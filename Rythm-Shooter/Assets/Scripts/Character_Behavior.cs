@@ -17,7 +17,7 @@ public class Character_Behavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetAxis("TriggersR_1") < -0.1 && Time.time > shotready)
+        if (Input.GetAxisRaw("TriggersR_1") < -0.1 && Time.time > shotready)
             Fire();
     }
 
@@ -25,60 +25,55 @@ public class Character_Behavior : MonoBehaviour
 
     void Fire()
     {
+        Vector2 Temp = Aim();
         GameObject shotcreate = Instantiate(shot);
         ShotBehavior shotinit = shotcreate.GetComponent<ShotBehavior>();
-        shotinit.Init(this.gameObject, transform.position + (0.2F * transform.right), transform.right);
+        shotinit.Init(this.gameObject, (Vector2)transform.position + (0.2F * (Temp)), Temp);
         shotready = Time.time + shootdelay;
     }
 
     Vector2 Aim()
     {
         Vector2 Temp;
-        Temp = new Vector2(0, 0);
-        float Y = Input.GetAxis("R_YAxis_1");
-        float X = Input.GetAxis("R_XAxis_1");
-        float slope = Y / X;
-        if (X < 0 && slope < -373.2f)
+        Temp = new Vector2(1, 0);
+        float Y = Input.GetAxisRaw("R_YAxis_1");
+        print(Y);
+        float X = Input.GetAxisRaw("R_XAxis_1");
+        print(X);
+        float tan = Mathf.Atan2(Y,X);
+        if (X < 0 && tan < Mathf.PI*7/12)
         {
-            Temp.x = Mathf.Cos(Mathf.Deg2Rad * 90f);
-            Temp.y = Mathf.Sin(Mathf.Deg2Rad * 90f);
+            Temp = new Vector2 (Mathf.Cos(Mathf.PI/2),Mathf.Sin(Mathf.PI/2));
         }
-        if (X < 0 && slope > -373.2f)
+        if (X < 0 && tan > Mathf.PI*7/12)
         {
-            Temp.x = Mathf.Cos(Mathf.Deg2Rad * 120f);
-            Temp.y = Mathf.Sin(Mathf.Deg2Rad * 120f);
+            Temp = new Vector2(Mathf.Cos(Mathf.PI *2/3), Mathf.Sin(Mathf.PI *2/3));
         }
-        if (X < 0 && slope > -100f)
+        if (X < 0 && tan > Mathf.PI*3/4)
         {
-            Temp.x = Mathf.Cos(Mathf.Deg2Rad * 150f);
-            Temp.y = Mathf.Sin(Mathf.Deg2Rad * 150f);
+            Temp = new Vector2(Mathf.Cos(Mathf.PI * 5/6), Mathf.Sin(Mathf.PI * 5/6));
         }
-        if (X < 0 && slope > -26.5f)
+        if (X < 0 && tan > Mathf.PI*11/12)
         {
-            Temp.x = Mathf.Cos(Mathf.Deg2Rad * 180f);
-            Temp.y = Mathf.Sin(Mathf.Deg2Rad * 180f);
+            Temp = new Vector2(Mathf.Cos(Mathf.PI), Mathf.Sin(Mathf.PI));
         }
-        if (X > 0 && slope > 373.2f)
+        if (X > 0 && tan > Mathf.PI*5/12)
         {
-            Temp.x = Mathf.Cos(Mathf.Deg2Rad * 90f);
-            Temp.y = Mathf.Sin(Mathf.Deg2Rad * 90f);
+            Temp = new Vector2(Mathf.Cos(Mathf.PI/2), Mathf.Sin(Mathf.PI/2));
         }
-        if (X > 0 && slope < 373.2f)
+        if (X > 0 && tan < Mathf.PI*5/12)
         {
-            Temp.x = Mathf.Cos(Mathf.Deg2Rad * 60f);
-            Temp.y = Mathf.Sin(Mathf.Deg2Rad * 60f);
+            Temp = new Vector2(Mathf.Cos(Mathf.PI/3), Mathf.Sin(Mathf.PI/3));
         }
-        if (X > 0 && slope < 100f)
+        if (X > 0 && tan < Mathf.PI/4)
         {
-            Temp.x = Mathf.Cos(Mathf.Deg2Rad * 30f);
-            Temp.y = Mathf.Sin(Mathf.Deg2Rad * 30f);
+            Temp = new Vector2(Mathf.Cos(Mathf.PI/6), Mathf.Sin(Mathf.PI/6));
         }
-        if (X > 0 && slope < 26.5f)
+        if (X > 0 && tan < Mathf.PI/12)
         {
-            Temp.x = Mathf.Cos(Mathf.Deg2Rad * 0f);
-            Temp.y = Mathf.Sin(Mathf.Deg2Rad * 0f);
+            Temp = new Vector2(Mathf.Cos(0), Mathf.Sin(0));
         }
-
+        print(Temp);
         return Temp;
     }
 
