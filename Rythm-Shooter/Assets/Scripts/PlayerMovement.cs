@@ -21,15 +21,15 @@ public class PlayerMovement : MonoBehaviour {
         mybody = GetComponent<Rigidbody2D>();
         myTransform = GetComponent<Transform>();
         pos = myTransform.position;
-        //tagGround = GameObject.Find(this.name + "/Tag Ground").transform;
+        tagGround = GameObject.FindGameObjectWithTag("Ground").transform;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
 
-        //isground = Physics2D.Linecast (myTransform.position, tagGround.position, playerMask);
-        Move(Input.GetAxisRaw("L_xaxis_1"));
+        isground = Physics2D.Linecast (myTransform.position, tagGround.position);
+        Move(Input.GetAxisRaw("L_XAxis_1"));
         if (Input.GetButtonDown("A_1"))
         {
             Jump();
