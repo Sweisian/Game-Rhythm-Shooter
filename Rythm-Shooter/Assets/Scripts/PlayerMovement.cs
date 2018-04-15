@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour {
     public LayerMask playerMask;
     public bool canmoveinair = true;
     Transform myTransform, tagGround;
-    Rigidbody2D mybody;
+    
     bool isgrounded = true;
     private Vector2 pos;
     Vector2 moveVel;
@@ -18,19 +18,42 @@ public class PlayerMovement : MonoBehaviour {
     public float minSpeed = 9f;
     public float maxSpeed = 5;
 
+    public float fallMultiplier = 2.5f;
+    public float lowJumpMultiplier = 2f;
+    Rigidbody2D mybody;
+
+    void Awake()
+    {
+        mybody = GetComponent<Rigidbody2D>();
+    }
+
     // Use this for initialization
     void Start()
     {
-        mybody = GetComponent<Rigidbody2D>();
+        //mybody = GetComponent<Rigidbody2D>();
         myTransform = GetComponent<Transform>();
         pos = myTransform.position;
         tagGround = GameObject.FindGameObjectWithTag("Ground").transform;
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
+        Debug.Log(isgrounded);
         Move(Input.GetAxisRaw("L_XAxis_1"));
+
+        // player is falling
+        if (mybody.velocity.y < 0)
+        {
+            mybody.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+            // minus 1 because unity is already applying 1 multiple of the gravity (don't want to add gravity part twice)
+        }
+        // player is moving up in the jump and a is released
+        else if (mybody.velocity.y > 0 )//&& !Input.GetButton("A_1"))
+        {
+            mybody.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
+        }
+
         //Respawn();
         //CheckDeath();
         if (Input.GetButtonDown("A_1"))
@@ -42,46 +65,27 @@ public class PlayerMovement : MonoBehaviour {
 
     public void Move(float horzontalInput)
     {
-        if (!canmoveinair && !isgrounded)
-            return;
-
         moveVel = mybody.velocity;
 
         if (Input.GetAxisRaw("L_XAxis_1") == 0)
         {
             // when movement keys are not currently pressed
-            if (isgrounded && Mathf.Abs(mybody.velocity.x) < 1)
-            {
-                // if circle is grounded and almost not moving
-                // this prevents the circle from drifting when the player isn't moving
-                moveVel.x = 0f;
-            }
-            if (!isgrounded)
-            {
-                // if in the air
-                if (Mathf.Abs(moveVel.x) <= minSpeed)
-                {
-                    return; //don't slow down anymore
-                }
-            }
-            if (moveVel.x > 0) //moving to the right
-                moveVel.x -= speed * scalingFactor;
-            else if (moveVel.x < 0) //moving to the left
-                moveVel.x += speed * scalingFactor;
-            mybody.velocity = moveVel; //set the circle's velocity
+            moveVel.x = 0f;            
         }
+
         // else movement keys are pressed	
         else if (Mathf.Abs(moveVel.x) < maxSpeed)
         {
-            moveVel.x += horzontalInput * speed;
-            mybody.velocity = moveVel;
+            moveVel.x += horzontalInput * speed;          
         }
+
         else
         {
             // don't increase speed if maxSpeed has been reached
-            moveVel.x = horzontalInput * maxSpeed;
-            mybody.velocity = moveVel;
+            moveVel.x = horzontalInput * maxSpeed;           
         }
+        mybody.velocity = moveVel;
+        
     }
 
 
@@ -94,7 +98,7 @@ public class PlayerMovement : MonoBehaviour {
     // Detect continous collision with the ground
     void OnCollisionStay2D(Collision2D hit)
     {
-        if (hit.gameObject.tag == "Ground" || hit.gameObject.tag == "boxToPush")
+        if (hit.gameObject.tag == "Ground")
         {
             isgrounded = true;
         }
@@ -103,7 +107,7 @@ public class PlayerMovement : MonoBehaviour {
     // Detect collision exit with ground
     void OnCollisionExit2D(Collision2D exit)
     {
-        if (exit.gameObject.tag == "Ground" || exit.gameObject.tag == "boxToPush")
+        if (exit.gameObject.tag == "Ground")
         {
             isgrounded = false;
         }
