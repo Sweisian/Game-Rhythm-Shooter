@@ -1,0 +1,4 @@
+sceneSetups:
+- path: Assets/Scenes/SWEI 4_13.unity
+  isLoaded: 1
+  isActive: 1
