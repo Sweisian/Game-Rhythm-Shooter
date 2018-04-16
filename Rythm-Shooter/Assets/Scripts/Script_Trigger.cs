@@ -10,12 +10,24 @@ public class Script_Trigger : MonoBehaviour
 
     public KeyCode myKey;
 
-    void Update()
+    //void Update()
+    //{
+    //    if (Input.GetKeyDown(myKey) && isActive)
+    //    {
+    //        beat.GetComponent<SpriteRenderer>().color = Color.green;
+    //        isActive = false;
+    //    }
+    //}
+
+    public void BeatHit()
     {
-        if (Input.GetKeyDown(myKey) && isActive)
-        {
-            beat.GetComponent<SpriteRenderer>().color = Color.green;
-        }
+        beat.GetComponent<SpriteRenderer>().color = Color.green;
+        isActive = false;
+    }
+
+    public bool GetIsActive()
+    {
+        return isActive;
     }
 
     void OnTriggerEnter2D(Collider2D c)

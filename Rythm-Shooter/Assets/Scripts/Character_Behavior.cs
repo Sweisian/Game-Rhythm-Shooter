@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Character_Behavior : MonoBehaviour
 {
@@ -8,17 +9,38 @@ public class Character_Behavior : MonoBehaviour
     public float shootdelay = 0.1f;
     private float shotready = 0.0f;
     public GameObject shot;
+
+    private Script_Trigger myTrigger;
+
     // Use this for initialization
     void Start()
     {
+        //added code to find the trigger object and script
+        myTrigger = GameObject.FindGameObjectWithTag("Trigger").GetComponent<Script_Trigger>();
 
+        if(myTrigger == null)
+            throw new Exception("a Trigger Object was not found");
     }
 
     // Update is called once per frame
     void Update()
     {
+        //temp code to test the trigger functionality
+        if (myTrigger.GetIsActive() && Input.GetKeyDown(myTrigger.myKey))
+        {
+            Fire();
+            myTrigger.BeatHit();
+        }
+
         if (Input.GetAxisRaw("TriggersR_1") < -0.1 && Time.time > shotready)
             Fire();
+
+        //Uncomment this when ready
+        //if (myTrigger.GetIsActive() && Input.GetAxisRaw("TriggersR_1"))
+        //{
+        //    Fire();
+        //    myTrigger.BeatHit();
+        //}
     }
 
 
