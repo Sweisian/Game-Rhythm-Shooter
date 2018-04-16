@@ -56,7 +56,7 @@ public class PlayerMovement : MonoBehaviour {
 
         //Respawn();
         //CheckDeath();
-        if (Input.GetButtonDown("A_1"))
+        if (Input.GetButtonDown("LB_1"))
         {
             Jump();
         }

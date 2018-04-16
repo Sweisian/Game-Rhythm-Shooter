@@ -10,6 +10,7 @@ public class Script_Trigger : MonoBehaviour
 
     public KeyCode myKey;
 
+    //Uneeded code
     //void Update()
     //{
     //    if (Input.GetKeyDown(myKey) && isActive)

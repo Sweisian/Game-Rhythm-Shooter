@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/SWEI 4_13.unity
+- path: Assets/Scenes/Emily's Shit.unity
   isLoaded: 1
   isActive: 1
