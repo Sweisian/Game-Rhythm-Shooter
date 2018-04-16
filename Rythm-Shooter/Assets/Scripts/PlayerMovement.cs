@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour {
 
     public float threshold = -20;
     public float speed = 10;
-    public float jumpvelocity = 10;
+    public float jumpvelocity = 20;
     public LayerMask playerMask;
     public bool canmoveinair = true;
     Transform myTransform, tagGround;

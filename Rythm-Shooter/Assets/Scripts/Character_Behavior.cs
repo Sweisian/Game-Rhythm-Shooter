@@ -37,9 +37,7 @@ public class Character_Behavior : MonoBehaviour
         Vector2 Temp;
         Temp = new Vector2(1, 0);
         float Y = Input.GetAxisRaw("R_YAxis_1");
-        print(Y);
         float X = Input.GetAxisRaw("R_XAxis_1");
-        print(X);
         float tan = Mathf.Atan2(Y,X);
         if (X < 0 && tan < Mathf.PI*7/12)
         {
@@ -72,6 +70,10 @@ public class Character_Behavior : MonoBehaviour
         if (X > 0 && tan < Mathf.PI/12)
         {
             Temp = new Vector2(Mathf.Cos(0), Mathf.Sin(0));
+        }
+        if (Y > 0.8)
+        {
+            Temp = new Vector2(Mathf.Cos(Mathf.PI/2), Mathf.Sin(Mathf.PI/2));
         }
         print(Temp);
         return Temp;
