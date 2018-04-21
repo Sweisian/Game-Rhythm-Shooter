@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour {
 
     public float threshold = -20;
     public float speed = 10;
+    [SerializeField] private float acceleration = 5f;
     public float jumpvelocity = 20;
     public LayerMask playerMask;
     public bool canmoveinair = true;
@@ -21,10 +22,14 @@ public class PlayerMovement : MonoBehaviour {
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 2f;
     Rigidbody2D mybody;
+    private ParticleSystem particles;
+    
 
     void Awake()
     {
         mybody = GetComponent<Rigidbody2D>();
+        //child = GetComponentInChildren()
+        particles = GetComponentInChildren<ParticleSystem>();
     }
 
     // Use this for initialization
@@ -40,8 +45,25 @@ public class PlayerMovement : MonoBehaviour {
     void Update()
     {
         Debug.Log(isgrounded);
+        if (Input.GetButtonDown("LB_1"))
+        {
+            Jump();
+        }
+
+        // try moving to fixed update
+
+
+        //Respawn();
+        //CheckDeath();
+
+        //particles.Play();
+    }
+
+    void FixedUpdate()
+    {
         Move(Input.GetAxisRaw("L_XAxis_1"));
 
+        
         // player is falling
         if (mybody.velocity.y < 0)
         {
@@ -49,24 +71,27 @@ public class PlayerMovement : MonoBehaviour {
             // minus 1 because unity is already applying 1 multiple of the gravity (don't want to add gravity part twice)
         }
         // player is moving up in the jump and a is released
-        else if (mybody.velocity.y > 0 )//&& !Input.GetButton("A_1"))
+        else if (mybody.velocity.y > 0) //&& !Input.GetButton("A_1"))
         {
             mybody.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
-        }
-
-        //Respawn();
-        //CheckDeath();
-        if (Input.GetButtonDown("LB_1"))
-        {
-            Jump();
         }
     }
 
 
     public void Move(float horzontalInput)
     {
+        
         moveVel = mybody.velocity;
-
+        
+        Vector2 direction = new Vector2(horzontalInput, 0f);  //probably wrong?
+        var goal = direction * speed;
+        Vector2 error = new Vector2(goal.x - moveVel.x, 0f);
+        mybody.AddForce(acceleration * error);
+        
+        /*
+        // janky old code
+        moveVel = mybody.velocity;
+        Debug.Log(horzontalInput);
         if (Input.GetAxisRaw("L_XAxis_1") == 0)
         {
             // when movement keys are not currently pressed
@@ -85,7 +110,7 @@ public class PlayerMovement : MonoBehaviour {
             moveVel.x = horzontalInput * maxSpeed;           
         }
         mybody.velocity = moveVel;
-        
+        */
     }
 
 
