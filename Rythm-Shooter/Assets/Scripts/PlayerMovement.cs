@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SynchronizerData;
 
 public class PlayerMovement : MonoBehaviour {
 
@@ -23,7 +24,10 @@ public class PlayerMovement : MonoBehaviour {
     public float lowJumpMultiplier = 2f;
     Rigidbody2D mybody;
     private ParticleSystem particles;
-    
+
+    private BeatObserver beatObserver;
+
+    private bool onBeat = false;
 
     void Awake()
     {
@@ -36,6 +40,7 @@ public class PlayerMovement : MonoBehaviour {
     void Start()
     {
         //mybody = GetComponent<Rigidbody2D>();
+        beatObserver = GetComponent<BeatObserver>();
         myTransform = GetComponent<Transform>();
         pos = myTransform.position;
         tagGround = GameObject.FindGameObjectWithTag("Ground").transform;
@@ -44,11 +49,17 @@ public class PlayerMovement : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(isgrounded);
+        //Debug.Log(isgrounded);
         if (Input.GetButtonDown("LB_1"))
         {
             Jump();
         }
+
+        if ((beatObserver.beatMask & BeatType.OnBeat) == BeatType.OnBeat)
+        {
+            onBeat = true;
+        }
+        else onBeat = false;
 
         // try moving to fixed update
 
@@ -79,8 +90,7 @@ public class PlayerMovement : MonoBehaviour {
 
 
     public void Move(float horzontalInput)
-    {
-        
+    {   
         moveVel = mybody.velocity;
         
         Vector2 direction = new Vector2(horzontalInput, 0f);  //probably wrong?
@@ -118,6 +128,14 @@ public class PlayerMovement : MonoBehaviour {
     {
         if (isgrounded)
             mybody.velocity += jumpvelocity * Vector2.up;
+        //particles.Play();
+        
+        if (onBeat == true)
+        {
+            //Debug.Log("FOUND THAT BEAT SONNN");
+            particles.Play();
+        }
+        
     }
 
     // Detect continous collision with the ground

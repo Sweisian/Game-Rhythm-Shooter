@@ -437,7 +437,6 @@ MonoBehaviour:
   audioSource: {fileID: 1888816424}
   observers:
   - {fileID: 336597342}
-  - {fileID: 1967047072}
 --- !u!4 &1593037856
 Transform:
   m_ObjectHideFlags: 0
@@ -4165,24 +4164,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c3dcd2c1ce352374aad368794729e61a, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &1967047072 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1602811437587966, guid: df43a4c168b2bd6418c91d94e229bae9,
-    type: 2}
-  m_PrefabInternal: {fileID: 1809984021}
---- !u!114 &1967047076
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1967047072}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dc6bf181cdb14aab9c6f511c928132c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  beatWindow: 10
-  beatMask: 0
 --- !u!1 &2103230387 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1376288901787878, guid: c3dcd2c1ce352374aad368794729e61a,
