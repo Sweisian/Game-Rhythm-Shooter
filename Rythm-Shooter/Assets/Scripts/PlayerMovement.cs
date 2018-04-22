@@ -5,23 +5,17 @@ using SynchronizerData;
 
 public class PlayerMovement : MonoBehaviour {
 
-    public float threshold = -20;
     public float speed = 10;
     [SerializeField] private float acceleration = 5f;
     public float jumpvelocity = 20;
-    public LayerMask playerMask;
-    public bool canmoveinair = true;
-    Transform myTransform, tagGround;
+
     
     bool isgrounded = true;
-    private Vector2 pos;
     Vector2 moveVel;
-    public float scalingFactor = 0.36f;
-    public float minSpeed = 9f;
-    public float maxSpeed = 5;
 
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 2f;
+
     Rigidbody2D mybody;
     private ParticleSystem particles;
 
@@ -32,18 +26,14 @@ public class PlayerMovement : MonoBehaviour {
     void Awake()
     {
         mybody = GetComponent<Rigidbody2D>();
-        //child = GetComponentInChildren()
         particles = GetComponentInChildren<ParticleSystem>();
+        beatObserver = GetComponent<BeatObserver>();
     }
 
     // Use this for initialization
     void Start()
     {
-        //mybody = GetComponent<Rigidbody2D>();
-        beatObserver = GetComponent<BeatObserver>();
-        myTransform = GetComponent<Transform>();
-        pos = myTransform.position;
-        tagGround = GameObject.FindGameObjectWithTag("Ground").transform;
+        
     }
 
     // Update is called once per frame
@@ -58,16 +48,18 @@ public class PlayerMovement : MonoBehaviour {
         if ((beatObserver.beatMask & BeatType.OnBeat) == BeatType.OnBeat)
         {
             onBeat = true;
+            //Debug.Log(onBeat);
         }
-        else onBeat = false;
-
-        // try moving to fixed update
-
-
-        //Respawn();
-        //CheckDeath();
-
-        //particles.Play();
+        else if ((beatObserver.beatMask & BeatType.OffBeat) == BeatType.OffBeat)
+        {
+            onBeat = true;
+            //Debug.Log(onBeat);
+        }
+        else
+        {
+            onBeat = false;
+            //Debug.Log(onBeat);
+        }
     }
 
     void FixedUpdate()
@@ -86,6 +78,8 @@ public class PlayerMovement : MonoBehaviour {
         {
             mybody.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
         }
+
+        
     }
 
 
@@ -97,30 +91,6 @@ public class PlayerMovement : MonoBehaviour {
         var goal = direction * speed;
         Vector2 error = new Vector2(goal.x - moveVel.x, 0f);
         mybody.AddForce(acceleration * error);
-        
-        /*
-        // janky old code
-        moveVel = mybody.velocity;
-        Debug.Log(horzontalInput);
-        if (Input.GetAxisRaw("L_XAxis_1") == 0)
-        {
-            // when movement keys are not currently pressed
-            moveVel.x = 0f;            
-        }
-
-        // else movement keys are pressed	
-        else if (Mathf.Abs(moveVel.x) < maxSpeed)
-        {
-            moveVel.x += horzontalInput * speed;          
-        }
-
-        else
-        {
-            // don't increase speed if maxSpeed has been reached
-            moveVel.x = horzontalInput * maxSpeed;           
-        }
-        mybody.velocity = moveVel;
-        */
     }
 
 
@@ -128,13 +98,13 @@ public class PlayerMovement : MonoBehaviour {
     {
         if (isgrounded)
             mybody.velocity += jumpvelocity * Vector2.up;
-        //particles.Play();
         
         if (onBeat == true)
         {
-            //Debug.Log("FOUND THAT BEAT SONNN");
+            Debug.Log("FOUND THAT BEAT SONNN");
             particles.Play();
         }
+        
         
     }
 

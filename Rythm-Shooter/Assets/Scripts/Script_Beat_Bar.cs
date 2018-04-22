@@ -40,7 +40,7 @@ public class Script_Beat_Bar : MonoBehaviour {
         if ((beatObserver.beatMask & BeatType.OnBeat) == BeatType.OnBeat)
         {
             transform.position = new Vector3(transform.position.x, transform.position.y - .1f, transform.position.z);
-            Debug.Log("Detected on beat");
+            //Debug.Log("Detected on beat");
         }
 
         if ((beatObserver.beatMask & BeatType.OffBeat) == BeatType.OffBeat)
