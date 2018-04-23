@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4310478355121328}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Beat Spawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37,7 +37,7 @@ GameObject:
   - component: {fileID: 212291637313638800}
   - component: {fileID: 61534482799272378}
   - component: {fileID: 114755029271634062}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Trigger
   m_TagString: Trigger
   m_Icon: {fileID: 0}
@@ -54,7 +54,8 @@ GameObject:
   - component: {fileID: 4327486881289704}
   - component: {fileID: 212850955577499640}
   - component: {fileID: 114275899525849212}
-  m_Layer: 0
+  - component: {fileID: 114237268650757936}
+  m_Layer: 9
   m_Name: BeatBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +73,7 @@ GameObject:
   - component: {fileID: 212844805599567060}
   - component: {fileID: 61109230228083120}
   - component: {fileID: 114587485350864434}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Kill Zone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +100,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1127987746779612}
   m_LocalRotation: {x: -0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.493, y: 0, z: -0.005859375}
+  m_LocalPosition: {x: 0.474, y: 0, z: -0.005859375}
   m_LocalScale: {x: -0.09832842, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4327486881289704}
@@ -129,7 +130,7 @@ Transform:
   m_GameObject: {fileID: 1284352103488646}
   m_LocalRotation: {x: -0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.01, z: 0}
-  m_LocalScale: {x: -0.02, y: 1, z: 1}
+  m_LocalScale: {x: 0.01, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4327486881289704}
   m_RootOrder: 0
@@ -184,6 +185,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &114237268650757936
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1602811437587966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dc6bf181cdb14aab9c6f511c928132c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  beatWindow: 10
+  beatMask: 0
 --- !u!114 &114275899525849212
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -195,12 +209,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4e27b37c725bea4e93345b9e81b7ad2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  beatGenOffSet: 0.5
-  onTime: 0.2
-  offTime: 0.3293339
-  testing: {fileID: 0}
   beatPrefab: {fileID: 4354142145583090, guid: dd0e262819b10d74e8c04640e9c8283b, type: 2}
   beatSpawnLoc: {fileID: 4310478355121328}
+  trigger: {fileID: 4720000142518648}
+  bpm: 113.3
+  beat_rate: 2
+  myBeat: {fileID: 1448054088260832, guid: 6b79c8d72d2f3284badee7d3432f9c19, type: 2}
 --- !u!114 &114587485350864434
 MonoBehaviour:
   m_ObjectHideFlags: 1

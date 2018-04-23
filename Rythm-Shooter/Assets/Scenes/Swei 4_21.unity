@@ -227,8 +227,9 @@ MonoBehaviour:
   negativeBeatOffset: 0
   beatType: 2
   loopTime: 30
-  audioSource: {fileID: 0}
-  observers: []
+  audioSource: {fileID: 1888816424}
+  observers:
+  - {fileID: 2126139575}
 --- !u!4 &431166228
 Transform:
   m_ObjectHideFlags: 0
@@ -326,11 +327,6 @@ Prefab:
     - target: {fileID: 4883124032016798, guid: 497c6594b26cac841870bf7b5a30ad10, type: 2}
       propertyPath: m_RootOrder
       value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 114776467177773578, guid: 497c6594b26cac841870bf7b5a30ad10,
-        type: 2}
-      propertyPath: jumpvelocity
-      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 497c6594b26cac841870bf7b5a30ad10, type: 2}
@@ -554,3 +550,8 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c3dcd2c1ce352374aad368794729e61a, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &2126139575 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1602811437587966, guid: df43a4c168b2bd6418c91d94e229bae9,
+    type: 2}
+  m_PrefabInternal: {fileID: 1809984021}

@@ -5,10 +5,10 @@ using System;
 
 public class Character_Behavior : MonoBehaviour
 {
-
     public float shootdelay = 0.1f;
     private float shotready = 0.0f;
     public GameObject shot;
+    public GameObject GameManage;
 
     private Script_Trigger myTrigger;
 
@@ -26,24 +26,22 @@ public class Character_Behavior : MonoBehaviour
     void Update()
     {
         //temp code to test the trigger functionality
-        //if (myTrigger.GetIsActive() && Input.GetKeyDown(myTrigger.myKey))
-        //{
-        //    Fire();
-        //    myTrigger.BeatHit();
-        //}
+        if (myTrigger.GetIsActive() && Input.GetKeyDown(KeyCode.F))
+        {
+            Fire();
+            myTrigger.BeatHit();
+        }
 
         //if (Input.GetAxisRaw("TriggersR_1") < -0.1 && Time.time > shotready)
         //    Fire();
 
-       // Uncomment this when ready
-        if (myTrigger.GetIsActive() && Input.GetAxisRaw("TriggersR_1") < -0.1)
+        // Uncomment this when ready
+        if (Input.GetButtonDown("A_1") && myTrigger.GetIsActive())
         {
             Fire();
             myTrigger.BeatHit();
         }
     }
-
-
 
     void Fire()
     {
@@ -99,6 +97,15 @@ public class Character_Behavior : MonoBehaviour
         }
         print(Temp);
         return Temp;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "shot")
+        {
+            this.GetComponentInParent<Script_GameManager>().respawn(this.gameObject);
+            Destroy(collision.gameObject);
+        }
     }
 
 
