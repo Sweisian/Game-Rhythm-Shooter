@@ -134,6 +134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shootdelay: 0.1
   shot: {fileID: 1568460062443294, guid: 374269934e004bb40a8193fd0a92612d, type: 2}
+  GameManage: {fileID: 0}
 --- !u!114 &114494061181423528
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -161,7 +162,7 @@ MonoBehaviour:
   speed: 10
   acceleration: 7
   jumpvelocity: 12
-  dashVelocity: 10
+  dashVelocity: 15
   fallMultiplier: 3
   lowJumpMultiplier: 2.5
 --- !u!198 &198857485430384610

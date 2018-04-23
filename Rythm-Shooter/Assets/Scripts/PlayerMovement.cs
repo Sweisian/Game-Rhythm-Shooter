@@ -154,7 +154,9 @@ public class PlayerMovement : MonoBehaviour {
 
     public void Dash(float horzontalInput, float verticalInput)
     {
-        mybody.velocity += dashVelocity * new Vector2(horzontalInput, verticalInput);
+        Vector2 myVector = new Vector2(horzontalInput, verticalInput);
+        myVector.Normalize();
+        mybody.velocity += dashVelocity *  myVector;
     }
 
     public void Jump()
