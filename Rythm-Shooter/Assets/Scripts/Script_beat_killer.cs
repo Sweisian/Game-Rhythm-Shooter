@@ -17,6 +17,6 @@ public class Script_beat_killer : MonoBehaviour {
     void OnCollisionEnter2D(Collision2D c)
     {
         Destroy(c.gameObject);
-        Debug.Log("Tried to kill :" + c);
+        //Debug.Log("Tried to kill :" + c);
     }
 }
