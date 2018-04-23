@@ -5,10 +5,10 @@ using System;
 
 public class Character_Behavior : MonoBehaviour
 {
-
     public float shootdelay = 0.1f;
     private float shotready = 0.0f;
     public GameObject shot;
+    public GameObject GameManage;
 
     private Script_Trigger myTrigger;
 
@@ -97,6 +97,15 @@ public class Character_Behavior : MonoBehaviour
         }
         print(Temp);
         return Temp;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "shot")
+        {
+            this.GetComponentInParent<Script_GameManager>().respawn(this.gameObject);
+            Destroy(collision.gameObject);
+        }
     }
 
 
