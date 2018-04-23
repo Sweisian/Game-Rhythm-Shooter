@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 50518197442726232}
   - component: {fileID: 114125776527979644}
   - component: {fileID: 61095444099453758}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Beat Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
