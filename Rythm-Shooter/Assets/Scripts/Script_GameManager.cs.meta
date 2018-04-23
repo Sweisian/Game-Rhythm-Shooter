@@ -5,7 +5,14 @@ licenseType: Free
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - player1: {fileID: 1461411647990530, guid: 497c6594b26cac841870bf7b5a30ad10, type: 2}
+  - player1score: {fileID: 1194102998361742, guid: af442de8029d94844a8ad27ef6cd9d01,
+      type: 2}
+  - player2: {fileID: 1876404698292402, guid: eff80e3f6d0e791418f652daebd16272, type: 2}
+  - player2score: {fileID: 1086382726622456, guid: f386046065f41054d8f9b3adbcd6b21e,
+      type: 2}
+  - testing: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
