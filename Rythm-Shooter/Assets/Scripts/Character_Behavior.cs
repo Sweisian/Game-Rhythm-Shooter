@@ -26,16 +26,16 @@ public class Character_Behavior : MonoBehaviour
     void Update()
     {
         //temp code to test the trigger functionality
-        //if (myTrigger.GetIsActive() && Input.GetKeyDown(myTrigger.myKey))
-        //{
-        //    Fire();
-        //    myTrigger.BeatHit();
-        //}
+        if (myTrigger.GetIsActive() && Input.GetKeyDown(KeyCode.F))
+        {
+            Fire();
+            myTrigger.BeatHit();
+        }
 
         //if (Input.GetAxisRaw("TriggersR_1") < -0.1 && Time.time > shotready)
         //    Fire();
 
-       // Uncomment this when ready
+        // Uncomment this when ready
         if (Input.GetButtonDown("A_1") && myTrigger.GetIsActive())
         {
             Fire();

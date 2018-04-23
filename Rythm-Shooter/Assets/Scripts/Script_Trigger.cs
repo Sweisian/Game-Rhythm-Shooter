@@ -13,11 +13,12 @@ public class Script_Trigger : MonoBehaviour
     //Uneeded code
     void Update()
     {
-        if (Input.GetKeyDown(myKey) && isActive)
-        {
-            beat.GetComponent<SpriteRenderer>().color = Color.green;
-            isActive = false;
-        }
+        //Temp code for testing
+        //if (Input.GetKeyDown(myKey) && isActive)
+        //{
+        //    beat.GetComponent<SpriteRenderer>().color = Color.green;
+        //    isActive = false;
+        //}
     }
 
     public void BeatHit()

@@ -333,11 +333,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 114776467177773578, guid: 497c6594b26cac841870bf7b5a30ad10,
-        type: 2}
-      propertyPath: jumpvelocity
-      value: 12
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 497c6594b26cac841870bf7b5a30ad10, type: 2}
   m_IsPrefabParent: 0
@@ -399,7 +394,7 @@ Prefab:
     - target: {fileID: 114275899525849212, guid: df43a4c168b2bd6418c91d94e229bae9,
         type: 2}
       propertyPath: bpm
-      value: 113
+      value: 113.3
       objectReference: {fileID: 0}
     - target: {fileID: 4310478355121328, guid: df43a4c168b2bd6418c91d94e229bae9, type: 2}
       propertyPath: m_LocalPosition.x
@@ -533,7 +528,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91b7313f19d4448c194f6d6daebf9a5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bpm: 113
+  bpm: 113.3
   startDelay: 1
 --- !u!1001 &1901225982
 Prefab:

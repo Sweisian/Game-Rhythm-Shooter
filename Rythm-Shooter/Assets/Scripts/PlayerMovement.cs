@@ -49,20 +49,6 @@ public class PlayerMovement : MonoBehaviour {
     {
         //Debug.Log(isgrounded);
 
-        //Now checks if the trigger is active
-        if (Input.GetButtonDown("Y_1") && myTrigger.GetIsActive())
-        {
-            Jump();
-            myTrigger.BeatHit();
-        }
-
-        //Dash Ability
-        if (Input.GetKeyDown("B_1") && myTrigger.GetIsActive())
-        {
-            Dash(Input.GetAxisRaw("L_XAxis_1"), Input.GetAxisRaw("L_YAxis_1"));
-            myTrigger.BeatHit();
-        }
-
         if ((beatObserver.beatMask & BeatType.OnBeat) == BeatType.OnBeat)
         {
             onBeat = true;
@@ -84,7 +70,34 @@ public class PlayerMovement : MonoBehaviour {
     {
         Move(Input.GetAxisRaw("L_XAxis_1"));
 
-        
+        //Now checks if the trigger is active
+        if (Input.GetButtonDown("Y_1") && myTrigger.GetIsActive())
+        {
+            Jump();
+            myTrigger.BeatHit();
+        }
+
+        //Dash Ability
+        if (Input.GetButtonDown("B_1") && myTrigger.GetIsActive())
+        {
+            Dash(Input.GetAxisRaw("L_XAxis_1"), Input.GetAxisRaw("L_YAxis_1"));
+            myTrigger.BeatHit();
+        }
+
+        //Alt jump for testing
+        if (Input.GetKeyDown(KeyCode.D) && myTrigger.GetIsActive())
+        {
+            Jump();
+            myTrigger.BeatHit();
+        }
+
+        //Alt dash for testing
+        if (Input.GetKeyDown(KeyCode.S) && myTrigger.GetIsActive())
+        {
+            Dash(1, 1);
+            myTrigger.BeatHit();
+        }
+
         // player is falling
         if (mybody.velocity.y < 0)
         {
