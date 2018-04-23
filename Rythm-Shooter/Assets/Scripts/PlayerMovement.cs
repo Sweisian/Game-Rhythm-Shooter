@@ -65,7 +65,6 @@ public class PlayerMovement : MonoBehaviour {
     void FixedUpdate()
     {
         Move(Input.GetAxisRaw("L_XAxis_1"));
-
         
         // player is falling
         if (mybody.velocity.y < 0)
@@ -83,11 +82,39 @@ public class PlayerMovement : MonoBehaviour {
     }
 
 
-    public void Move(float horzontalInput)
+    public void Move(float horizontalInput)
     {   
+        //Debug.Log(horizontalInput);
         moveVel = mybody.velocity;
-        
-        Vector2 direction = new Vector2(horzontalInput, 0f);  //probably wrong?
+
+        // separates movement into discrete speeds (crawl, walk, run)
+        if (horizontalInput > 0 && horizontalInput <= 0.3f)
+        {
+            horizontalInput = 0.3f;
+        }
+        else if (horizontalInput > 0.3f && horizontalInput <= 0.9f)
+        {
+            horizontalInput = 0.5f;
+        }
+        else if (horizontalInput > 0.8f && horizontalInput <= 1)
+        {
+            horizontalInput = 1;
+        }
+
+        if (horizontalInput < 0 && horizontalInput >= -0.3f)
+        {
+            horizontalInput = -0.3f;
+        }
+        else if (horizontalInput < -0.3f && horizontalInput >= -0.9f)
+        {
+            horizontalInput = -0.5f;
+        }
+        else if (horizontalInput < -0.8f && horizontalInput > -1)
+        {
+            horizontalInput = -1;
+        }
+
+        Vector2 direction = new Vector2(horizontalInput, 0f);  //probably wrong?
         var goal = direction * speed;
         Vector2 error = new Vector2(goal.x - moveVel.x, 0f);
         mybody.AddForce(acceleration * error);
