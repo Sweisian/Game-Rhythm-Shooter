@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Script_Beat : MonoBehaviour
 {
-
     public float moveSpeed;
 
 	// Use this for initialization
@@ -13,8 +12,4 @@ public class Script_Beat : MonoBehaviour
 	    gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(moveSpeed , 0);
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }
