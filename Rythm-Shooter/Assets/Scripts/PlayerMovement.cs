@@ -80,7 +80,8 @@ public class PlayerMovement : MonoBehaviour {
         //Dash Ability
         if (Input.GetButtonDown("B_1") && myTrigger.GetIsActive())
         {
-            Dash(Input.GetAxisRaw("L_XAxis_1"), Input.GetAxisRaw("L_YAxis_1"));
+            //negative on the y to invert stick for some reason
+            Dash(Input.GetAxisRaw("L_XAxis_1"), -Input.GetAxisRaw("L_YAxis_1"));
             myTrigger.BeatHit();
         }
 

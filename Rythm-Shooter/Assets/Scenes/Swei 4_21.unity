@@ -194,11 +194,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &390981643 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4720000142518648, guid: df43a4c168b2bd6418c91d94e229bae9,
-    type: 2}
-  m_PrefabInternal: {fileID: 1809984021}
 --- !u!1 &431166226
 GameObject:
   m_ObjectHideFlags: 0
@@ -374,35 +369,6 @@ Prefab:
     - target: {fileID: 4327486881289704, guid: df43a4c168b2bd6418c91d94e229bae9, type: 2}
       propertyPath: m_RootOrder
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114275899525849212, guid: df43a4c168b2bd6418c91d94e229bae9,
-        type: 2}
-      propertyPath: trigger
-      value: 
-      objectReference: {fileID: 390981643}
-    - target: {fileID: 114275899525849212, guid: df43a4c168b2bd6418c91d94e229bae9,
-        type: 2}
-      propertyPath: myBeat
-      value: 
-      objectReference: {fileID: 1448054088260832, guid: dd0e262819b10d74e8c04640e9c8283b,
-        type: 2}
-    - target: {fileID: 114275899525849212, guid: df43a4c168b2bd6418c91d94e229bae9,
-        type: 2}
-      propertyPath: beat_rate
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114275899525849212, guid: df43a4c168b2bd6418c91d94e229bae9,
-        type: 2}
-      propertyPath: bpm
-      value: 113.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4310478355121328, guid: df43a4c168b2bd6418c91d94e229bae9, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0.474
-      objectReference: {fileID: 0}
-    - target: {fileID: 4310478355121328, guid: df43a4c168b2bd6418c91d94e229bae9, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: df43a4c168b2bd6418c91d94e229bae9, type: 2}
@@ -589,16 +555,3 @@ GameObject:
   m_PrefabParentObject: {fileID: 1602811437587966, guid: df43a4c168b2bd6418c91d94e229bae9,
     type: 2}
   m_PrefabInternal: {fileID: 1809984021}
---- !u!114 &2126139579
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2126139575}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dc6bf181cdb14aab9c6f511c928132c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  beatWindow: 10
-  beatMask: 0
