@@ -8,8 +8,9 @@ public class PlayerMovement : MonoBehaviour {
     public float speed = 10;
     [SerializeField] private float acceleration = 5f;
     public float jumpvelocity = 20;
+    public float dashVelocity = 10;
 
-    
+
     bool isgrounded = true;
     Vector2 moveVel;
 
@@ -23,26 +24,43 @@ public class PlayerMovement : MonoBehaviour {
 
     private bool onBeat = false;
 
+    private Script_Trigger myTrigger;
+
     void Awake()
     {
         mybody = GetComponent<Rigidbody2D>();
         particles = GetComponentInChildren<ParticleSystem>();
         beatObserver = GetComponent<BeatObserver>();
+
+        myTrigger = GameObject.FindGameObjectWithTag("Trigger").GetComponent<Script_Trigger>();
+        if (myTrigger == null)
+            Debug.Log("Didn't find a Trigger");
     }
 
     // Use this for initialization
     void Start()
     {
         
+
     }
 
     // Update is called once per frame
     void Update()
     {
         //Debug.Log(isgrounded);
-        if (Input.GetButtonDown("LB_1"))
+
+        //Now checks if the trigger is active
+        if (Input.GetButtonDown("Y_1") && myTrigger.GetIsActive())
         {
             Jump();
+            myTrigger.BeatHit();
+        }
+
+        //Dash Ability
+        if (Input.GetKeyDown("B_1") && myTrigger.GetIsActive())
+        {
+            Dash(Input.GetAxisRaw("L_XAxis_1"), Input.GetAxisRaw("L_YAxis_1"));
+            myTrigger.BeatHit();
         }
 
         if ((beatObserver.beatMask & BeatType.OnBeat) == BeatType.OnBeat)
@@ -78,10 +96,7 @@ public class PlayerMovement : MonoBehaviour {
         {
             mybody.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
         }
-
-        
     }
-
 
     public void Move(float horzontalInput)
     {   
@@ -94,6 +109,11 @@ public class PlayerMovement : MonoBehaviour {
     }
 
 
+    public void Dash(float horzontalInput, float verticalInput)
+    {
+        mybody.velocity += dashVelocity * new Vector2(horzontalInput, verticalInput);
+    }
+
     public void Jump()
     {
         if (isgrounded)
@@ -104,8 +124,6 @@ public class PlayerMovement : MonoBehaviour {
             Debug.Log("FOUND THAT BEAT SONNN");
             particles.Play();
         }
-        
-        
     }
 
     // Detect continous collision with the ground

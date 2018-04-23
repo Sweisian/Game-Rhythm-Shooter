@@ -36,14 +36,12 @@ public class Character_Behavior : MonoBehaviour
         //    Fire();
 
        // Uncomment this when ready
-        if (myTrigger.GetIsActive() && Input.GetAxisRaw("TriggersR_1") < -0.1)
+        if (Input.GetButtonDown("A_1") && myTrigger.GetIsActive())
         {
             Fire();
             myTrigger.BeatHit();
         }
     }
-
-
 
     void Fire()
     {
