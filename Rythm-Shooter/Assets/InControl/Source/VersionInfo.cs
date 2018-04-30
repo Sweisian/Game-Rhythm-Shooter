@@ -24,11 +24,15 @@ namespace InControl
 
 		public static VersionInfo InControlVersion()
 		{
-			return new VersionInfo() {
-				Major = 1,
-				Minor = 4,
-				Patch = 4,
-				Build = 3848
+            return new VersionInfo() {
+                Major = 1,
+                Minor = 4,
+                Patch = 4,
+
+                //Not sure what the issue was. Got a merge conflict. and I just picked one
+                Build = 3848
+
+				//Build = 3836
 			};
 		}
 
