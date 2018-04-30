@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using InControl;
 
 public class Character_Behavior : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class Character_Behavior : MonoBehaviour
     public GameObject GameManage;
 
     private Script_Trigger myTrigger;
+    public Vector2 LastAim;
 
     public float speed = 10;
     [SerializeField] private float acceleration = 5f;
@@ -50,6 +52,9 @@ public class Character_Behavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        InputDevice player = InputManager.ActiveDevice;
+
         //temp code to test the trigger functionality
         if (localIsActive && Input.GetKeyDown(KeyCode.F))
         {
@@ -61,23 +66,35 @@ public class Character_Behavior : MonoBehaviour
         //    Fire();
 
         // Uncomment this when ready
+/*
         if (Input.GetButtonDown("A_1") && localIsActive)
+*/
+        if (player.Action1)
         {
-            Fire();
-            myTrigger.BeatHit(localIsActive);
-        }       
+            Debug.Log("A Pressed");
+            if (myTrigger.GetIsActive())
+            {
+                Fire();
+                particles[0].Play();
+                myTrigger.BeatHit(localIsActive);
+            }
+        }
+            
     }
 
     void FixedUpdate()
     {
+        InputDevice player = InputManager.ActiveDevice;
+        InputControl movecontrol = player.GetControl(InputControlType.LeftStickX);
+        InputControl aimcontrol = player.GetControl(InputControlType.LeftStickY);
+        Move(movecontrol.Value);
+
         FallingPhysics();
 
-        Move(Input.GetAxisRaw("L_XAxis_1"));
-
         //Jump Ability
-        if (Input.GetButtonDown("Y_1"))
+        if (player.Action2)
         {
-            //Debug.Log("Y Pressed");
+            Debug.Log("B Pressed");
 
             //Now checks if the trigger is active
             if (localIsActive && myTrigger.GetIsActive())
@@ -101,13 +118,15 @@ public class Character_Behavior : MonoBehaviour
             localIsActive = true;
         }
 
+        
         //Dash Ability
-        if (Input.GetButtonDown("B_1"))
+        if (player.Action3)
         {
+            Debug.Log("X pressed");
             if (localIsActive)
             {
                 //negative on the y to invert stick for some reason
-                Dash(Input.GetAxisRaw("L_XAxis_1"), -Input.GetAxisRaw("L_YAxis_1"));
+                Dash(movecontrol.Value, -aimcontrol);
                 myTrigger.BeatHit(localIsActive);
                 particles[0].Play();
             }
@@ -116,6 +135,7 @@ public class Character_Behavior : MonoBehaviour
                 particles[1].Play();
             }
         }
+        
     }
 
     void UpdateGlobalActive()
@@ -193,6 +213,9 @@ public class Character_Behavior : MonoBehaviour
 
     void Fire()
     {
+        InputDevice player = InputManager.ActiveDevice;
+        InputControl aimX = player.GetControl(InputControlType.LeftStickX);
+        InputControl aimY = player.GetControl(InputControlType.LeftStickY);
         Vector2 Temp = Aim();
         GameObject shotcreate = Instantiate(shot);
         ShotBehavior shotinit = shotcreate.GetComponent<ShotBehavior>();
@@ -202,49 +225,49 @@ public class Character_Behavior : MonoBehaviour
 
     Vector2 Aim()
     {
-        Vector2 Temp;
-        Temp = new Vector2(1, 0);
-        float Y = Input.GetAxisRaw("L_YAxis_1");
-        float X = Input.GetAxisRaw("L_XAxis_1");
+        InputDevice player = InputManager.ActiveDevice;
+        InputControl aimX = player.GetControl(InputControlType.LeftStickX);
+        InputControl aimY = player.GetControl(InputControlType.LeftStickY);
+        float Y = aimY.Value;
+        float X = aimX.Value;
         float tan = Mathf.Atan2(Y,X);
         if (X < 0 && tan < Mathf.PI*7/12)
         {
-            Temp = new Vector2 (Mathf.Cos(Mathf.PI/2),Mathf.Sin(Mathf.PI/2));
+            LastAim = new Vector2 (Mathf.Cos(Mathf.PI/2),Mathf.Sin(Mathf.PI/2));
         }
         if (X < 0 && tan > Mathf.PI*7/12)
         {
-            Temp = new Vector2(Mathf.Cos(Mathf.PI *2/3), Mathf.Sin(Mathf.PI *2/3));
+            LastAim = new Vector2(Mathf.Cos(Mathf.PI *2/3), Mathf.Sin(Mathf.PI *2/3));
         }
         if (X < 0 && tan > Mathf.PI*3/4)
         {
-            Temp = new Vector2(Mathf.Cos(Mathf.PI * 5/6), Mathf.Sin(Mathf.PI * 5/6));
+            LastAim = new Vector2(Mathf.Cos(Mathf.PI * 5/6), Mathf.Sin(Mathf.PI * 5/6));
         }
         if (X < 0 && tan > Mathf.PI*11/12)
         {
-            Temp = new Vector2(Mathf.Cos(Mathf.PI), Mathf.Sin(Mathf.PI));
+            LastAim = new Vector2(Mathf.Cos(Mathf.PI), Mathf.Sin(Mathf.PI));
         }
         if (X > 0 && tan > Mathf.PI*5/12)
         {
-            Temp = new Vector2(Mathf.Cos(Mathf.PI/2), Mathf.Sin(Mathf.PI/2));
+            LastAim  = new Vector2(Mathf.Cos(Mathf.PI/2), Mathf.Sin(Mathf.PI/2));
         }
         if (X > 0 && tan < Mathf.PI*5/12)
         {
-            Temp = new Vector2(Mathf.Cos(Mathf.PI/3), Mathf.Sin(Mathf.PI/3));
+            LastAim = new Vector2(Mathf.Cos(Mathf.PI/3), Mathf.Sin(Mathf.PI/3));
         }
         if (X > 0 && tan < Mathf.PI/4)
         {
-            Temp = new Vector2(Mathf.Cos(Mathf.PI/6), Mathf.Sin(Mathf.PI/6));
+            LastAim = new Vector2(Mathf.Cos(Mathf.PI/6), Mathf.Sin(Mathf.PI/6));
         }
         if (X > 0 && tan < Mathf.PI/12)
         {
-            Temp = new Vector2(Mathf.Cos(0), Mathf.Sin(0));
+            LastAim = new Vector2(Mathf.Cos(0), Mathf.Sin(0));
         }
         if (Y > 0.8)
         {
-            Temp = new Vector2(Mathf.Cos(Mathf.PI/2), Mathf.Sin(Mathf.PI/2));
+            LastAim = new Vector2(Mathf.Cos(Mathf.PI/2), Mathf.Sin(Mathf.PI/2));
         }
-        print(Temp);
-        return Temp;
+        return LastAim;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
