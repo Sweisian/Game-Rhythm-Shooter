@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using SynchronizerData;
+using InControl;
 
 public class PlayerMovement : MonoBehaviour {
 
@@ -26,6 +27,8 @@ public class PlayerMovement : MonoBehaviour {
 
     private Script_Trigger myTrigger;
 
+
+
     void Awake()
     {
         mybody = GetComponent<Rigidbody2D>();
@@ -40,7 +43,6 @@ public class PlayerMovement : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        
 
     }
 
@@ -68,17 +70,19 @@ public class PlayerMovement : MonoBehaviour {
 
     void FixedUpdate()
     {
-        Move(Input.GetAxisRaw("L_XAxis_1"));
+        InputDevice player = InputManager.ActiveDevice;
+        InputControl movecontrol = player.GetControl(InputControlType.LeftStickX);
+        Move(movecontrol.Value);
 
         //Now checks if the trigger is active
-        if (Input.GetButtonDown("Y_1") && myTrigger.GetIsActive())
+        if (player.Action2 && myTrigger.GetIsActive())
         {
             Jump();
             myTrigger.BeatHit();
         }
 
         //Dash Ability
-        if (Input.GetButtonDown("B_1") && myTrigger.GetIsActive())
+        if (player.Action3 && myTrigger.GetIsActive())
         {
             //negative on the y to invert stick for some reason
             Dash(Input.GetAxisRaw("L_XAxis_1"), -Input.GetAxisRaw("L_YAxis_1"));
