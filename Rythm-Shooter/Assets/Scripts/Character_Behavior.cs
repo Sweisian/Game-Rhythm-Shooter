@@ -87,7 +87,8 @@ public class Character_Behavior : MonoBehaviour
                 myTrigger.BeatHit(localIsActive);
             }
         }
-            
+        
+
     }
 
     void FixedUpdate()
@@ -133,6 +134,7 @@ public class Character_Behavior : MonoBehaviour
 
             }
         }
+        
         if (isgrounded)
         {
             localIsActive = true;
@@ -229,7 +231,7 @@ public class Character_Behavior : MonoBehaviour
     public void Jump()
     {
         if (isgrounded)
-            mybody.velocity += jumpvelocity * Vector2.up;
+            mybody.velocity += jumpvelocity * Vector2.up * Time.deltaTime;
     }
 
     void Fire()
