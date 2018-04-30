@@ -59,7 +59,7 @@ public class Character_Behavior2 : MonoBehaviour
     void Update()
     {
 
-        InputDevice player = InputManager.ActiveDevice;
+        InputDevice player = InputManager.Devices[1];
 
         /*
         //temp code to test the trigger functionality
@@ -92,7 +92,7 @@ public class Character_Behavior2 : MonoBehaviour
 
     void FixedUpdate()
     {
-        InputDevice player = InputManager.ActiveDevice;
+        InputDevice player = InputManager.Devices[1];
         InputControl movecontrol = player.GetControl(InputControlType.LeftStickX);
         InputControl aimcontrol = player.GetControl(InputControlType.LeftStickY);
         Move(movecontrol.Value);
@@ -230,7 +230,7 @@ public class Character_Behavior2 : MonoBehaviour
 
     void Fire()
     {
-        InputDevice player = InputManager.ActiveDevice;
+        InputDevice player = InputManager.Devices[1];
         InputControl aimX = player.GetControl(InputControlType.LeftStickX);
         InputControl aimY = player.GetControl(InputControlType.LeftStickY);
         Vector2 Temp = Aim();
@@ -242,7 +242,7 @@ public class Character_Behavior2 : MonoBehaviour
 
     Vector2 Aim()
     {
-        InputDevice player = InputManager.ActiveDevice;
+        InputDevice player = InputManager.Devices[1];
         InputControl aimX = player.GetControl(InputControlType.LeftStickX);
         InputControl aimY = player.GetControl(InputControlType.LeftStickY);
         float Y = aimY.Value;
