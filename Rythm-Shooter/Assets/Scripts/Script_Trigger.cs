@@ -21,16 +21,17 @@ public class Script_Trigger : MonoBehaviour
         //}
     }
 
-    public void BeatHit()
+    public void BeatHit(bool localIsActive)
     {
         beat.GetComponent<SpriteRenderer>().color = Color.green;
-        isActive = false;
+        localIsActive = false;
     }
-
+    
     public bool GetIsActive()
     {
         return isActive;
     }
+    
 
     void OnTriggerEnter2D(Collider2D c)
     {

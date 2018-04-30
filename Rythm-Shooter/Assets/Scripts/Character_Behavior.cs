@@ -31,6 +31,8 @@ public class Character_Behavior : MonoBehaviour
 
     private bool onBeat = false;
 
+    private bool localIsActive = false;
+
     // Use this for initialization
     void Start()
     {
@@ -49,20 +51,20 @@ public class Character_Behavior : MonoBehaviour
     void Update()
     {
         //temp code to test the trigger functionality
-        if (myTrigger.GetIsActive() && Input.GetKeyDown(KeyCode.F))
+        if (localIsActive && Input.GetKeyDown(KeyCode.F))
         {
             Fire();
-            myTrigger.BeatHit();
+            myTrigger.BeatHit(localIsActive);
         }
 
         //if (Input.GetAxisRaw("TriggersR_1") < -0.1 && Time.time > shotready)
         //    Fire();
 
         // Uncomment this when ready
-        if (Input.GetButtonDown("A_1") && myTrigger.GetIsActive())
+        if (Input.GetButtonDown("A_1") && localIsActive)
         {
             Fire();
-            myTrigger.BeatHit();
+            myTrigger.BeatHit(localIsActive);
         }       
     }
 
@@ -78,27 +80,35 @@ public class Character_Behavior : MonoBehaviour
             //Debug.Log("Y Pressed");
 
             //Now checks if the trigger is active
-            if (myTrigger.GetIsActive())
+            if (localIsActive && myTrigger.GetIsActive())
             {
                 Jump();
-                myTrigger.BeatHit();
+                myTrigger.BeatHit(localIsActive);
                 if (isgrounded)
                     particles[0].Play();
             }
             else
             {
-                if (isgrounded) particles[1].Play();
+                if (isgrounded)
+                {
+                    particles[1].Play();
+                }
+
             }
+        }
+        if (isgrounded)
+        {
+            localIsActive = true;
         }
 
         //Dash Ability
         if (Input.GetButtonDown("B_1"))
         {
-            if (myTrigger.GetIsActive())
+            if (localIsActive)
             {
                 //negative on the y to invert stick for some reason
                 Dash(Input.GetAxisRaw("L_XAxis_1"), -Input.GetAxisRaw("L_YAxis_1"));
-                myTrigger.BeatHit();
+                myTrigger.BeatHit(localIsActive);
                 particles[0].Play();
             }
             else
@@ -106,6 +116,11 @@ public class Character_Behavior : MonoBehaviour
                 particles[1].Play();
             }
         }
+    }
+
+    void UpdateGlobalActive()
+    {
+        localIsActive = myTrigger.GetIsActive();
     }
 
     void FallingPhysics()
