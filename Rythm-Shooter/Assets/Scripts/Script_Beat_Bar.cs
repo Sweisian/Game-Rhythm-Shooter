@@ -37,7 +37,7 @@ public class Script_Beat_Bar : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         if ((beatObserver.beatMask & BeatType.OnBeat) == BeatType.OnBeat)
         {

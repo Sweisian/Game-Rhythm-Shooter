@@ -37,13 +37,13 @@ public class Script_Trigger : MonoBehaviour
         isActive = true;
         beat = c.gameObject;
 
-        Debug.Log("Beat entered trigger");
+        //Debug.Log("Beat entered trigger");
     }
 
     void OnTriggerExit2D(Collider2D c)
     {
         isActive = false;
 
-        Debug.Log("Beat exited trigger");
+        //Debug.Log("Beat exited trigger");
     }
 }
