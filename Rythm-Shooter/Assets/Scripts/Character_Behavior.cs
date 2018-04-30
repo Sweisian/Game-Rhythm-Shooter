@@ -59,7 +59,7 @@ public class Character_Behavior : MonoBehaviour
     void Update()
     {
 
-        InputDevice player = InputManager.ActiveDevice;
+        InputDevice player = InputManager.Devices[0];
 
         //temp code to test the trigger functionality
         if (localIsActive && Input.GetKeyDown(KeyCode.F))
@@ -90,7 +90,7 @@ public class Character_Behavior : MonoBehaviour
 
     void FixedUpdate()
     {
-        InputDevice player = InputManager.ActiveDevice;
+        InputDevice player = InputManager.Devices[0];
         InputControl movecontrol = player.GetControl(InputControlType.LeftStickX);
         InputControl aimcontrol = player.GetControl(InputControlType.LeftStickY);
         Move(movecontrol.Value);
@@ -228,7 +228,7 @@ public class Character_Behavior : MonoBehaviour
 
     void Fire()
     {
-        InputDevice player = InputManager.ActiveDevice;
+        InputDevice player = InputManager.Devices[0];
         InputControl aimX = player.GetControl(InputControlType.LeftStickX);
         InputControl aimY = player.GetControl(InputControlType.LeftStickY);
         Vector2 Temp = Aim();
@@ -240,7 +240,7 @@ public class Character_Behavior : MonoBehaviour
 
     Vector2 Aim()
     {
-        InputDevice player = InputManager.ActiveDevice;
+        InputDevice player = InputManager.Devices[0];
         InputControl aimX = player.GetControl(InputControlType.LeftStickX);
         InputControl aimY = player.GetControl(InputControlType.LeftStickY);
         float Y = aimY.Value;
