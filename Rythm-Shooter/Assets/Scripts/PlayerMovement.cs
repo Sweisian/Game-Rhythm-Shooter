@@ -31,6 +31,9 @@ public class PlayerMovement : MonoBehaviour {
 
     void Awake()
     {
+        //InputDevice myDevice = InputManager.ActiveDevice;
+        //InputControl control = device.GetControl(InputControlType.Action1)
+
         mybody = GetComponent<Rigidbody2D>();
         particles = GetComponentInChildren<ParticleSystem>();
         beatObserver = GetComponent<BeatObserver>();
