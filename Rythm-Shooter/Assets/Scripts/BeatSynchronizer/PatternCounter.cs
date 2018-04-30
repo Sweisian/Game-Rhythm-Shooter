@@ -11,7 +11,7 @@ public class PatternCounter : MonoBehaviour {
 
 	public BeatValue[] beatValues;
 	public int beatScalar = 1;
-	public float loopTime = 0f;
+	public float loopTime = 10f;
 	public AudioSource audioSource;
 	public GameObject[] observers;
 	
