@@ -225,7 +225,7 @@ public class Character_Behavior2 : MonoBehaviour
     public void Jump()
     {
         if (isgrounded)
-            mybody.velocity += jumpvelocity * Vector2.up;
+            mybody.velocity += jumpvelocity * Vector2.up * Time.deltaTime;
     }
 
     void Fire()
