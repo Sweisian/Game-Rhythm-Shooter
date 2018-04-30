@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour {
     public float lowJumpMultiplier = 2f;
 
     Rigidbody2D mybody;
-    private ParticleSystem particles;
+    private ParticleSystem[] particles;
 
     private BeatObserver beatObserver;
 
@@ -29,7 +29,7 @@ public class PlayerMovement : MonoBehaviour {
     void Awake()
     {
         mybody = GetComponent<Rigidbody2D>();
-        particles = GetComponentInChildren<ParticleSystem>();
+        particles = GetComponentsInChildren<ParticleSystem>();
         beatObserver = GetComponent<BeatObserver>();
 
         myTrigger = GameObject.FindGameObjectWithTag("Trigger").GetComponent<Script_Trigger>();
@@ -47,42 +47,46 @@ public class PlayerMovement : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(isgrounded);
 
-        if ((beatObserver.beatMask & BeatType.OnBeat) == BeatType.OnBeat)
-        {
-            onBeat = true;
-            //Debug.Log(onBeat);
-        }
-        else if ((beatObserver.beatMask & BeatType.OffBeat) == BeatType.OffBeat)
-        {
-            onBeat = true;
-            //Debug.Log(onBeat);
-        }
-        else
-        {
-            onBeat = false;
-            //Debug.Log(onBeat);
-        }
     }
 
     void FixedUpdate()
     {
         Move(Input.GetAxisRaw("L_XAxis_1"));
 
-        //Now checks if the trigger is active
-        if (Input.GetButtonDown("Y_1") && myTrigger.GetIsActive())
+        //Jump Ability
+        if (Input.GetButtonDown("Y_1"))
         {
-            Jump();
-            myTrigger.BeatHit();
+            //Debug.Log("Y Pressed");
+
+            //Now checks if the trigger is active
+            if (myTrigger.GetIsActive())
+            {
+                Jump();
+                myTrigger.BeatHit();
+                if (isgrounded)
+                    particles[0].Play();
+            }
+            else
+            {
+                if (isgrounded) particles[1].Play();
+            }
         }
 
         //Dash Ability
-        if (Input.GetButtonDown("B_1") && myTrigger.GetIsActive())
+        if (Input.GetButtonDown("B_1") )
         {
-            //negative on the y to invert stick for some reason
-            Dash(Input.GetAxisRaw("L_XAxis_1"), -Input.GetAxisRaw("L_YAxis_1"));
-            myTrigger.BeatHit();
+            if (myTrigger.GetIsActive())
+            {
+                //negative on the y to invert stick for some reason
+                Dash(Input.GetAxisRaw("L_XAxis_1"), -Input.GetAxisRaw("L_YAxis_1"));
+                myTrigger.BeatHit();
+                particles[0].Play();
+            }
+            else
+            {
+                particles[1].Play();
+            }
         }
 
         //Alt jump for testing
@@ -145,7 +149,7 @@ public class PlayerMovement : MonoBehaviour {
             horizontalInput = -1;
         }
 
-        Vector2 direction = new Vector2(horizontalInput, 0f);  //probably wrong?
+        Vector2 direction = new Vector2(horizontalInput, 0f); 
         var goal = direction * speed;
         Vector2 error = new Vector2(goal.x - moveVel.x, 0f);
         mybody.AddForce(acceleration * error);
@@ -163,12 +167,6 @@ public class PlayerMovement : MonoBehaviour {
     {
         if (isgrounded)
             mybody.velocity += jumpvelocity * Vector2.up;
-        
-        if (onBeat == true)
-        {
-            Debug.Log("FOUND THAT BEAT SONNN");
-            particles.Play();
-        }
     }
 
     // Detect continous collision with the ground
