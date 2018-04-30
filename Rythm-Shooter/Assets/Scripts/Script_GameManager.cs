@@ -38,16 +38,17 @@ public class Script_GameManager : MonoBehaviour
 	
     public void respawn (GameObject caller)
     {
-        if (caller == player1)
+        Debug.Log("respawn");
+        if (caller.GetComponent<Character_Behavior>() != null)
         {
-            player1.transform.position = new Vector2(Random.Range(-3, 3), Random.Range(-1, 1));
-            score1 += 1;
+            caller.transform.position = new Vector2(Random.Range(-5, 5), Random.Range(-1, 1));
+            score2 += 1;
             player1score.GetComponent<Text>().text = score1.ToString();
         }
-        if (caller == player2)
+        if (caller.GetComponent<Character_Behavior2>() != null)
         {
-            player2.transform.position = new Vector2(Random.Range(-3, 3), Random.Range(-1, 1));
-            score2 += 1;
+            caller.transform.position = new Vector2(Random.Range(-5, 5), Random.Range(-1, 1));
+            score1 += 1;
             player2score.GetComponent<Text>().text = score2.ToString();
         }
     }
