@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour {
     public float dashVelocity = 10;
 
 
-    bool isgrounded = true;
+    bool isGrounded = true;
     Vector2 moveVel;
 
     public float fallMultiplier = 2.5f;
@@ -27,12 +27,13 @@ public class PlayerMovement : MonoBehaviour {
 
     private Script_Trigger myTrigger;
 
-
+    private Animator myAnim;
+    private SpriteRenderer mySpriteRen;
 
     void Awake()
     {
-        //InputDevice myDevice = InputManager.ActiveDevice;
-        //InputControl control = device.GetControl(InputControlType.Action1)
+        myAnim = GetComponent<Animator>();
+        mySpriteRen = GetComponent<SpriteRenderer>();
 
         mybody = GetComponent<Rigidbody2D>();
         particles = GetComponentInChildren<ParticleSystem>();
@@ -52,7 +53,9 @@ public class PlayerMovement : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(isgrounded);
+        //Debug.Log(isGrounded);
+
+        
 
         if ((beatObserver.beatMask & BeatType.OnBeat) == BeatType.OnBeat)
         {
@@ -76,6 +79,14 @@ public class PlayerMovement : MonoBehaviour {
         InputDevice player = InputManager.ActiveDevice;
         InputControl movecontrol = player.GetControl(InputControlType.LeftStickX);
         Move(movecontrol.Value);
+
+        myAnim.SetFloat("moveSpeed", Mathf.Abs(movecontrol.Value));
+
+        if(movecontrol.Value > .01f)
+            transform.localScale = new Vector2(1, transform.localScale.y);
+
+        if (movecontrol.Value < -.01f)
+            transform.localScale = new Vector2(-1, transform.localScale.y);
 
         //Now checks if the trigger is active
         if (player.Action2 && myTrigger.GetIsActive())
@@ -168,7 +179,7 @@ public class PlayerMovement : MonoBehaviour {
 
     public void Jump()
     {
-        if (isgrounded)
+        if (isGrounded)
             mybody.velocity += jumpvelocity * Vector2.up;
         
         if (onBeat == true)
@@ -183,7 +194,9 @@ public class PlayerMovement : MonoBehaviour {
     {
         if (hit.gameObject.tag == "Ground")
         {
-            isgrounded = true;
+            isGrounded = true;
+            myAnim.SetBool("isJump", false);
+            Debug.Log("isGrounded set to true");
         }
     }
 
@@ -192,7 +205,9 @@ public class PlayerMovement : MonoBehaviour {
     {
         if (exit.gameObject.tag == "Ground")
         {
-            isgrounded = false;
+            isGrounded = false;
+            myAnim.SetBool("isJump", true);
+            Debug.Log("isGrounded set to false");
         }
     }
 }
