@@ -35,9 +35,15 @@ public class Character_Behavior : MonoBehaviour
 
     private bool localIsActive = false;
 
+    private Animator myAnim;
+    private SpriteRenderer mySpriteRen;
+
     // Use this for initialization
     void Start()
     {
+        myAnim = GetComponent<Animator>();
+        mySpriteRen = GetComponent<SpriteRenderer>();
+
         //added code to find the trigger object and script
         myTrigger = GameObject.FindGameObjectWithTag("Trigger").GetComponent<Script_Trigger>();
 
@@ -88,6 +94,15 @@ public class Character_Behavior : MonoBehaviour
         InputControl movecontrol = player.GetControl(InputControlType.LeftStickX);
         InputControl aimcontrol = player.GetControl(InputControlType.LeftStickY);
         Move(movecontrol.Value);
+
+        myAnim.SetFloat("moveSpeed", Mathf.Abs(movecontrol.Value));
+
+        //Sets orientation of sprite
+        if (movecontrol.Value > .01f)
+            transform.localScale = new Vector2(1, transform.localScale.y);
+
+        if (movecontrol.Value < -.01f)
+            transform.localScale = new Vector2(-1, transform.localScale.y);
 
         FallingPhysics();
 
@@ -285,6 +300,7 @@ public class Character_Behavior : MonoBehaviour
         if (hit.gameObject.tag == "Ground")
         {
             isgrounded = true;
+            myAnim.SetBool("isJump", false);
         }
     }
 
@@ -294,6 +310,7 @@ public class Character_Behavior : MonoBehaviour
         if (exit.gameObject.tag == "Ground")
         {
             isgrounded = false;
+            myAnim.SetBool("isJump", true);
         }
     }
 
