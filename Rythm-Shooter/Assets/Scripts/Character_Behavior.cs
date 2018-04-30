@@ -59,14 +59,16 @@ public class Character_Behavior : MonoBehaviour
     void Update()
     {
 
-        InputDevice player = InputManager.Devices[0];
 
+        InputDevice player = InputManager.Devices[0];
+        /*
         //temp code to test the trigger functionality
         if (localIsActive && Input.GetKeyDown(KeyCode.F))
         {
             Fire();
             myTrigger.BeatHit(localIsActive);
         }
+        */
 
         //if (Input.GetAxisRaw("TriggersR_1") < -0.1 && Time.time > shotready)
         //    Fire();
@@ -75,7 +77,7 @@ public class Character_Behavior : MonoBehaviour
 /*
         if (Input.GetButtonDown("A_1") && localIsActive)
 */
-        if (player.Action1)
+        if (player.Action1.WasPressed)
         {
             Debug.Log("A Pressed");
             if (myTrigger.GetIsActive())
@@ -107,12 +109,15 @@ public class Character_Behavior : MonoBehaviour
         FallingPhysics();
 
         //Jump Ability
-        if (player.Action2)
+        
+        if (player.Action2.WasPressed)
         {
             Debug.Log("B Pressed");
 
             //Now checks if the trigger is active
-            if (localIsActive && myTrigger.GetIsActive())
+            //if (localIsActive && myTrigger.GetIsActive())
+            if (myTrigger.GetIsActive())
+
             {
                 Jump();
                 myTrigger.BeatHit(localIsActive);
@@ -135,10 +140,11 @@ public class Character_Behavior : MonoBehaviour
 
         
         //Dash Ability
-        if (player.Action3)
+        if (player.Action3.WasPressed)
         {
             Debug.Log("X pressed");
-            if (localIsActive)
+            if (myTrigger.GetIsActive())
+            //if (localIsActive)
             {
                 //negative on the y to invert stick for some reason
                 Dash(movecontrol.Value, -aimcontrol);
