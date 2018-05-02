@@ -4,7 +4,7 @@
 /[Bb]uild/
 /[Bb]uilds/
 /Assets/AssetStoreTools*
-/InControl/Source/VersionInfo.cs
+/Assets/InControl/Source/VersionInfo.cs
 
 Temp/
 Library/
