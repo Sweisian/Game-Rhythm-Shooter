@@ -38,9 +38,31 @@ public class Character_Behavior2 : MonoBehaviour
     private Animator myAnim;
     private SpriteRenderer mySpriteRen;
 
+    private bool jump = false;
+
+
+
+    //NEW//
+    private Character_Behavior charB;
+    private GameObject currGameObject;
+    InputDevice player;
+    //private float acceleration;
+
+
     // Use this for initialization
     void Start()
     {
+        //NEW//
+        charB = GameObject.FindGameObjectWithTag("PlayerOne").GetComponent<Character_Behavior>();
+        if (charB == null)
+            Debug.Log("CharacterBehavior not found");
+        currGameObject = this.gameObject;
+        player = InputManager.Devices[1];
+        //acceleration = charB.acceleration;
+
+
+
+
         myAnim = GetComponent<Animator>();
         mySpriteRen = GetComponent<SpriteRenderer>();
 
@@ -82,10 +104,17 @@ public class Character_Behavior2 : MonoBehaviour
             Debug.Log("A Pressed");
             if (myTrigger.GetIsActive())
             {
-                Fire();
+                charB.Fire(this.gameObject, player);
                 particles[0].Play();
                 myTrigger.BeatHit();
             }
+        }
+
+        //jump
+        if (player.Action2.WasPressed && isgrounded)
+        {
+            //Debug.Log("B Pressed");
+            jump = true;
         }
 
     }
@@ -95,7 +124,7 @@ public class Character_Behavior2 : MonoBehaviour
         InputDevice player = InputManager.Devices[1];
         InputControl movecontrol = player.GetControl(InputControlType.LeftStickX);
         InputControl aimcontrol = player.GetControl(InputControlType.LeftStickY);
-        Move(movecontrol.Value);
+        charB.Move(movecontrol.Value, mybody);
 
         myAnim.SetFloat("moveSpeed", Mathf.Abs(movecontrol.Value));
 
@@ -109,25 +138,19 @@ public class Character_Behavior2 : MonoBehaviour
         FallingPhysics();
 
         //Jump Ability
-        if (player.Action2.WasPressed)
+        if (jump)
         {
-            Debug.Log("B Pressed");
-
             //Now checks if the trigger is active
             if (myTrigger.GetIsActive())
             {
-                Jump();
+                charB.Jump(mybody);
+                jump = false;
                 myTrigger.BeatHit();
-                if (isgrounded)
-                    particles[0].Play();
+                particles[0].Play();
             }
             else
             {
-                if (isgrounded)
-                {
-                    particles[1].Play();
-                }
-
+                particles[1].Play();
             }
         }
         if (isgrounded)
@@ -174,7 +197,7 @@ public class Character_Behavior2 : MonoBehaviour
             mybody.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
         }
     }
-
+    /*
     public void Move(float horizontalInput)
 
     {
@@ -213,6 +236,7 @@ public class Character_Behavior2 : MonoBehaviour
         Vector2 error = new Vector2(goal.x - moveVel.x, 0f);
         mybody.AddForce(acceleration * error);
     }
+    */
 
 
     public void Dash(float horzontalInput, float verticalInput)
@@ -222,11 +246,13 @@ public class Character_Behavior2 : MonoBehaviour
         mybody.velocity += dashVelocity * myVector;
     }
 
+    /*
     public void Jump()
     {
         if (isgrounded)
             mybody.velocity += jumpvelocity * Vector2.up * Time.deltaTime;
     }
+    
 
     void Fire()
     {
@@ -286,6 +312,7 @@ public class Character_Behavior2 : MonoBehaviour
         }
         return LastAim;
     }
+    */
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
