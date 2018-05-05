@@ -35,6 +35,8 @@ public class Character_Behavior : MonoBehaviour
 
     private bool onBeat = false;
 
+    public bool forceOnBeat = true;
+
     //private bool localIsActive = false;
 
     private Animator myAnim;
@@ -124,20 +126,32 @@ public class Character_Behavior : MonoBehaviour
 
         //Jump Ability        
         if (jump)
-        {            
+        {
             //Now checks if the trigger is active
             //if (localIsActive && myTrigger.GetIsActive())
-            if (myTrigger.GetIsActive())
+            if (forceOnBeat)
+            {
+                if (myTrigger.GetIsActive())
+                {
+                    Jump();
+                    myTrigger.BeatHit();
+                    if (isgrounded)
+                        particles[0].Play();
+                }
+                else
+                {
+                    particles[1].Play();
+                }
+            }
+            else
             {
                 Jump();
                 myTrigger.BeatHit();
                 if (isgrounded)
                     particles[0].Play();
             }
-            else
-            {
-                particles[1].Play();
-            }
+
+            
         }
         /*
         if (isgrounded)
@@ -149,19 +163,30 @@ public class Character_Behavior : MonoBehaviour
         //Dash Ability
         if (dash)
         {
-            //Debug.Log("X pressed");
-            if (myTrigger.GetIsActive())
-            //if (localIsActive)
+            if(forceOnBeat)
             {
-                //negative on the y to invert stick for some reason
-                Dash(movecontrol.Value, -aimcontrol);
-                myTrigger.BeatHit();
-                particles[0].Play();
+                if (myTrigger.GetIsActive())
+                //if (localIsActive)
+                {
+                    //negative on the y to invert stick for some reason
+                    Dash(movecontrol.Value, -aimcontrol);
+                    myTrigger.BeatHit();
+                    particles[0].Play();
+                }
+                else
+                {
+                    particles[1].Play();
+                }
             }
             else
             {
-                particles[1].Play();
+                    //negative on the y to invert stick for some reason
+                    Dash(movecontrol.Value, -aimcontrol);
+                    myTrigger.BeatHit();
+                    particles[0].Play();
             }
+
+    
         }
         
     }
