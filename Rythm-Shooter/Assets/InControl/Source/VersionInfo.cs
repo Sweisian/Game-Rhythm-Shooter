@@ -31,9 +31,9 @@ namespace InControl
 
                 //Not sure what the issue was. Got a merge conflict. and I just picked one
 
-                Build = 3900
+                Build = 3937
 
-				//Build = 3888
+				//Build = 3925
 			};
 		}
 

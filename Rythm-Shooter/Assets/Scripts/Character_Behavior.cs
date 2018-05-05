@@ -21,6 +21,8 @@ public class Character_Behavior : MonoBehaviour
 
 
     bool isgrounded = true;
+    private bool jump = false;
+    private bool dash = false;
     Vector2 moveVel;
 
     public float fallMultiplier = 2.5f;
@@ -33,7 +35,7 @@ public class Character_Behavior : MonoBehaviour
 
     private bool onBeat = false;
 
-    private bool localIsActive = false;
+    //private bool localIsActive = false;
 
     private Animator myAnim;
     private SpriteRenderer mySpriteRen;
@@ -84,11 +86,22 @@ public class Character_Behavior : MonoBehaviour
             {
                 Fire();
                 particles[0].Play();
-                myTrigger.BeatHit(localIsActive);
+                myTrigger.BeatHit();
             }
         }
-        
+        //jump
+        if (player.Action2.WasPressed && isgrounded)
+        {
+            //Debug.Log("B Pressed");
+            jump = true;
+        }
 
+        //dash
+        if (player.Action3.WasPressed)
+        {
+            dash = true;
+        }
+       
     }
 
     void FixedUpdate()
@@ -109,48 +122,40 @@ public class Character_Behavior : MonoBehaviour
 
         FallingPhysics();
 
-        //Jump Ability
-        
-        if (player.Action2.WasPressed)
-        {
-            Debug.Log("B Pressed");
-
+        //Jump Ability        
+        if (jump)
+        {            
             //Now checks if the trigger is active
             //if (localIsActive && myTrigger.GetIsActive())
             if (myTrigger.GetIsActive())
-
             {
                 Jump();
-                myTrigger.BeatHit(localIsActive);
+                myTrigger.BeatHit();
                 if (isgrounded)
                     particles[0].Play();
             }
             else
             {
-                if (isgrounded)
-                {
-                    particles[1].Play();
-                }
-
+                particles[1].Play();
             }
         }
-        
+        /*
         if (isgrounded)
         {
             localIsActive = true;
-        }
+        }*/
 
         
         //Dash Ability
-        if (player.Action3.WasPressed)
+        if (dash)
         {
-            Debug.Log("X pressed");
+            //Debug.Log("X pressed");
             if (myTrigger.GetIsActive())
             //if (localIsActive)
             {
                 //negative on the y to invert stick for some reason
                 Dash(movecontrol.Value, -aimcontrol);
-                myTrigger.BeatHit(localIsActive);
+                myTrigger.BeatHit();
                 particles[0].Play();
             }
             else
@@ -161,10 +166,12 @@ public class Character_Behavior : MonoBehaviour
         
     }
 
+    /*
     void UpdateGlobalActive()
     {
         localIsActive = myTrigger.GetIsActive();
     }
+    */
 
     void FallingPhysics()
     {
@@ -226,12 +233,17 @@ public class Character_Behavior : MonoBehaviour
         Vector2 myVector = new Vector2(horzontalInput, verticalInput);
         myVector.Normalize();
         mybody.velocity += dashVelocity * myVector;
+        dash = false;
     }
 
     public void Jump()
     {
-        if (isgrounded)
-            mybody.velocity += jumpvelocity * Vector2.up * Time.deltaTime;
+        jump = false;
+        mybody.velocity += jumpvelocity * Vector2.up; //* Time.deltaTime;
+        //Vector2 jumpForce = new Vector2(0f, jumpvelocity);
+        //mybody.AddForce(jumpForce);
+            
+        
     }
 
     void Fire()
