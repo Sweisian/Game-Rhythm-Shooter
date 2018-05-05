@@ -15,8 +15,8 @@ public class Character_Behavior : MonoBehaviour
     public Vector2 LastAim;
 
     public float speed = 10;
-    [SerializeField] private float acceleration = 5f;
-    public float jumpvelocity = 20;
+    [SerializeField] public float acceleration = 5f;   //lookup how to do have friend scripts in c#
+    [SerializeField] public float jumpvelocity = 10;
     public float dashVelocity = 10;
 
 
@@ -40,9 +40,20 @@ public class Character_Behavior : MonoBehaviour
     private Animator myAnim;
     private SpriteRenderer mySpriteRen;
 
+
+
+
+    //NEW//
+    private GameObject currGameObject;
+    private InputDevice player;
+
     // Use this for initialization
     void Start()
     {
+        currGameObject = this.gameObject;
+        player = InputManager.Devices[0];
+
+
         myAnim = GetComponent<Animator>();
         mySpriteRen = GetComponent<SpriteRenderer>();
 
@@ -81,10 +92,10 @@ public class Character_Behavior : MonoBehaviour
 */
         if (player.Action1.WasPressed)
         {
-            Debug.Log("A Pressed");
+            Debug.Log("A Pressed player 1");
             if (myTrigger.GetIsActive())
             {
-                Fire();
+                Fire(this.gameObject, player);
                 particles[0].Play();
                 myTrigger.BeatHit();
             }
@@ -92,7 +103,7 @@ public class Character_Behavior : MonoBehaviour
         //jump
         if (player.Action2.WasPressed && isgrounded)
         {
-            //Debug.Log("B Pressed");
+            Debug.Log("B Pressed player 1");
             jump = true;
         }
 
@@ -109,7 +120,7 @@ public class Character_Behavior : MonoBehaviour
         InputDevice player = InputManager.Devices[0];
         InputControl movecontrol = player.GetControl(InputControlType.LeftStickX);
         InputControl aimcontrol = player.GetControl(InputControlType.LeftStickY);
-        Move(movecontrol.Value);
+        Move(movecontrol.Value, mybody);
 
         myAnim.SetFloat("moveSpeed", Mathf.Abs(movecontrol.Value));
 
@@ -129,7 +140,8 @@ public class Character_Behavior : MonoBehaviour
             //if (localIsActive && myTrigger.GetIsActive())
             if (myTrigger.GetIsActive())
             {
-                Jump();
+                Jump(mybody);
+                jump = false;
                 myTrigger.BeatHit();
                 if (isgrounded)
                     particles[0].Play();
@@ -188,8 +200,7 @@ public class Character_Behavior : MonoBehaviour
         }
     }
 
-    public void Move(float horizontalInput)
-
+    public void Move(float horizontalInput, Rigidbody2D mybody)
     {
         //Debug.Log(horizontalInput);
         moveVel = mybody.velocity;
@@ -220,7 +231,7 @@ public class Character_Behavior : MonoBehaviour
         {
             horizontalInput = -1;
         }
-
+        // use local acceleration and speed variables (don't need to assign in CharB2)
         Vector2 direction = new Vector2(horizontalInput, 0f);
         var goal = direction * speed;
         Vector2 error = new Vector2(goal.x - moveVel.x, 0f);
@@ -236,9 +247,13 @@ public class Character_Behavior : MonoBehaviour
         dash = false;
     }
 
-    public void Jump()
+    public void Jump(Rigidbody2D mybody)
     {
-        jump = false;
+        Debug.Log("Jump velocity is: ");
+        Debug.Log(jumpvelocity);
+        Debug.Log("mybody.velocity before jump is: ");
+        Debug.Log(mybody.velocity);
+        
         mybody.velocity += jumpvelocity * Vector2.up; //* Time.deltaTime;
         //Vector2 jumpForce = new Vector2(0f, jumpvelocity);
         //mybody.AddForce(jumpForce);
@@ -246,21 +261,21 @@ public class Character_Behavior : MonoBehaviour
         
     }
 
-    void Fire()
+    public void Fire(GameObject currGameObject, InputDevice player)
     {
-        InputDevice player = InputManager.Devices[0];
+        
         InputControl aimX = player.GetControl(InputControlType.LeftStickX);
         InputControl aimY = player.GetControl(InputControlType.LeftStickY);
-        Vector2 Temp = Aim();
+        Vector2 Temp = Aim(player);
         GameObject shotcreate = Instantiate(shot);
         ShotBehavior shotinit = shotcreate.GetComponent<ShotBehavior>();
-        shotinit.Init(this.gameObject, (Vector2)transform.position + (1.5F * (Temp)), Temp);
+        shotinit.Init(currGameObject, (Vector2)currGameObject.transform.position + (1.5F * (Temp)), Temp);
         shotready = Time.time + shootdelay;
     }
 
-    Vector2 Aim()
+    Vector2 Aim(InputDevice player)
     {
-        InputDevice player = InputManager.Devices[0];
+        //InputDevice player = InputManager.Devices[0];
         InputControl aimX = player.GetControl(InputControlType.LeftStickX);
         InputControl aimY = player.GetControl(InputControlType.LeftStickY);
         float Y = aimY.Value;
