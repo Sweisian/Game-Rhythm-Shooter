@@ -11,7 +11,7 @@ public class Character_Behavior2 : MonoBehaviour
     public GameObject shot;
     public GameObject GameManage;
 
-    private Script_Trigger myTrigger;
+    private Script_Trigger2 myTrigger;
     public Vector2 LastAim;
 
     public float speed = 10;
@@ -45,7 +45,7 @@ public class Character_Behavior2 : MonoBehaviour
         mySpriteRen = GetComponent<SpriteRenderer>();
 
         //added code to find the trigger object and script
-        myTrigger = GameObject.FindGameObjectWithTag("Trigger").GetComponent<Script_Trigger>();
+        myTrigger = GameObject.FindGameObjectWithTag("Trigger").GetComponent<Script_Trigger2>();
 
         mybody = GetComponent<Rigidbody2D>();
         particles = GetComponentsInChildren<ParticleSystem>();
@@ -84,7 +84,7 @@ public class Character_Behavior2 : MonoBehaviour
             {
                 Fire();
                 particles[0].Play();
-                myTrigger.BeatHit(localIsActive);
+                myTrigger.BeatHit();
             }
         }
 
@@ -117,7 +117,7 @@ public class Character_Behavior2 : MonoBehaviour
             if (myTrigger.GetIsActive())
             {
                 Jump();
-                myTrigger.BeatHit(localIsActive);
+                myTrigger.BeatHit();
                 if (isgrounded)
                     particles[0].Play();
             }
@@ -144,7 +144,7 @@ public class Character_Behavior2 : MonoBehaviour
             {
                 //negative on the y to invert stick for some reason
                 Dash(movecontrol.Value, -aimcontrol);
-                myTrigger.BeatHit(localIsActive);
+                myTrigger.BeatHit();
                 particles[0].Play();
             }
             else
