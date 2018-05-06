@@ -31,7 +31,11 @@ namespace InControl
 
                 //Not sure what the issue was. Got a merge conflict. and I just picked one
 
+<<<<<<< HEAD
                 Build = 3995
+=======
+                Build = 4000
+>>>>>>> 17b01c7cf30525a0dbb8f4268b486ab39db6c66d
 
 
 			};
