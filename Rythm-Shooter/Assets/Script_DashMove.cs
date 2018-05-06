@@ -8,7 +8,9 @@ public class Script_DashMove : MonoBehaviour {
     public float dashSpeed;
     private float dashTime;
     public float startDashTime;
-    private int direction;
+
+
+    [HideInInspector] public int direction;
 
 	// Use this for initialization
 	void Start () {
@@ -16,8 +18,8 @@ public class Script_DashMove : MonoBehaviour {
         dashTime = startDashTime;
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	// To call a dash, simply change the direction field.
+	void FixedUpdate () {
 		if(direction == 0)
         {
             if(Input.GetKeyDown(KeyCode.LeftArrow))
@@ -28,7 +30,8 @@ public class Script_DashMove : MonoBehaviour {
             {
                 direction = 2;
             }
-        } else
+        }
+        else
         {
             if (dashTime <= 0)
             {
