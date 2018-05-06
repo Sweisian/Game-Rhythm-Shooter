@@ -85,14 +85,23 @@ public class Character_Behavior : MonoBehaviour
 
         if (player.Action1.WasPressed)
         {
-            Debug.Log("A Pressed player 1");
-            if (myTrigger.GetIsActive())
+            if (forceOnBeat)
+            {
+                Debug.Log("A Pressed player 1");
+                if (myTrigger.GetIsActive())
+                {
+                    Fire(this.gameObject, player);
+                    particles[0].Play();
+                    myTrigger.BeatHit();
+                }
+            }
+            else
             {
                 Fire(this.gameObject, player);
                 particles[0].Play();
-                myTrigger.BeatHit();
             }
         }
+       
         //jump
         if (player.Action2.WasPressed && isgrounded)
         {
