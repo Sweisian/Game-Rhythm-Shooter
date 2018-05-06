@@ -37,8 +37,6 @@ public class Character_Behavior : MonoBehaviour
 
     public bool forceOnBeat = true;
 
-    //private bool localIsActive = false;
-
     private Animator myAnim;
     private SpriteRenderer mySpriteRen;
 
@@ -124,27 +122,29 @@ public class Character_Behavior : MonoBehaviour
         if (movecontrol.Value < -.01f)
             transform.localScale = new Vector2(-1, transform.localScale.y);
 
-        FallingPhysics();
+        FallingPhysics(mybody);
 
         //Jump Ability        
         if (jump)
         {
             //Now checks if the trigger is active
-            //if (localIsActive && myTrigger.GetIsActive())
             if (forceOnBeat)
             {
                 if (myTrigger.GetIsActive())
                 {
                     Jump(mybody);
                     myTrigger.BeatHit();
+                    jump = false;
                     if (isgrounded)
                         particles[0].Play();
                 }
                 else
                 {
                     particles[1].Play();
+                    jump = false;
                 }
             }
+            
             else
             {
                 Jump(mybody);
@@ -153,14 +153,10 @@ public class Character_Behavior : MonoBehaviour
                 if (isgrounded)
                     particles[0].Play();
             }
+            
 
             
         }
-        /*
-        if (isgrounded)
-        {
-            localIsActive = true;
-        }*/
 
         
         //Dash Ability
@@ -169,7 +165,6 @@ public class Character_Behavior : MonoBehaviour
             if (forceOnBeat)
             {
                 if (myTrigger.GetIsActive())
-                //if (localIsActive)
                 {
                     if (movecontrol.Value < 0)
                     {
@@ -198,22 +193,11 @@ public class Character_Behavior : MonoBehaviour
                 Debug.Log("I DASHED");
             }
 
-            dash = false;
-            
-
-    
-        }
-        
+            dash = false;         
+        }      
     }
 
-    /*
-    void UpdateGlobalActive()
-    {
-        localIsActive = myTrigger.GetIsActive();
-    }
-    */
-
-    void FallingPhysics()
+    public void FallingPhysics(Rigidbody2D mybody)
     {
         // player is falling
         if (mybody.velocity.y < 0)
@@ -260,10 +244,13 @@ public class Character_Behavior : MonoBehaviour
             horizontalInput = -1;
         }
         // use local acceleration and speed variables (don't need to assign in CharB2)
+        /*
         Vector2 direction = new Vector2(horizontalInput, 0f);
         var goal = direction * speed;
         Vector2 error = new Vector2(goal.x - moveVel.x, 0f);
         mybody.AddForce(acceleration * error);
+        */
+        mybody.velocity = new Vector2(horizontalInput*speed, mybody.velocity.y);
     }
 
 

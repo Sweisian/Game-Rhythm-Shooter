@@ -33,8 +33,6 @@ public class Character_Behavior2 : MonoBehaviour
 
     private bool onBeat = false;
 
-    private bool localIsActive = false;
-
     private Animator myAnim;
     private SpriteRenderer mySpriteRen;
 
@@ -83,14 +81,7 @@ public class Character_Behavior2 : MonoBehaviour
 
         InputDevice player = InputManager.Devices[1];
 
-        /*
-        //temp code to test the trigger functionality
-        if (localIsActive && Input.GetKeyDown(KeyCode.F))
-        {
-            Fire();
-            myTrigger.BeatHit(localIsActive);
-        }
-        */
+        
 
         //if (Input.GetAxisRaw("TriggersR_1") < -0.1 && Time.time > shotready)
         //    Fire();
@@ -135,7 +126,7 @@ public class Character_Behavior2 : MonoBehaviour
         if (movecontrol.Value < -.01f)
             transform.localScale = new Vector2(-1, transform.localScale.y);
 
-        FallingPhysics();
+        charB.FallingPhysics(mybody);
 
         //Jump Ability
         if (jump)
@@ -151,11 +142,8 @@ public class Character_Behavior2 : MonoBehaviour
             else
             {
                 particles[1].Play();
+                jump = false;
             }
-        }
-        if (isgrounded)
-        {
-            localIsActive = true;
         }
 
 
@@ -176,11 +164,6 @@ public class Character_Behavior2 : MonoBehaviour
             }
         }
 
-    }
-
-    void UpdateGlobalActive()
-    {
-        localIsActive = myTrigger.GetIsActive();
     }
 
     void FallingPhysics()
