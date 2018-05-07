@@ -46,6 +46,8 @@ public class Character_Behavior : MonoBehaviour
 
     private Script_DashMove myDashMove;
 
+    public Boolean facingRight = true;
+
     void Awake()
     {
         currGameObject = this.gameObject;
@@ -77,9 +79,7 @@ public class Character_Behavior : MonoBehaviour
     void Update()
     {
 
-
         InputDevice player = InputManager.Devices[0];
-
 
         if (player.Action1.WasPressed)
         {
@@ -126,9 +126,14 @@ public class Character_Behavior : MonoBehaviour
 
         //Sets orientation of sprite
         if (movecontrol.Value > .01f)
-            transform.localScale = new Vector2(1, transform.localScale.y);
+            facingRight = true;
 
         if (movecontrol.Value < -.01f)
+            facingRight = false;
+
+        if(facingRight)
+            transform.localScale = new Vector2(1, transform.localScale.y);
+        if(!facingRight)
             transform.localScale = new Vector2(-1, transform.localScale.y);
 
         FallingPhysics(mybody);
@@ -162,9 +167,6 @@ public class Character_Behavior : MonoBehaviour
                 if (isgrounded)
                     particles[0].Play();
             }
-            
-
-            
         }
 
         
@@ -280,9 +282,7 @@ public class Character_Behavior : MonoBehaviour
         
         mybody.velocity += jumpvelocity * Vector2.up; //* Time.deltaTime;
         //Vector2 jumpForce = new Vector2(0f, jumpvelocity);
-        //mybody.AddForce(jumpForce);
-            
-        
+        //mybody.AddForce(jumpForce); 
     }
 
     public void Fire(GameObject currGameObject, InputDevice player)
@@ -293,6 +293,7 @@ public class Character_Behavior : MonoBehaviour
         Vector2 Temp = Aim(player);
         GameObject shotcreate = Instantiate(shot);
         ShotBehavior shotinit = shotcreate.GetComponent<ShotBehavior>();
+
         shotinit.Init(currGameObject, (Vector2)currGameObject.transform.position + (1.5F * (Temp)), Temp);
         shotready = Time.time + shootdelay;
     }
@@ -305,6 +306,17 @@ public class Character_Behavior : MonoBehaviour
         float Y = aimY.Value;
         float X = aimX.Value;
         float tan = Mathf.Atan2(Y,X);
+
+        if(Y == 0 && X == 0 && facingRight)
+        {
+            LastAim = new Vector2(1, 0);
+        }
+        if (Y == 0 && X == 0 && !facingRight)
+        {
+            LastAim = new Vector2(-1, 0);
+        }
+
+
         if (X < 0 && tan < Mathf.PI*7/12)
         {
             LastAim = new Vector2 (Mathf.Cos(Mathf.PI/2),Mathf.Sin(Mathf.PI/2));
