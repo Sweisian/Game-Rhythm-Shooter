@@ -124,7 +124,7 @@ MonoBehaviour:
   GameManage: {fileID: 0}
   LastAim: {x: 0, y: 0}
   speed: 10
-  jumpvelocity: 10
+  jumpvelocity: 20
   fallMultiplier: 2.5
   lowJumpMultiplier: 2
   forceOnBeat: 0
