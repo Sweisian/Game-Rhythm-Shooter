@@ -185,6 +185,7 @@ public class Character_Behavior : MonoBehaviour
                 Dash(movecontrol, myDashMove);               
                 //Debug.Log("I DASHED");
             }
+
             dash = false;         
         }
 
