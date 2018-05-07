@@ -101,6 +101,7 @@ public class Character_Behavior : MonoBehaviour
         //dash
         if (player.Action3.WasPressed)
         {
+            Debug.Log("X Pressed by player 1");
             dash = true;
         }
        
@@ -152,12 +153,8 @@ public class Character_Behavior : MonoBehaviour
                 myTrigger.BeatHit();
                 if (isgrounded)
                     particles[0].Play();
-            }
-            
-
-            
+            }            
         }
-
         
         //Dash Ability
         if (dash)
@@ -166,31 +163,19 @@ public class Character_Behavior : MonoBehaviour
             {
                 if (myTrigger.GetIsActive())
                 {
-                    if (movecontrol.Value < 0)
-                    {
-                        myDashMove.direction = 1;
-                    }
-                    else if (movecontrol.Value > 0)
-                    {
-                        myDashMove.direction = 2;
-                    }
-
+                    Dash(myDashMove, movecontrol);
                     myTrigger.BeatHit();
                     particles[0].Play();
+                }
+                else
+                {
+                    particles[1].Play();
                 }
             }
             else
             {
-                if (movecontrol.Value < 0)
-                {
-                    myDashMove.direction = 1;
-                }
-                else if (movecontrol.Value > 0)
-                {
-                    myDashMove.direction = 2;
-                }
-                particles[1].Play();
-                Debug.Log("I DASHED");
+                Dash(myDashMove, movecontrol);               
+                //Debug.Log("I DASHED");
             }
 
             dash = false;         
@@ -254,12 +239,22 @@ public class Character_Behavior : MonoBehaviour
     }
 
 
-    public void Dash(float horzontalInput, float verticalInput)
-    {
+    public void Dash(Script_DashMove myDashMove, InputControl movecontrol)
+    {       
+        if (movecontrol.Value < 0)
+        {
+            myDashMove.direction = 1;
+        }
+        else if (movecontrol.Value > 0)
+        {
+            myDashMove.direction = 2;
+        }
+
+        /*
         Vector2 myVector = new Vector2(horzontalInput, verticalInput);
         myVector.Normalize();
         mybody.velocity += dashVelocity * myVector;
-        dash = false;
+        */
     }
 
     public void Jump(Rigidbody2D mybody)
