@@ -46,9 +46,9 @@ public class Script_Beat_Bar : MonoBehaviour {
         if ((beatObserver.beatMask & BeatType.OnBeat) == BeatType.OnBeat)
         {
             onBeat = true;
-            GameObject thisBeat;
-            thisBeat = Instantiate(myBeat, beatSpawnLoc);
-            thisBeat.GetComponent<Script_Beat>().moveSpeed = beatSpeed;
+            //GameObject thisBeat;
+            //thisBeat = Instantiate(myBeat, beatSpawnLoc);
+            //thisBeat.GetComponent<Script_Beat>().moveSpeed = beatSpeed;
 
             if (down)
             {
