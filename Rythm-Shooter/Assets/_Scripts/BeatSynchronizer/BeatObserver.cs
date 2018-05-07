@@ -16,7 +16,7 @@ using SynchronizerData;
 /// </remarks>
 public class BeatObserver : MonoBehaviour {
 
-	[Range(0, 500)]
+	[Range(0, 1000)]
 	public float beatWindow = 10f;	// in milliseconds
 	
 	[HideInInspector]
@@ -57,6 +57,6 @@ public class BeatObserver : MonoBehaviour {
 	{
 		yield return new WaitForSeconds(beatWindow / 1000f);
 		beatMask ^= beatType;
-	}
+    }
 
 }

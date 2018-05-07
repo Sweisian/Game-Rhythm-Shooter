@@ -29,7 +29,7 @@ public class BeatCounter : MonoBehaviour {
 	{
 		// Calculate number of samples between each beat.
 		float audioBpm = audioSource.GetComponent<BeatSynchronizer>().bpm;
-		samplePeriod = 2f *(60f / (audioBpm * BeatDecimalValues.values[(int)beatValue])) * audioSource.clip.frequency;
+		samplePeriod = (60f / (audioBpm * BeatDecimalValues.values[(int)beatValue])) * audioSource.clip.frequency;
 
 		if (beatOffset != BeatValue.None) {
 			sampleOffset = (60f / (audioBpm * BeatDecimalValues.values[(int)beatOffset])) * audioSource.clip.frequency;
