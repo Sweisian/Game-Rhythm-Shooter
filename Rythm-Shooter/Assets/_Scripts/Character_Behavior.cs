@@ -316,7 +316,6 @@ public class Character_Behavior : MonoBehaviour
             LastAim = new Vector2(-1, 0);
         }
 
-
         if (X < 0 && tan < Mathf.PI*7/12)
         {
             LastAim = new Vector2 (Mathf.Cos(Mathf.PI/2),Mathf.Sin(Mathf.PI/2));
@@ -333,6 +332,13 @@ public class Character_Behavior : MonoBehaviour
         {
             LastAim = new Vector2(Mathf.Cos(Mathf.PI), Mathf.Sin(Mathf.PI));
         }
+
+        //This should be left shooting
+        if (X < 0 && tan < Mathf.PI / 12)
+        {
+            LastAim = new Vector2(-1, 0);
+        }
+
         if (X > 0 && tan > Mathf.PI*5/12)
         {
             LastAim  = new Vector2(Mathf.Cos(Mathf.PI/2), Mathf.Sin(Mathf.PI/2));
