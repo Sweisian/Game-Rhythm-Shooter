@@ -61,6 +61,7 @@ public class Character_Behavior : MonoBehaviour
         mybody = GetComponent<Rigidbody2D>();
         particles = GetComponentsInChildren<ParticleSystem>();
         beatObserver = GetComponent<BeatObserver>();
+
         myDashMove = GetComponent<Script_DashMove>();
 
         if (myTrigger == null)
@@ -115,7 +116,8 @@ public class Character_Behavior : MonoBehaviour
         InputDevice player = InputManager.Devices[0];
         InputControl movecontrol = player.GetControl(InputControlType.LeftStickX);
         InputControl aimcontrol = player.GetControl(InputControlType.LeftStickY);
-        Move(movecontrol.Value, mybody);
+
+        
 
         myAnim.SetFloat("moveSpeed", Mathf.Abs(movecontrol.Value));
 
@@ -184,7 +186,10 @@ public class Character_Behavior : MonoBehaviour
                 //Debug.Log("I DASHED");
             }
             dash = false;         
-        }      
+        }
+
+        //Might be important this stays at the end
+        Move(movecontrol.Value, mybody);
     }
 
     public void Dash(InputControl movecontrol, Script_DashMove myDashMove)
@@ -204,6 +209,7 @@ public class Character_Behavior : MonoBehaviour
             if(!facingRight)
                 myDashMove.direction = 1;
         }
+        Debug.Log("I Dashed");
     }
 
     public void FallingPhysics(Rigidbody2D mybody)
@@ -249,15 +255,22 @@ public class Character_Behavior : MonoBehaviour
         {
             horizontalInput = -1;
         }
-        mybody.velocity = new Vector2(horizontalInput*speed, mybody.velocity.y);
+
+        //this is necessary so this code doesn't overwrite the dash velocity
+        //Simply checks if we are dashing or not
+        if (myDashMove.direction == 0)
+        {
+            mybody.velocity = new Vector2(horizontalInput * speed, mybody.velocity.y);
+        }
     }
 
     public void Jump(Rigidbody2D mybody)
     {
-        Debug.Log("Jump velocity is: ");
-        Debug.Log(jumpvelocity);
-        Debug.Log("mybody.velocity before jump is: ");
-        Debug.Log(mybody.velocity);        
+        //Debug.Log("Jump velocity is: ");
+        //Debug.Log(jumpvelocity);
+        //Debug.Log("mybody.velocity before jump is: ");
+        //Debug.Log(mybody.velocity);
+        
         mybody.velocity += jumpvelocity * Vector2.up; //* Time.deltaTime;
     }
 
@@ -338,14 +351,7 @@ public class Character_Behavior : MonoBehaviour
         return LastAim;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.GetComponent<ShotBehavior>() != null)
-        {
-            GameManage.GetComponent<Script_GameManager>().respawn(this.gameObject);
-            Destroy(collision.gameObject);
-        }
-    }
+    
 
     // Detect continous collision with the ground
     void OnCollisionStay2D(Collision2D hit)
