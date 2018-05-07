@@ -279,7 +279,8 @@ public class Character_Behavior : MonoBehaviour
         
         InputControl aimX = player.GetControl(InputControlType.LeftStickX);
         InputControl aimY = player.GetControl(InputControlType.LeftStickY);
-        Vector2 Temp = Aim(player);
+        Vector2 Temp = Aim(player, currGameObject);
+        
         GameObject shotcreate = Instantiate(shot);
         ShotBehavior shotinit = shotcreate.GetComponent<ShotBehavior>();
 
@@ -287,7 +288,7 @@ public class Character_Behavior : MonoBehaviour
         shotready = Time.time + shootdelay;
     }
 
-    Vector2 Aim(InputDevice player)
+    Vector2 Aim(InputDevice player, GameObject curr)
     {
         //InputDevice player = InputManager.Devices[0];
         InputControl aimX = player.GetControl(InputControlType.LeftStickX);
@@ -295,88 +296,93 @@ public class Character_Behavior : MonoBehaviour
         float Y = aimY.Value;
         float X = aimX.Value;
         float tan = Mathf.Atan2(Y,X);
+        vector2 temp = new vector2();
 
         if(Y == 0 && X == 0 && facingRight)
         {
-            LastAim = new Vector2(1, 0);
+            temp = new Vector2(1, 0);
         }
         if (Y == 0 && X == 0 && !facingRight)
         {
-            LastAim = new Vector2(-1, 0);
+            temp = new Vector2(-1, 0);
         }
 
         if (X < 0 && tan < Mathf.PI*7/12)
         {
-            LastAim = new Vector2 (Mathf.Cos(Mathf.PI/2),Mathf.Sin(Mathf.PI/2));
+            temp = new Vector2 (Mathf.Cos(Mathf.PI/2),Mathf.Sin(Mathf.PI/2));
         }
         if (X < 0 && tan > Mathf.PI*7/12)
         {
-            LastAim = new Vector2(Mathf.Cos(Mathf.PI *2/3), Mathf.Sin(Mathf.PI *2/3));
+            temp = new Vector2(Mathf.Cos(Mathf.PI *2/3), Mathf.Sin(Mathf.PI *2/3));
         }
         if (X < 0 && tan > Mathf.PI*3/4)
         {
-            LastAim = new Vector2(Mathf.Cos(Mathf.PI * 5/6), Mathf.Sin(Mathf.PI * 5/6));
+            temp = new Vector2(Mathf.Cos(Mathf.PI * 5/6), Mathf.Sin(Mathf.PI * 5/6));
         }
         if (X < 0 && tan > Mathf.PI*11/12)
         {
-            LastAim = new Vector2(Mathf.Cos(Mathf.PI), Mathf.Sin(Mathf.PI));
+            temp = new Vector2(Mathf.Cos(Mathf.PI), Mathf.Sin(Mathf.PI));
         }
         if (X < 0 && tan < Mathf.PI * 13 / 12)
         {
-            LastAim = new Vector2(Mathf.Cos(Mathf.PI * 7/6 ), Mathf.Sin(Mathf.PI * 7/6));
+            temp = new Vector2(Mathf.Cos(Mathf.PI * 7/6 ), Mathf.Sin(Mathf.PI * 7/6));
         }
         if (X < 0 && tan < Mathf.PI * 5 / 4)
         {
-            LastAim = new Vector2(Mathf.Cos(Mathf.PI * 4/3), Mathf.Sin(Mathf.PI * 4/3));
+            temp = new Vector2(Mathf.Cos(Mathf.PI * 4/3), Mathf.Sin(Mathf.PI * 4/3));
         }
         if (X < 0 && tan < Mathf.PI * 17/12)
         {
-            LastAim = new Vector2(Mathf.Cos(Mathf.PI * 3 / 2), Mathf.Sin(Mathf.PI * 3 / 2));
+            temp = new Vector2(Mathf.Cos(Mathf.PI * 3 / 2), Mathf.Sin(Mathf.PI * 3 / 2));
         }
 
         //This should be left shooting
         if (X < 0 && tan < Mathf.PI / 12)
         {
-            LastAim = new Vector2(-1, 0);
+            temp = new Vector2(-1, 0);
         }
 
         if (X > 0 && tan > Mathf.PI*5/12)
         {
-            LastAim  = new Vector2(Mathf.Cos(Mathf.PI/2), Mathf.Sin(Mathf.PI/2));
+            temp  = new Vector2(Mathf.Cos(Mathf.PI/2), Mathf.Sin(Mathf.PI/2));
         }
         if (X > 0 && tan < Mathf.PI*5/12)
         {
-            LastAim = new Vector2(Mathf.Cos(Mathf.PI/3), Mathf.Sin(Mathf.PI/3));
+            temp = new Vector2(Mathf.Cos(Mathf.PI/3), Mathf.Sin(Mathf.PI/3));
         }
         if (X > 0 && tan < Mathf.PI/4)
         {
-            LastAim = new Vector2(Mathf.Cos(Mathf.PI/6), Mathf.Sin(Mathf.PI/6));
+            temp = new Vector2(Mathf.Cos(Mathf.PI/6), Mathf.Sin(Mathf.PI/6));
         }
         if (X > 0 && tan < Mathf.PI/12)
         {
-            LastAim = new Vector2(Mathf.Cos(0), Mathf.Sin(0));
+            temp = new Vector2(Mathf.Cos(0), Mathf.Sin(0));
         }
         if (X > 0 && tan > Mathf.PI * 23/12)
         {
-            LastAim = new Vector2(Mathf.Cos(Mathf.PI * 11/6), Mathf.Sin(Mathf.PI * 11 / 6));
+            temp = new Vector2(Mathf.Cos(Mathf.PI * 11/6), Mathf.Sin(Mathf.PI * 11 / 6));
         }
         if (X > 0 && tan > Mathf.PI * 7 / 4)
         {
-            LastAim = new Vector2(Mathf.Cos(Mathf.PI * 5 / 3), Mathf.Sin(Mathf.PI * 5 / 3));
+            temp = new Vector2(Mathf.Cos(Mathf.PI * 5 / 3), Mathf.Sin(Mathf.PI * 5 / 3));
         }
         if (X > 0 && tan > Mathf.PI * 19/12)
         {
-            LastAim = new Vector2(Mathf.Cos(Mathf.PI *  3/2), Mathf.Sin(Mathf.PI * 3/2));
+            temp = new Vector2(Mathf.Cos(Mathf.PI *  3/2), Mathf.Sin(Mathf.PI * 3/2));
         }
         if (Y > 0.8)
         {
-            LastAim = new Vector2(Mathf.Cos(Mathf.PI/2), Mathf.Sin(Mathf.PI/2));
+            temp = new Vector2(Mathf.Cos(Mathf.PI/2), Mathf.Sin(Mathf.PI/2));
         }
         if (Y < -0.8)
         {
-            LastAim = new Vector2(Mathf.Cos(Mathf.PI * 3/ 2), Mathf.Sin(Mathf.PI * 3/ 2));
+            temp = new Vector2(Mathf.Cos(Mathf.PI * 3/ 2), Mathf.Sin(Mathf.PI * 3/ 2));
         }
-        return LastAim;
+        if (curr.getComponent<Character_Behavior2> != null) { curr.getComponent<Character_Behavior2>().LastAim = temp; }
+        else { LastAim = temp;
+        }
+
+        return temp;
     }
 
     
