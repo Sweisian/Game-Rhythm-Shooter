@@ -16,6 +16,8 @@ public class ShotBehavior : MonoBehaviour {
         Creator = creator;
         transform.position = initialPosition;
         angle = Right;
+
+        GameManage = GameObject.Find("GameManager").GetComponent<Script_GameManager>();
     }
 	
 	// Update is called once per frame
@@ -25,12 +27,11 @@ public class ShotBehavior : MonoBehaviour {
     
     void OnCollisionEnter2D(Collision2D c)
     {
-
         Debug.Log("Shot entered: " + c.gameObject.name);
 
             if (c.gameObject.tag == "PlayerOne" || c.gameObject.tag == "PlayerTwo")
                 {
-                    GameManage.GetComponent<Script_GameManager>().respawn(c.gameObject);
+                    GameManage.respawn(c.gameObject);
                 }
 
         Destroy(gameObject);
