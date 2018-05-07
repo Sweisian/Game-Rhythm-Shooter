@@ -321,6 +321,18 @@ public class Character_Behavior : MonoBehaviour
         {
             LastAim = new Vector2(Mathf.Cos(Mathf.PI), Mathf.Sin(Mathf.PI));
         }
+        if (X < 0 && tan > Mathf.PI * 13 / 12)
+        {
+            LastAim = new Vector2(Mathf.Cos(Mathf.PI * 7/6 ), Mathf.Sin(Mathf.PI * 7/6));
+        }
+        if (X < 0 && tan > Mathf.PI * 5 / 4)
+        {
+            LastAim = new Vector2(Mathf.Cos(Mathf.PI * 4/3), Mathf.Sin(Mathf.PI * 4/3));
+        }
+        if (X < 0 && tan > Mathf.PI * 17/12)
+        {
+            LastAim = new Vector2(Mathf.Cos(Mathf.PI * 3 / 2), Mathf.Sin(Mathf.PI * 3 / 2));
+        }
 
         //This should be left shooting
         if (X < 0 && tan < Mathf.PI / 12)
@@ -344,9 +356,25 @@ public class Character_Behavior : MonoBehaviour
         {
             LastAim = new Vector2(Mathf.Cos(0), Mathf.Sin(0));
         }
+        if (X > 0 && tan < Mathf.PI *  23/12)
+        {
+            LastAim = new Vector2(Mathf.Cos(Mathf.PI * 11/6), Mathf.Sin(Mathf.PI * 11 / 6));
+        }
+        if (X > 0 && tan < Mathf.PI * 7 / 4)
+        {
+            LastAim = new Vector2(Mathf.Cos(Mathf.PI * 5 / 3), Mathf.Sin(Mathf.PI * 5 / 3));
+        }
+        if (X > 0 && tan < Mathf.PI * 19/12)
+        {
+            LastAim = new Vector2(Mathf.Cos(Mathf.PI *  3/2), Mathf.Sin(Mathf.PI * 3/2));
+        }
         if (Y > 0.8)
         {
             LastAim = new Vector2(Mathf.Cos(Mathf.PI/2), Mathf.Sin(Mathf.PI/2));
+        }
+        if (Y < -0.8)
+        {
+            LastAim = new Vector2(Mathf.Cos(Mathf.PI / 2), Mathf.Sin(Mathf.PI / 2));
         }
         return LastAim;
     }
