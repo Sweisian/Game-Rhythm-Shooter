@@ -15,20 +15,17 @@ public class Character_Behavior : MonoBehaviour
     public Vector2 LastAim;
 
     public float speed = 10;
-    [SerializeField] public float acceleration = 5f;   //lookup how to do have friend scripts in c#
     [SerializeField] public float jumpvelocity = 10;
-    public float dashVelocity = 10;
 
 
     bool isgrounded = true;
     private bool jump = false;
     private bool dash = false;
-    Vector2 moveVel;
 
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 2f;
 
-    Rigidbody2D mybody;
+    private Rigidbody2D mybody;
     private ParticleSystem[] particles;
 
     private BeatObserver beatObserver;
@@ -40,17 +37,19 @@ public class Character_Behavior : MonoBehaviour
     private Animator myAnim;
     private SpriteRenderer mySpriteRen;
 
-    //NEW//
-    private GameObject currGameObject;
     private InputDevice player;
 
     private Script_DashMove myDashMove;
 
     public Boolean facingRight = true;
 
+    [SerializeField] public GameObject beatBar;
+    private Script_Beat_Bar beatBarScript;
+
     void Awake()
     {
-        currGameObject = this.gameObject;
+        beatBarScript = beatBar.GetComponent<Script_Beat_Bar>();
+        //cpurrGameObject = this.gameObject;
         player = InputManager.Devices[0];
 
         myAnim = GetComponent<Animator>();
@@ -69,12 +68,6 @@ public class Character_Behavior : MonoBehaviour
 
     }
 
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -86,7 +79,8 @@ public class Character_Behavior : MonoBehaviour
             if (forceOnBeat)
             {
                 Debug.Log("A Pressed player 1");
-                if (myTrigger.GetIsActive())
+                if (beatBarScript.onBeat)
+                //if (myTrigger.GetIsActive())
                 {
                     Fire(this.gameObject, player);
                     particles[0].Play();
@@ -145,21 +139,21 @@ public class Character_Behavior : MonoBehaviour
             //Now checks if the trigger is active
             if (forceOnBeat)
             {
-                if (myTrigger.GetIsActive())
+                //if (myTrigger.GetIsActive())
+                if (beatBarScript.onBeat)
                 {
                     Jump(mybody);
-                    myTrigger.BeatHit();
                     jump = false;
+                    myTrigger.BeatHit();                   
                     if (isgrounded)
                         particles[0].Play();
                 }
                 else
                 {
-                    particles[1].Play();
                     jump = false;
+                    particles[1].Play();                    
                 }
-            }
-            
+            }           
             else
             {
                 Jump(mybody);
@@ -167,7 +161,6 @@ public class Character_Behavior : MonoBehaviour
                 myTrigger.BeatHit();
                 if (isgrounded)
                     particles[0].Play();
-
             }
         }
         
@@ -176,28 +169,25 @@ public class Character_Behavior : MonoBehaviour
         {
             if (forceOnBeat)
             {
-                if (myTrigger.GetIsActive())
+                //if (myTrigger.GetIsActive())
+                if (beatBarScript.onBeat)
                 {
-                    Dash(movecontrol);
+                    Dash(movecontrol, myDashMove);
                     myTrigger.BeatHit();
                     particles[0].Play();
                 }
-                else
-                {
-                    particles[1].Play();
-                }
+                else particles[1].Play();                
             }
             else
             {
-                Dash(movecontrol);               
+                Dash(movecontrol, myDashMove);               
                 //Debug.Log("I DASHED");
             }
-
             dash = false;         
         }      
     }
 
-    public void Dash(InputControl movecontrol)
+    public void Dash(InputControl movecontrol, Script_DashMove myDashMove)
     {
         if (movecontrol.Value < 0)
         {
@@ -214,7 +204,6 @@ public class Character_Behavior : MonoBehaviour
             if(!facingRight)
                 myDashMove.direction = 1;
         }
-
     }
 
     public void FallingPhysics(Rigidbody2D mybody)
@@ -234,9 +223,6 @@ public class Character_Behavior : MonoBehaviour
 
     public void Move(float horizontalInput, Rigidbody2D mybody)
     {
-        //Debug.Log(horizontalInput);
-        moveVel = mybody.velocity;
-
         // separates movement into discrete speeds (crawl, walk, run)
         if (horizontalInput > 0 && horizontalInput <= 0.3f)
         {
@@ -263,13 +249,6 @@ public class Character_Behavior : MonoBehaviour
         {
             horizontalInput = -1;
         }
-        // use local acceleration and speed variables (don't need to assign in CharB2)
-        /*
-        Vector2 direction = new Vector2(horizontalInput, 0f);
-        var goal = direction * speed;
-        Vector2 error = new Vector2(goal.x - moveVel.x, 0f);
-        mybody.AddForce(acceleration * error);
-        */
         mybody.velocity = new Vector2(horizontalInput*speed, mybody.velocity.y);
     }
 
@@ -278,11 +257,8 @@ public class Character_Behavior : MonoBehaviour
         Debug.Log("Jump velocity is: ");
         Debug.Log(jumpvelocity);
         Debug.Log("mybody.velocity before jump is: ");
-        Debug.Log(mybody.velocity);
-        
+        Debug.Log(mybody.velocity);        
         mybody.velocity += jumpvelocity * Vector2.up; //* Time.deltaTime;
-        //Vector2 jumpForce = new Vector2(0f, jumpvelocity);
-        //mybody.AddForce(jumpForce); 
     }
 
     public void Fire(GameObject currGameObject, InputDevice player)

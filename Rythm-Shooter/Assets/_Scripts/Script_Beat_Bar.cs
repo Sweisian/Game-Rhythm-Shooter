@@ -22,6 +22,10 @@ public class Script_Beat_Bar : MonoBehaviour {
 
     private BeatObserver beatObserver;
 
+    private bool down = true;
+
+    public bool onBeat;
+
     // Use this for initialization
     void Start()
     {
@@ -41,13 +45,30 @@ public class Script_Beat_Bar : MonoBehaviour {
     {
         if ((beatObserver.beatMask & BeatType.OnBeat) == BeatType.OnBeat)
         {
-            GameObject thisBeat;
-            thisBeat = Instantiate(myBeat, beatSpawnLoc);
-            thisBeat.GetComponent<Script_Beat>().moveSpeed = beatSpeed;
-
-            //transform.position = new Vector3(transform.position.x, transform.position.y - .1f, transform.position.z);
+            onBeat = true;
+            //GameObject thisBeat;
+            //thisBeat = Instantiate(myBeat, beatSpawnLoc);
+            //thisBeat.GetComponent<Script_Beat>().moveSpeed = beatSpeed;
+            if (down)
+            {
+                transform.position = new Vector3(transform.position.x, transform.position.y - .1f,
+                    transform.position.z);
+                //down = false;
+            }
+            else
+            {
+                transform.position = new Vector3(transform.position.x, transform.position.y + .1f,
+                    transform.position.z);
+                //down = true;
+            }
             //Debug.Log("Detected on beat");
         }
+        else
+        {
+            down = !down;
+            onBeat = false;
+        }
+        Debug.Log(onBeat);
 
         //if ((beatObserver.beatMask & BeatType.OffBeat) == BeatType.OffBeat)
         //{

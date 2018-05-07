@@ -199,12 +199,11 @@ MonoBehaviour:
   shot: {fileID: 1568460062443294, guid: 374269934e004bb40a8193fd0a92612d, type: 2}
   GameManage: {fileID: 0}
   LastAim: {x: 0, y: 0}
-  speed: 10
-  acceleration: 5
-  jumpvelocity: 10
-  dashVelocity: 7
   fallMultiplier: 2.5
   lowJumpMultiplier: 2
+  beatBar: {fileID: 0}
+  facingRight: 1
+  forceOnBeat: 1
 --- !u!114 &114847788037927452
 MonoBehaviour:
   m_ObjectHideFlags: 1

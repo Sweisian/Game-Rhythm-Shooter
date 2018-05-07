@@ -14,14 +14,7 @@ public class Character_Behavior2 : MonoBehaviour
     private Script_Trigger2 myTrigger;
     public Vector2 LastAim;
 
-    public float speed = 10;
-    [SerializeField] private float acceleration = 5f;
-    public float jumpvelocity = 20;
-    public float dashVelocity = 10;
-
-
     bool isgrounded = true;
-    Vector2 moveVel;
 
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 2f;
@@ -37,31 +30,32 @@ public class Character_Behavior2 : MonoBehaviour
     private SpriteRenderer mySpriteRen;
 
     private bool jump = false;
+    private bool dash = false;
 
-
-
-    //NEW//
     private Character_Behavior charB;
     private GameObject currGameObject;
-    InputDevice player;
+    private InputDevice player;
 
     private Script_DashMove myDashMove;
-    //private float acceleration;
 
+    [SerializeField] public GameObject beatBar;
+    private Script_Beat_Bar beatBarScript;
+
+    public Boolean facingRight = true;
+
+    public bool forceOnBeat = true;
 
     // Use this for initialization
     void Start()
     {
-        //NEW//
+        beatBarScript = beatBar.GetComponent<Script_Beat_Bar>();
+
         charB = GameObject.FindGameObjectWithTag("PlayerOne").GetComponent<Character_Behavior>();
         if (charB == null)
             Debug.Log("CharacterBehavior not found");
         currGameObject = this.gameObject;
         player = InputManager.Devices[1];
         myDashMove = GetComponent<Script_DashMove>();
-
-
-
 
         myAnim = GetComponent<Animator>();
         mySpriteRen = GetComponent<SpriteRenderer>();
@@ -83,19 +77,46 @@ public class Character_Behavior2 : MonoBehaviour
 
         InputDevice player = InputManager.Devices[1];
 
+        if (player.Action1.WasPressed)
+        {
+            if (forceOnBeat)
+            {
+                Debug.Log("A Pressed player 2");
+                if (beatBarScript.onBeat)
+                    //if (myTrigger.GetIsActive())
+                {
+                    charB.Fire(this.gameObject, player);
+                    particles[0].Play();
+                    myTrigger.BeatHit();
+                }
+            }
+            else
+            {
+                charB.Fire(this.gameObject, player);
+                particles[0].Play();
+            }
+        }
+
+        //jump
+        if (player.Action2.WasPressed && isgrounded)
+        {
+            Debug.Log("B Pressed player 2");
+            jump = true;
+        }
+
+        //dash
+        if (player.Action3.WasPressed)
+        {
+            Debug.Log("X Pressed by player 2");
+            dash = true;
+        }
         
-
-        //if (Input.GetAxisRaw("TriggersR_1") < -0.1 && Time.time > shotready)
-        //    Fire();
-
-        // Uncomment this when ready
         /*
-                if (Input.GetButtonDown("A_1") && localIsActive)
-        */
         if (player.Action1.WasPressed)
         {
             Debug.Log("A Pressed");
-            if (myTrigger.GetIsActive())
+            //if (myTrigger.GetIsActive())
+            if (beatBarScript.onBeat)
             {
                 charB.Fire(this.gameObject, player);
                 particles[0].Play();
@@ -109,6 +130,7 @@ public class Character_Behavior2 : MonoBehaviour
             //Debug.Log("B Pressed");
             jump = true;
         }
+        */
 
     }
 
@@ -123,182 +145,73 @@ public class Character_Behavior2 : MonoBehaviour
 
         //Sets orientation of sprite
         if (movecontrol.Value > .01f)
-            transform.localScale = new Vector2(1, transform.localScale.y);
+            facingRight = true;
 
         if (movecontrol.Value < -.01f)
+            facingRight = false;
+
+        if (facingRight)
+            transform.localScale = new Vector2(1, transform.localScale.y);
+        if (!facingRight)
             transform.localScale = new Vector2(-1, transform.localScale.y);
 
         charB.FallingPhysics(mybody);
 
-        //Jump Ability
+        //Jump Ability        
         if (jump)
         {
             //Now checks if the trigger is active
-            if (myTrigger.GetIsActive())
+            if (forceOnBeat)
+            {
+                //if (myTrigger.GetIsActive())
+                if (beatBarScript.onBeat)
+                {
+                    charB.Jump(mybody);
+                    jump = false;
+                    myTrigger.BeatHit();
+                    if (isgrounded)
+                        particles[0].Play();
+                }
+                else
+                {
+                    jump = false;
+                    particles[1].Play();
+                }
+            }
+            else
             {
                 charB.Jump(mybody);
                 jump = false;
                 myTrigger.BeatHit();
-                particles[0].Play();
-            }
-            else
-            {
-                particles[1].Play();
-                jump = false;
+                if (isgrounded)
+                    particles[0].Play();
             }
         }
-
 
         //Dash Ability
-        if (player.Action3.WasPressed)
+        if (dash)
         {
-            Debug.Log("X pressed");
-            if (myTrigger.GetIsActive())
+            if (forceOnBeat)
             {
-                //negative on the y to invert stick for some reason
-                charB.Dash(movecontrol);
-                myTrigger.BeatHit();
-                particles[0].Play();
+                //if (myTrigger.GetIsActive())
+                if (beatBarScript.onBeat)
+                {
+                    charB.Dash(movecontrol, myDashMove);
+                    myTrigger.BeatHit();
+                    particles[0].Play();
+                }
+                else particles[1].Play();
             }
             else
             {
-                particles[1].Play();
+                charB.Dash(movecontrol, myDashMove);
+                //Debug.Log("I DASHED");
             }
+            dash = false;
         }
 
     }
-    /*
-    void FallingPhysics()
-    {
-        // player is falling
-        if (mybody.velocity.y < 0)
-        {
-            mybody.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
-            // minus 1 because unity is already applying 1 multiple of the gravity (don't want to add gravity part twice)
-        }
-        // player is moving up in the jump and a is released
-        else if (mybody.velocity.y > 0) //&& !Input.GetButton("A_1"))
-        {
-            mybody.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
-        }
-    }
-    /*
-    public void Move(float horizontalInput)
-
-    {
-        //Debug.Log(horizontalInput);
-        moveVel = mybody.velocity;
-
-        // separates movement into discrete speeds (crawl, walk, run)
-        if (horizontalInput > 0 && horizontalInput <= 0.3f)
-        {
-            horizontalInput = 0.3f;
-        }
-        else if (horizontalInput > 0.3f && horizontalInput <= 0.9f)
-        {
-            horizontalInput = 0.5f;
-        }
-        else if (horizontalInput > 0.8f && horizontalInput <= 1)
-        {
-            horizontalInput = 1;
-        }
-
-        if (horizontalInput < 0 && horizontalInput >= -0.3f)
-        {
-            horizontalInput = -0.3f;
-        }
-        else if (horizontalInput < -0.3f && horizontalInput >= -0.9f)
-        {
-            horizontalInput = -0.5f;
-        }
-        else if (horizontalInput < -0.8f && horizontalInput > -1)
-        {
-            horizontalInput = -1;
-        }
-
-        Vector2 direction = new Vector2(horizontalInput, 0f);
-        var goal = direction * speed;
-        Vector2 error = new Vector2(goal.x - moveVel.x, 0f);
-        mybody.AddForce(acceleration * error);
-    }
-    */
-    /*
-
-    public void Dash(float horzontalInput, float verticalInput)
-    {
-        Vector2 myVector = new Vector2(horzontalInput, verticalInput);
-        myVector.Normalize();
-        mybody.velocity += dashVelocity * myVector;
-    }
-
-    /*
-    public void Jump()
-    {
-        if (isgrounded)
-            mybody.velocity += jumpvelocity * Vector2.up * Time.deltaTime;
-    }
-    
-
-    void Fire()
-    {
-        InputDevice player = InputManager.Devices[1];
-        InputControl aimX = player.GetControl(InputControlType.LeftStickX);
-        InputControl aimY = player.GetControl(InputControlType.LeftStickY);
-        Vector2 Temp = Aim();
-        GameObject shotcreate = Instantiate(shot);
-        ShotBehavior shotinit = shotcreate.GetComponent<ShotBehavior>();
-        shotinit.Init(this.gameObject, (Vector2)transform.position + (1.5F * (Temp)), Temp);
-        shotready = Time.time + shootdelay;
-    }
-
-    Vector2 Aim()
-    {
-        InputDevice player = InputManager.Devices[1];
-        InputControl aimX = player.GetControl(InputControlType.LeftStickX);
-        InputControl aimY = player.GetControl(InputControlType.LeftStickY);
-        float Y = aimY.Value;
-        float X = aimX.Value;
-        float tan = Mathf.Atan2(Y, X);
-        if (X < 0 && tan < Mathf.PI * 7 / 12)
-        {
-            LastAim = new Vector2(Mathf.Cos(Mathf.PI / 2), Mathf.Sin(Mathf.PI / 2));
-        }
-        if (X < 0 && tan > Mathf.PI * 7 / 12)
-        {
-            LastAim = new Vector2(Mathf.Cos(Mathf.PI * 2 / 3), Mathf.Sin(Mathf.PI * 2 / 3));
-        }
-        if (X < 0 && tan > Mathf.PI * 3 / 4)
-        {
-            LastAim = new Vector2(Mathf.Cos(Mathf.PI * 5 / 6), Mathf.Sin(Mathf.PI * 5 / 6));
-        }
-        if (X < 0 && tan > Mathf.PI * 11 / 12)
-        {
-            LastAim = new Vector2(Mathf.Cos(Mathf.PI), Mathf.Sin(Mathf.PI));
-        }
-        if (X > 0 && tan > Mathf.PI * 5 / 12)
-        {
-            LastAim = new Vector2(Mathf.Cos(Mathf.PI / 2), Mathf.Sin(Mathf.PI / 2));
-        }
-        if (X > 0 && tan < Mathf.PI * 5 / 12)
-        {
-            LastAim = new Vector2(Mathf.Cos(Mathf.PI / 3), Mathf.Sin(Mathf.PI / 3));
-        }
-        if (X > 0 && tan < Mathf.PI / 4)
-        {
-            LastAim = new Vector2(Mathf.Cos(Mathf.PI / 6), Mathf.Sin(Mathf.PI / 6));
-        }
-        if (X > 0 && tan < Mathf.PI / 12)
-        {
-            LastAim = new Vector2(Mathf.Cos(0), Mathf.Sin(0));
-        }
-        if (Y > 0.8)
-        {
-            LastAim = new Vector2(Mathf.Cos(Mathf.PI / 2), Mathf.Sin(Mathf.PI / 2));
-        }
-        return LastAim;
-    }
-    */
-
+   
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.GetComponent<ShotBehavior>() != null)
@@ -308,7 +221,7 @@ public class Character_Behavior2 : MonoBehaviour
         }
     }
 
-    // Detect continous collision with the ground
+    // Detect continous collision with the ground'
     void OnCollisionStay2D(Collision2D hit)
     {
         if (hit.gameObject.tag == "Ground")
