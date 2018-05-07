@@ -68,7 +68,7 @@ public class Script_Beat_Bar : MonoBehaviour {
             down = !down;
             onBeat = false;
         }
-        Debug.Log(onBeat);
+        //Debug.Log(onBeat);
 
         //if ((beatObserver.beatMask & BeatType.OffBeat) == BeatType.OffBeat)
         //{
