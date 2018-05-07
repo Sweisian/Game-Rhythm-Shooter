@@ -288,10 +288,10 @@ public class Character_Behavior : MonoBehaviour
 
     public void Jump(Rigidbody2D mybody)
     {
-        Debug.Log("Jump velocity is: ");
-        Debug.Log(jumpvelocity);
-        Debug.Log("mybody.velocity before jump is: ");
-        Debug.Log(mybody.velocity);
+        //Debug.Log("Jump velocity is: ");
+        //Debug.Log(jumpvelocity);
+        //Debug.Log("mybody.velocity before jump is: ");
+        //Debug.Log(mybody.velocity);
         
         mybody.velocity += jumpvelocity * Vector2.up; //* Time.deltaTime;
         //Vector2 jumpForce = new Vector2(0f, jumpvelocity);
