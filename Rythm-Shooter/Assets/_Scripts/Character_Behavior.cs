@@ -227,7 +227,7 @@ public class Character_Behavior : MonoBehaviour
         }
     }
 
-    public void Move(float horizontalInput, Rigidbody2D mybody)
+    public void Move(float horizontalInput, Rigidbody2D mybody, Script_DashMove myDashMove)
     {
         // separates movement into discrete speeds (crawl, walk, run)
         if (horizontalInput > 0 && horizontalInput <= 0.3f)
