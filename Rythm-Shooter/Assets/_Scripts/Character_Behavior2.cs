@@ -139,7 +139,7 @@ public class Character_Behavior2 : MonoBehaviour
         InputDevice player = InputManager.Devices[1];
         InputControl movecontrol = player.GetControl(InputControlType.LeftStickX);
         InputControl aimcontrol = player.GetControl(InputControlType.LeftStickY);
-        charB.Move(movecontrol.Value, mybody);
+        charB.Move(movecontrol.Value, mybody, myDashMove);
 
         myAnim.SetFloat("moveSpeed", Mathf.Abs(movecontrol.Value));
 

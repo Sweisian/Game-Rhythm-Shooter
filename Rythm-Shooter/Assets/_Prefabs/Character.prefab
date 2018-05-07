@@ -99,7 +99,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1461411647990530}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -29.1, y: 6.7, z: 0.14453125}
+  m_LocalPosition: {x: -27.275078, y: 1.2000476, z: 0.14453125}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_Children:
   - {fileID: 4334662591494624}
@@ -189,7 +189,7 @@ MonoBehaviour:
   jumpvelocity: 20
   fallMultiplier: 3
   lowJumpMultiplier: 2
-  forceOnBeat: 0
+  forceOnBeat: 1
   facingRight: 1
   beatBar: {fileID: 0}
 --- !u!114 &114240458859098090
@@ -204,8 +204,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dashSpeed: 80
+<<<<<<< HEAD
   dashTime: 0
   startDashTime: 0.1
+=======
+  dashTime: 5
+  startDashTime: 5
+>>>>>>> a92e8afca84ca4440ed7d8d4c9a282e8d7d615cf
   direction: 0
 --- !u!198 &198178781330645194
 ParticleSystem:
@@ -9530,7 +9535,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300006, guid: 2c98d3189623bf04b89b18bc655e933f, type: 3}
+  m_Sprite: {fileID: 21300004, guid: 2c98d3189623bf04b89b18bc655e933f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
