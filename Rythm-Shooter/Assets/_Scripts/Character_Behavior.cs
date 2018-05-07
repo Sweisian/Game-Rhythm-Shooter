@@ -15,7 +15,7 @@ public class Character_Behavior : MonoBehaviour
     public Vector2 LastAim;
 
     public float speed = 10;
-    [SerializeField] public float jumpvelocity = 10;
+    [SerializeField] public float jumpvelocity = 20;
 
 
     bool isgrounded = true;

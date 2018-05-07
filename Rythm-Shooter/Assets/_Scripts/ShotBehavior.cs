@@ -25,12 +25,14 @@ public class ShotBehavior : MonoBehaviour {
     
     void OnCollisionEnter2D(Collision2D c)
     {
-            if (c.gameObject.tag == "PlayerOne" || c.gameObject.tag == "PlayerTwo")
-            {
-                GameManage.GetComponent<Script_GameManager>().respawn(c.gameObject);
-            }
 
         Debug.Log("Shot entered: " + c.gameObject.name);
+
+            if (c.gameObject.tag == "PlayerOne" || c.gameObject.tag == "PlayerTwo")
+                {
+                    GameManage.GetComponent<Script_GameManager>().respawn(c.gameObject);
+                }
+
         Destroy(gameObject);
     }
 }

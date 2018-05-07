@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4883124032016798}
   - component: {fileID: 114078495822834188}
   - component: {fileID: 61513742385087604}
-  - component: {fileID: 114494061181423528}
   - component: {fileID: 212764206536361902}
   - component: {fileID: 95536089011696912}
   - component: {fileID: 50880443604086834}
@@ -205,22 +204,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dashSpeed: 80
+<<<<<<< HEAD
+  dashTime: 0
+  startDashTime: 0.1
+=======
   dashTime: 5
   startDashTime: 5
+>>>>>>> a92e8afca84ca4440ed7d8d4c9a282e8d7d615cf
   direction: 0
---- !u!114 &114494061181423528
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1461411647990530}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dc6bf181cdb14aab9c6f511c928132c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  beatWindow: 60
-  beatMask: 0
 --- !u!198 &198178781330645194
 ParticleSystem:
   m_ObjectHideFlags: 1
