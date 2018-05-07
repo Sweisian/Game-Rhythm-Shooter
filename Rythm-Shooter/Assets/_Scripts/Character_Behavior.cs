@@ -189,7 +189,7 @@ public class Character_Behavior : MonoBehaviour
         }
 
         //Might be important this stays at the end
-        Move(movecontrol.Value, mybody);
+        Move(movecontrol.Value, mybody, myDashMove);
     }
 
     public void Dash(InputControl movecontrol, Script_DashMove myDashMove)
