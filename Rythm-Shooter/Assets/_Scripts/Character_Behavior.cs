@@ -15,7 +15,7 @@ public class Character_Behavior : MonoBehaviour
     public Vector2 LastAim;
 
     public float speed = 10;
-    [SerializeField] public float jumpvelocity = 10;
+    [SerializeField] public float jumpvelocity = 20;
 
 
     bool isgrounded = true;
@@ -189,7 +189,7 @@ public class Character_Behavior : MonoBehaviour
         }
 
         //Might be important this stays at the end
-        Move(movecontrol.Value, mybody);
+        Move(movecontrol.Value, mybody, myDashMove);
     }
 
     public void Dash(InputControl movecontrol, Script_DashMove myDashMove)
