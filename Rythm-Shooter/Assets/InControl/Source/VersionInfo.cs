@@ -29,9 +29,8 @@ namespace InControl
                 Minor = 4,
                 Patch = 4,
 
-                //Not sure what the issue was. Got a merge conflict. and I just picked one
-
                 Build = 4016
+
 
 
 			};

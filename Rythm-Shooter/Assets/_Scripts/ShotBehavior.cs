@@ -20,4 +20,6 @@ public class ShotBehavior : MonoBehaviour {
 	void Update () {
         transform.position += (Vector3)(angle * shotspeed); 
 	}
+
+
 }
