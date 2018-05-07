@@ -9,6 +9,8 @@ public class ShotBehavior : MonoBehaviour {
     public float shotspeed = 0.5f;
     public Vector2 angle;
 
+    public Script_GameManager GameManage;
+
     public void Init(GameObject creator, Vector2 initialPosition, Vector2 Right)
     {
         Creator = creator;
@@ -20,6 +22,14 @@ public class ShotBehavior : MonoBehaviour {
 	void Update () {
         transform.position += (Vector3)(angle * shotspeed); 
 	}
+    
+    void OnCollisionEnter2D(Collision2D c)
+    {
+            if (c.gameObject.tag == "player")
+            {
+                GameManage.GetComponent<Script_GameManager>().respawn(c.gameObject);
+            }
 
-
+        Destroy(gameObject);
+    }
 }

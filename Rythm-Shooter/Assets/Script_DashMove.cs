@@ -6,7 +6,7 @@ public class Script_DashMove : MonoBehaviour {
 
     private Rigidbody2D rb;
     public float dashSpeed;
-    private float dashTime;
+    public float dashTime;
     public float startDashTime;
 
 
@@ -38,19 +38,24 @@ public class Script_DashMove : MonoBehaviour {
                 direction = 0;
                 dashTime = startDashTime;
                 rb.velocity = Vector2.zero;
-            } else {
+            }
+            else
+            {
                 dashTime -= Time.deltaTime;
 
                 if(direction == 1)
                 {
                     rb.velocity = Vector2.left * dashSpeed;
+                    Debug.Log(rb);
+                    Debug.Log(rb.velocity);
                 }
                 else if (direction == 2)
                 {
                     rb.velocity = Vector2.right * dashSpeed;
+                    Debug.Log(rb);
+                    Debug.Log(rb.velocity);
                 }
             }
         }
-    
 	}
 }
