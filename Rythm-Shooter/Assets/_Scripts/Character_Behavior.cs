@@ -178,7 +178,7 @@ public class Character_Behavior : MonoBehaviour
             {
                 if (myTrigger.GetIsActive())
                 {
-                    Dash(myDashMove, movecontrol);
+                    Dash(movecontrol);
                     myTrigger.BeatHit();
                     particles[0].Play();
                 }
@@ -189,12 +189,32 @@ public class Character_Behavior : MonoBehaviour
             }
             else
             {
-                Dash(myDashMove, movecontrol);               
+                Dash(movecontrol);               
                 //Debug.Log("I DASHED");
             }
 
             dash = false;         
         }      
+    }
+
+    public void Dash(InputControl movecontrol)
+    {
+        if (movecontrol.Value < 0)
+        {
+            myDashMove.direction = 1;
+        }
+        else if (movecontrol.Value > 0)
+        {
+            myDashMove.direction = 2;
+        }
+        else if(movecontrol.Value == 0)
+        {
+            if(facingRight)
+                myDashMove.direction = 2;
+            if(!facingRight)
+                myDashMove.direction = 1;
+        }
+
     }
 
     public void FallingPhysics(Rigidbody2D mybody)
@@ -251,25 +271,6 @@ public class Character_Behavior : MonoBehaviour
         mybody.AddForce(acceleration * error);
         */
         mybody.velocity = new Vector2(horizontalInput*speed, mybody.velocity.y);
-    }
-
-
-    public void Dash(Script_DashMove myDashMove, InputControl movecontrol)
-    {       
-        if (movecontrol.Value < 0)
-        {
-            myDashMove.direction = 1;
-        }
-        else if (movecontrol.Value > 0)
-        {
-            myDashMove.direction = 2;
-        }
-
-        /*
-        Vector2 myVector = new Vector2(horzontalInput, verticalInput);
-        myVector.Normalize();
-        mybody.velocity += dashVelocity * myVector;
-        */
     }
 
     public void Jump(Rigidbody2D mybody)

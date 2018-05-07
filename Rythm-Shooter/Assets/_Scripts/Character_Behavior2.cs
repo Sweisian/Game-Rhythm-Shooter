@@ -156,7 +156,7 @@ public class Character_Behavior2 : MonoBehaviour
             if (myTrigger.GetIsActive())
             {
                 //negative on the y to invert stick for some reason
-                charB.Dash(myDashMove, movecontrol);
+                charB.Dash(movecontrol);
                 myTrigger.BeatHit();
                 particles[0].Play();
             }
