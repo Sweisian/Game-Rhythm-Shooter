@@ -44,6 +44,8 @@ public class Character_Behavior2 : MonoBehaviour
     private Character_Behavior charB;
     private GameObject currGameObject;
     InputDevice player;
+
+    private Script_DashMove myDashMove;
     //private float acceleration;
 
 
@@ -56,7 +58,7 @@ public class Character_Behavior2 : MonoBehaviour
             Debug.Log("CharacterBehavior not found");
         currGameObject = this.gameObject;
         player = InputManager.Devices[1];
-        //acceleration = charB.acceleration;
+        myDashMove = GetComponent<Script_DashMove>();
 
 
 
@@ -154,7 +156,7 @@ public class Character_Behavior2 : MonoBehaviour
             if (myTrigger.GetIsActive())
             {
                 //negative on the y to invert stick for some reason
-                Dash(movecontrol.Value, -aimcontrol);
+                charB.Dash(myDashMove, movecontrol);
                 myTrigger.BeatHit();
                 particles[0].Play();
             }
@@ -165,7 +167,7 @@ public class Character_Behavior2 : MonoBehaviour
         }
 
     }
-
+    /*
     void FallingPhysics()
     {
         // player is falling
@@ -220,7 +222,7 @@ public class Character_Behavior2 : MonoBehaviour
         mybody.AddForce(acceleration * error);
     }
     */
-
+    /*
 
     public void Dash(float horzontalInput, float verticalInput)
     {
