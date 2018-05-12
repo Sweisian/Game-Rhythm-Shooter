@@ -7428,7 +7428,22 @@ Prefab:
     - target: {fileID: 114237268650757936, guid: df43a4c168b2bd6418c91d94e229bae9,
         type: 2}
       propertyPath: beatWindow
-      value: 150
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 212850955577499640, guid: df43a4c168b2bd6418c91d94e229bae9,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 212844805599567060, guid: df43a4c168b2bd6418c91d94e229bae9,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 212291637313638800, guid: df43a4c168b2bd6418c91d94e229bae9,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: df43a4c168b2bd6418c91d94e229bae9, type: 2}
@@ -7680,7 +7695,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bpm: 110
-  startDelay: 0.075
+  startDelay: 1.2
 --- !u!1 &1953681792
 GameObject:
   m_ObjectHideFlags: 0
