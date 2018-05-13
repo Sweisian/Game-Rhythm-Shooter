@@ -7,73 +7,75 @@ using InControl;
 public class Character_Behavior : MonoBehaviour
 {
     public float shootdelay = 0.1f;
-    private float shotready = 0.0f;
+    protected float shotready = 0.0f;
     public GameObject shot;
     public GameObject GameManage;
 
-    private Script_Trigger myTrigger;
+    
     public Vector2 LastAim;
 
     public float speed = 10;
     [SerializeField] public float jumpvelocity = 20;
 
 
-    bool isgrounded = true;
-    private bool jump = false;
-    private bool dash = false;
+    protected bool isgrounded = true;
+    protected bool jump = false;
+    protected bool dash = false;
 
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 2f;
 
-    private Rigidbody2D mybody;
-    private ParticleSystem[] particles;
+    protected Script_Trigger myTrigger;
+    protected Rigidbody2D mybody;
+    protected ParticleSystem[] particles;
+    protected Script_DashMove myDashMove;
+    protected BeatObserver beatObserver;
+    protected Animator myAnim;
+    protected SpriteRenderer mySpriteRen;
+    protected InputDevice player;
+    protected Script_Beat_Bar beatBarScript;
 
-    private BeatObserver beatObserver;
-
-    private bool onBeat = false;
+    protected bool onBeat = false;
 
     public bool forceOnBeat = true;
-
-    private Animator myAnim;
-    private SpriteRenderer mySpriteRen;
-
-    private InputDevice player;
-
-    private Script_DashMove myDashMove;
 
     public Boolean facingRight = true;
 
     [SerializeField] public GameObject beatBar;
-    private Script_Beat_Bar beatBarScript;
+    
 
-    void Awake()
-    {
-        beatBarScript = beatBar.GetComponent<Script_Beat_Bar>();
-        //cpurrGameObject = this.gameObject;
-        player = InputManager.Devices[0];
+    [Range(0, 1)]
+    public int playerNumber;
 
-        myAnim = GetComponent<Animator>();
-        mySpriteRen = GetComponent<SpriteRenderer>();
 
-        //added code to find the trigger object and script
-        myTrigger = GameObject.FindGameObjectWithTag("Trigger").GetComponent<Script_Trigger>();
+    //SHOULD BE COVERED IN SCRIPT_PLAYERONE
+    //void Awake()
+    //{
+    //    beatBarScript = beatBar.GetComponent<Script_Beat_Bar>();
+    //    //cpurrGameObject = this.gameObject;
+    //    player = InputManager.Devices[playerNumber];
 
-        mybody = GetComponent<Rigidbody2D>();
-        particles = GetComponentsInChildren<ParticleSystem>();
-        beatObserver = GetComponent<BeatObserver>();
+    //    myAnim = GetComponent<Animator>();
+    //    mySpriteRen = GetComponent<SpriteRenderer>();
 
-        myDashMove = GetComponent<Script_DashMove>();
+    //    //added code to find the trigger object and script
+    //    myTrigger = GameObject.FindGameObjectWithTag("Trigger").GetComponent<Script_Trigger>();
 
-        if (myTrigger == null)
-            throw new Exception("a Trigger Object was not found");
+    //    mybody = GetComponent<Rigidbody2D>();
+    //    particles = GetComponentsInChildren<ParticleSystem>();
+    //    beatObserver = GetComponent<BeatObserver>();
 
-    }
+    //    myDashMove = GetComponent<Script_DashMove>();
+
+    //    if (myTrigger == null)
+    //        throw new Exception("a Trigger Object was not found");
+    //}
 
     // Update is called once per frame
     void Update()
     {
 
-        InputDevice player = InputManager.Devices[0];
+        InputDevice player = InputManager.Devices[playerNumber];
 
         if (player.Action1.WasPressed || Input.GetKeyDown(KeyCode.J))
         {
@@ -114,10 +116,9 @@ public class Character_Behavior : MonoBehaviour
     void FixedUpdate()
     {
         InputDevice player = InputManager.Devices[0];
+
         InputControl movecontrol = player.GetControl(InputControlType.LeftStickX);
         InputControl aimcontrol = player.GetControl(InputControlType.LeftStickY);
-
-        
 
         myAnim.SetFloat("moveSpeed", Mathf.Abs(movecontrol.Value));
 
@@ -400,26 +401,6 @@ public class Character_Behavior : MonoBehaviour
     }
 
     
-
-    // Detect continous collision with the ground
-    void OnCollisionStay2D(Collision2D hit)
-    {
-        if (hit.gameObject.tag == "Ground")
-        {
-            isgrounded = true;
-            myAnim.SetBool("isJump", false);
-        }
-    }
-
-    // Detect collision exit with ground
-    void OnCollisionExit2D(Collision2D exit)
-    {
-        if (exit.gameObject.tag == "Ground")
-        {
-            isgrounded = false;
-            myAnim.SetBool("isJump", true);
-        }
-    }
 
 
 }
