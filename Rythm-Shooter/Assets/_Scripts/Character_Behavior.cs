@@ -6,51 +6,46 @@ using InControl;
 
 public class Character_Behavior : MonoBehaviour
 {
-    public float shootdelay = 0.1f;
-    private float shotready = 0.0f;
-    public GameObject shot;
-    public GameObject GameManage;
+    //Things we have to manually add to the game object
+    [SerializeField] private GameObject shot;
+    [SerializeField] private GameObject GameManage ;
+    [SerializeField] private GameObject beatBar;
 
-    private Script_Trigger myTrigger;
-    public Vector2 LastAim;
+    //Important fields to be editable from the inspector
+    [SerializeField] private float jumpvelocity = 20;
+    [SerializeField] private float speed = 10;
+    [SerializeField] private float shootdelay = 0.1f;
+    [SerializeField] private float shotready = 0.0f;
+    [SerializeField] private bool forceOnBeat = true;
+    [SerializeField] private float fallMultiplier = 2.5f;
+    [SerializeField] private float lowJumpMultiplier = 2f;
+    [Range(0, 1)] [SerializeField] private int playerNumber;
 
-    public float speed = 10;
-    [SerializeField] public float jumpvelocity = 20;
-
-
-    bool isgrounded = true;
+    //Things we don't care about seeing in the inpsector
+    private Vector2 LastAim;
+    private bool isgrounded = true;
     private bool jump = false;
     private bool dash = false;
-
-    public float fallMultiplier = 2.5f;
-    public float lowJumpMultiplier = 2f;
-
-    private Rigidbody2D mybody;
-    private ParticleSystem[] particles;
-
-    private BeatObserver beatObserver;
-
+    private bool facingRight = true;
     private bool onBeat = false;
 
-    public bool forceOnBeat = true;
-
+    //Game object specific elements assigned in Awake()
+    private Script_Trigger myTrigger;
+    private Rigidbody2D mybody;
+    private ParticleSystem[] particles;
+    private BeatObserver beatObserver;
     private Animator myAnim;
     private SpriteRenderer mySpriteRen;
-
     private InputDevice player;
-
     private Script_DashMove myDashMove;
-
-    public Boolean facingRight = true;
-
-    [SerializeField] public GameObject beatBar;
     private Script_Beat_Bar beatBarScript;
+
 
     void Awake()
     {
         beatBarScript = beatBar.GetComponent<Script_Beat_Bar>();
         //cpurrGameObject = this.gameObject;
-        player = InputManager.Devices[0];
+        player = InputManager.Devices[playerNumber];
 
         myAnim = GetComponent<Animator>();
         mySpriteRen = GetComponent<SpriteRenderer>();
@@ -73,7 +68,7 @@ public class Character_Behavior : MonoBehaviour
     void Update()
     {
 
-        InputDevice player = InputManager.Devices[0];
+        InputDevice player = InputManager.Devices[playerNumber];
 
         if (player.Action1.WasPressed || Input.GetKeyDown(KeyCode.J))
         {

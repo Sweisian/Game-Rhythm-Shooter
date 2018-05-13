@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 95633615619422264}
   - component: {fileID: 212855887822309632}
   - component: {fileID: 114925332910968600}
+  - component: {fileID: 114765274599481782}
   m_Layer: 0
   m_Name: New Player 2
   m_TagString: PlayerTwo
@@ -39,7 +40,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1670267430515468}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -18.3, y: 8.7, z: 0.88671875}
+  m_LocalPosition: {x: 29, y: 11.5, z: 0.88671875}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -114,7 +115,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1670267430515468}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0f8f87b38a9ab641b6bb1bca344e575, type: 3}
   m_Name: 
@@ -128,6 +129,28 @@ MonoBehaviour:
   beatBar: {fileID: 0}
   facingRight: 1
   forceOnBeat: 0
+--- !u!114 &114765274599481782
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1670267430515468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b7f780c5b0bc1b4cadbd75e07d154ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shot: {fileID: 1568460062443294, guid: 374269934e004bb40a8193fd0a92612d, type: 2}
+  GameManage: {fileID: 0}
+  beatBar: {fileID: 0}
+  jumpvelocity: 20
+  speed: 10
+  shootdelay: 0.1
+  shotready: 0
+  forceOnBeat: 0
+  fallMultiplier: 2.5
+  lowJumpMultiplier: 2
+  playerNumber: 1
 --- !u!114 &114925332910968600
 MonoBehaviour:
   m_ObjectHideFlags: 1
