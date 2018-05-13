@@ -22,14 +22,14 @@ public class Script_DashMove : MonoBehaviour {
 	void FixedUpdate () {
 		if(direction == 0)
         {
-            if(Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                direction = 1;
-            }
-            if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                direction = 2;
-            }
+            //if(Input.GetKeyDown(KeyCode.LeftArrow))
+            //{
+            //    direction = 1;
+            //}
+            //if (Input.GetKeyDown(KeyCode.RightArrow))
+            //{
+            //    direction = 2;
+            //}
         }
         else
         {

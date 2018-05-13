@@ -75,7 +75,7 @@ public class Character_Behavior : MonoBehaviour
 
         InputDevice player = InputManager.Devices[0];
 
-        if (player.Action1.WasPressed)
+        if (player.Action1.WasPressed || Input.GetKeyDown(KeyCode.J))
         {
             if (forceOnBeat)
             {
@@ -96,14 +96,14 @@ public class Character_Behavior : MonoBehaviour
         }
        
         //jump
-        if (player.Action2.WasPressed && isgrounded)
+        if ((player.Action2.WasPressed && isgrounded) || (Input.GetKeyDown(KeyCode.K) && isgrounded))
         {
             Debug.Log("B Pressed player 1");
             jump = true;
         }
 
         //dash
-        if (player.Action3.WasPressed)
+        if (player.Action3.WasPressed || Input.GetKeyDown(KeyCode.L))
         {
             Debug.Log("X Pressed by player 1");
             dash = true;
@@ -122,10 +122,10 @@ public class Character_Behavior : MonoBehaviour
         myAnim.SetFloat("moveSpeed", Mathf.Abs(movecontrol.Value));
 
         //Sets orientation of sprite
-        if (movecontrol.Value > .01f)
+        if (movecontrol.Value > .01f ||  Input.GetKey(KeyCode.D))
             facingRight = true;
 
-        if (movecontrol.Value < -.01f)
+        if (movecontrol.Value < -.01f || Input.GetKey(KeyCode.A))
             facingRight = false;
 
         if(facingRight)
@@ -230,6 +230,13 @@ public class Character_Behavior : MonoBehaviour
 
     public void Move(float horizontalInput, Rigidbody2D mybody, Script_DashMove myDashMove)
     {
+        //Code for keyboard controls
+        if(Input.GetKey(KeyCode.A))
+            horizontalInput = -1f;
+
+        if (Input.GetKey(KeyCode.D))
+            horizontalInput = 1f;
+
         // separates movement into discrete speeds (crawl, walk, run)
         if (horizontalInput > 0 && horizontalInput <= 0.3f)
         {
