@@ -31,7 +31,9 @@ public class ShotBehavior : MonoBehaviour {
 
             if (c.gameObject.tag == "PlayerOne" || c.gameObject.tag == "PlayerTwo")
                 {
-                    GameManage.respawn(c.gameObject);
+                    //only respawn the other player if they are not dashing. Jank ass "I FRAMES"
+                    if(c.gameObject.GetComponent<Script_DashMove>().direction == 0)
+                        GameManage.respawn(c.gameObject);
                 }
 
         Destroy(gameObject);

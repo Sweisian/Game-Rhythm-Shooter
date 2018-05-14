@@ -22,14 +22,22 @@ public class Script_DashMove : MonoBehaviour {
 	void FixedUpdate () {
 		if(direction == 0)
         {
-            //if(Input.GetKeyDown(KeyCode.LeftArrow))
-            //{
-            //    direction = 1;
-            //}
-            //if (Input.GetKeyDown(KeyCode.RightArrow))
-            //{
-            //    direction = 2;
-            //}
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                direction = 1;
+            }
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                direction = 2;
+            }
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                direction = 3;
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                direction = 4;
+            }
         }
         else
         {
@@ -46,14 +54,19 @@ public class Script_DashMove : MonoBehaviour {
                 if(direction == 1)
                 {
                     rb.velocity = Vector2.left * dashSpeed;
-                    //Debug.Log(rb);
-                    //Debug.Log(rb.velocity);
                 }
                 else if (direction == 2)
                 {
                     rb.velocity = Vector2.right * dashSpeed;
-                    //Debug.Log(rb);
-                    //Debug.Log(rb.velocity);
+                }
+                else if (direction == 3)
+                {
+                    rb.velocity = Vector2.up * dashSpeed;
+
+                }
+                else if (direction == 4)
+                {
+                    rb.velocity = Vector2.down * dashSpeed;
                 }
             }
         }

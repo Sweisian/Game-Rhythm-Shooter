@@ -59,28 +59,36 @@ public class Script_GameManager : MonoBehaviour
         if (score1 >= scoreCap)
         {
             gameOverText.text = "Game Over. Green Wins!";
+            gameOverText.color = Color.green;
         }
         if (score2 >= scoreCap)
         {
             gameOverText.text = "Game Over. Red Wins!";
+            gameOverText.color = Color.red;
         }
     }
 	
     public void respawn (GameObject caller)
     {
         //Debug.Log("respawn");
-        if (caller.GetComponent<Character_Behavior>() != null)
+        if (caller.tag == "PlayerOne")
         {
             score2 += 1;
             player2score.text = "Victories: " + score2.ToString();
 
+            StartCoroutine("redWinsRoutine");
+
             player1.transform.position = playerOneRespawn.position;
             player2.transform.position = playerTwoRespawn.position;
+
         }
-        if (caller.GetComponent<Character_Behavior2>() != null)
+
+        if (caller.tag == "PlayerTwo")
         {
             score1 += 1;
             player1score.text = "Victories: " + score1.ToString();
+
+            StartCoroutine("greenWinsRoutine");
 
             player1.transform.position = playerOneRespawn.position;
             player2.transform.position = playerTwoRespawn.position;
@@ -90,16 +98,29 @@ public class Script_GameManager : MonoBehaviour
         //SceneManager.LoadScene(scene.name);
     }
 
-    //IEnumerator Rhythm()
-    //{
-    //    yield return new WaitForSeconds(offSet);
+    IEnumerator redWinsRoutine()
+    {
+        gameOverText.text = "Point: Red";
+        gameOverText.color = Color.red;
 
-    //    while (true)
-    //    {
-    //        isOnBeat = true;
-    //        yield return new WaitForSecondsRealtime(onTime);
-    //        isOnBeat = false;
-    //        yield return new WaitForSecondsRealtime(offTime);
-    //    }
-    //}
+        Time.timeScale = .2f;
+        yield return new WaitForSecondsRealtime(2);
+        gameOverText.text = "";
+        Time.timeScale = 1f;
+
+    }
+
+    IEnumerator greenWinsRoutine()
+    {
+        gameOverText.text = "Point: Green";
+        gameOverText.color = Color.green;
+
+        Time.timeScale = .2f;
+        yield return new WaitForSecondsRealtime(2);
+        gameOverText.text = "";
+        Time.timeScale = 1f;
+
+
+
+    }
 }

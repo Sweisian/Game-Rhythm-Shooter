@@ -6,6 +6,17 @@ using InControl;
 
 public class Character_Behavior : MonoBehaviour
 {
+    //Game object specific elements assigned in Awake()
+    private Animator myAnim;
+    private Script_Trigger myTrigger;
+    private Rigidbody2D mybody;
+    private ParticleSystem[] particles;
+    private BeatObserver beatObserver;
+    private SpriteRenderer mySpriteRen;
+    private InputDevice player;
+    private Script_DashMove myDashMove;
+    private Script_Beat_Bar beatBarScript;
+
     //Things we have to manually add to the game object
     [SerializeField] private GameObject shot;
     [SerializeField] private GameObject GameManage ;
@@ -19,7 +30,7 @@ public class Character_Behavior : MonoBehaviour
     [SerializeField] private bool forceOnBeat = true;
     [SerializeField] private float fallMultiplier = 2.5f;
     [SerializeField] private float lowJumpMultiplier = 2f;
-    [Range(0, 1)] [SerializeField] private int playerNumber;
+    [Range(0, 1)] [SerializeField] private int playerNumber = 0;
 
     //Things we don't care about seeing in the inpsector
     private Vector2 LastAim;
@@ -29,25 +40,19 @@ public class Character_Behavior : MonoBehaviour
     private bool facingRight = true;
     private bool onBeat = false;
 
-    //Game object specific elements assigned in Awake()
-    private Script_Trigger myTrigger;
-    private Rigidbody2D mybody;
-    private ParticleSystem[] particles;
-    private BeatObserver beatObserver;
-    private Animator myAnim;
-    private SpriteRenderer mySpriteRen;
-    private InputDevice player;
-    private Script_DashMove myDashMove;
-    private Script_Beat_Bar beatBarScript;
-
 
     void Awake()
     {
-        beatBarScript = beatBar.GetComponent<Script_Beat_Bar>();
-        //cpurrGameObject = this.gameObject;
-        player = InputManager.Devices[playerNumber];
-
+        //This needs to go first, or we get problems
         myAnim = GetComponent<Animator>();
+        Debug.Log("AWAKE myAnim is: " + myAnim);
+
+        //If you don't have a controller plugged in, the game is UNPLAYABLE
+        player = InputManager.Devices[playerNumber];
+        Debug.Log("AWAKE player is: " + player);
+
+        beatBarScript = beatBar.GetComponent<Script_Beat_Bar>();
+
         mySpriteRen = GetComponent<SpriteRenderer>();
 
         //added code to find the trigger object and script
@@ -109,18 +114,16 @@ public class Character_Behavior : MonoBehaviour
     void FixedUpdate()
     {
         InputDevice player = InputManager.Devices[0];
-        InputControl movecontrol = player.GetControl(InputControlType.LeftStickX);
-        InputControl aimcontrol = player.GetControl(InputControlType.LeftStickY);
+        InputControl xControl = player.GetControl(InputControlType.LeftStickX);
+        InputControl yControl = player.GetControl(InputControlType.LeftStickY);
 
-        
-
-        myAnim.SetFloat("moveSpeed", Mathf.Abs(movecontrol.Value));
+        myAnim.SetFloat("moveSpeed", Mathf.Abs(xControl.Value));
 
         //Sets orientation of sprite
-        if (movecontrol.Value > .01f ||  Input.GetKey(KeyCode.D))
+        if (xControl.Value > .01f ||  Input.GetKey(KeyCode.D))
             facingRight = true;
 
-        if (movecontrol.Value < -.01f || Input.GetKey(KeyCode.A))
+        if (xControl.Value < -.01f || Input.GetKey(KeyCode.A))
             facingRight = false;
 
         if(facingRight)
@@ -169,7 +172,7 @@ public class Character_Behavior : MonoBehaviour
                 //if (myTrigger.GetIsActive())
                 if (beatBarScript.onBeat)
                 {
-                    Dash(movecontrol, myDashMove);
+                    Dash(xControl, myDashMove);
                     myTrigger.BeatHit();
                     particles[0].Play();
                 }
@@ -177,7 +180,7 @@ public class Character_Behavior : MonoBehaviour
             }
             else
             {
-                Dash(movecontrol, myDashMove);               
+                Dash(xControl, myDashMove);               
                 //Debug.Log("I DASHED");
             }
 
@@ -185,27 +188,48 @@ public class Character_Behavior : MonoBehaviour
         }
 
         //Might be important this stays at the end
-        Move(movecontrol.Value, mybody, myDashMove);
+        Move(xControl.Value, mybody, myDashMove);
     }
 
-    public void Dash(InputControl movecontrol, Script_DashMove myDashMove)
+    public void Dash(InputControl xControl, Script_DashMove myDashMove)
     {
-        if (movecontrol.Value < 0)
+        
+
+        InputControl aimX = player.GetControl(InputControlType.LeftStickX);
+        InputControl aimY = player.GetControl(InputControlType.LeftStickY);
+        float Y = aimY.Value;
+        float X = aimX.Value;
+
+        float YAbsVal = Mathf.Abs(Y);
+        float XAbsVal = Mathf.Abs(X);
+
+        if (X < 0 && XAbsVal > YAbsVal)
         {
             myDashMove.direction = 1;
         }
-        else if (movecontrol.Value > 0)
+        else if (X > 0 && XAbsVal > YAbsVal)
         {
             myDashMove.direction = 2;
         }
-        else if(movecontrol.Value == 0)
+        else if (Y > 0 && YAbsVal > XAbsVal)
+        {
+            myDashMove.direction = 3;
+        }
+        else if (Y < 0 && YAbsVal > XAbsVal)
+        {
+            myDashMove.direction = 4;
+        }
+        else if(xControl.Value == 0)
         {
             if(facingRight)
                 myDashMove.direction = 2;
             if(!facingRight)
                 myDashMove.direction = 1;
         }
-        Debug.Log("I Dashed");
+        //Debug.Log("I Dashed");
+
+        //Needs to go at end because this depends on the myDashMove.direction value
+        StartCoroutine("dashFlash");
     }
 
     public void FallingPhysics(Rigidbody2D mybody)
@@ -306,6 +330,21 @@ public class Character_Behavior : MonoBehaviour
         float tan = Mathf.Atan2(Y, X);
         Vector2 temp = new Vector2();
 
+        //New way of shooting
+        if (facingRight)
+        {
+            temp = new Vector2(1, 0);
+        }
+        if (!facingRight)
+        {
+            temp = new Vector2(-1, 0);
+        }
+
+        LastAim = temp;
+        
+
+        /* This is the old way of shooting. It still is buggy
+
         if (Y == 0 && X == 0 && facingRight)
         {
             temp = new Vector2(1, 0);
@@ -315,6 +354,7 @@ public class Character_Behavior : MonoBehaviour
             temp = new Vector2(-1, 0);
         }
 
+       
         if (X < 0 && tan < Mathf.PI * 7 / 12)
         {
             temp = new Vector2(Mathf.Cos(Mathf.PI / 2), Mathf.Sin(Mathf.PI / 2));
@@ -386,21 +426,23 @@ public class Character_Behavior : MonoBehaviour
         {
             temp = new Vector2(Mathf.Cos(Mathf.PI * 3 / 2), Mathf.Sin(Mathf.PI * 3 / 2));
         }
+
         if (curr.GetComponent<Character_Behavior2>() != null) { 
             curr.GetComponent<Character_Behavior2>().LastAim = temp; }
         else
         {
             LastAim = temp;
         }
-    }
 
-    
+       */
+    }
 
     // Detect continous collision with the ground
     void OnCollisionStay2D(Collision2D hit)
     {
         if (hit.gameObject.tag == "Ground")
         {
+            //Debug.Log("myAnim is: " + myAnim);
             isgrounded = true;
             myAnim.SetBool("isJump", false);
         }
@@ -414,6 +456,22 @@ public class Character_Behavior : MonoBehaviour
             isgrounded = false;
             myAnim.SetBool("isJump", true);
         }
+    }
+
+    IEnumerator dashFlash()
+    {
+        //Debug.Log("called dashFlash");
+        //Debug.Log(myDashMove.direction);
+        while (myDashMove.direction != 0)
+        {
+            //Debug.Log("inside dashFlash");
+            Color32 c = mySpriteRen.color;
+            mySpriteRen.color = Color.black;
+            yield return new WaitForSeconds(0.03f);
+            mySpriteRen.color = c;
+            yield return new WaitForSeconds(0.03f);
+        }
+        mySpriteRen.color = c;
     }
 
 
