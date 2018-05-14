@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using InControl;
+using EZCameraShake;
 
 public class Character_Behavior : MonoBehaviour
 {
@@ -21,6 +22,9 @@ public class Character_Behavior : MonoBehaviour
     [SerializeField] private GameObject shot;
     [SerializeField] private GameObject GameManage ;
     [SerializeField] private GameObject beatBar;
+
+    //move dis
+     private ParticleSystem myDashParticles;
 
     //Important fields to be editable from the inspector
     [SerializeField] private float jumpvelocity = 20;
@@ -63,6 +67,11 @@ public class Character_Behavior : MonoBehaviour
         beatObserver = GetComponent<BeatObserver>();
 
         myDashMove = GetComponent<Script_DashMove>();
+
+        //finds child dash particles with name "Dash Particles"
+        myDashParticles = transform.Find("Dash Particles").gameObject.GetComponent<ParticleSystem>();
+        if (myDashParticles == null)
+            Debug.Log("No Dash Particles child attached");
 
         if (myTrigger == null)
             throw new Exception("a Trigger Object was not found");
@@ -107,7 +116,19 @@ public class Character_Behavior : MonoBehaviour
         {
             Debug.Log("X Pressed by player 1");
             dash = true;
-        } 
+        }
+
+        //Handles enableing particle emmision on dash
+        if (myDashMove.direction != 0)
+        {
+            var emission = myDashParticles.emission;
+            emission.enabled = true;
+        }
+        else if (myDashMove.direction == 0)
+        {
+            var emission = myDashParticles.emission;
+            emission.enabled = false;
+        }
     }
 
     void FixedUpdate()
@@ -192,7 +213,8 @@ public class Character_Behavior : MonoBehaviour
 
     public void Dash(InputControl xControl, Script_DashMove myDashMove)
     {
-        
+        //camera shake function
+        CameraShaker.Instance.ShakeOnce(5f, 3f, 0f, .5f);
 
         InputControl aimX = player.GetControl(InputControlType.LeftStickX);
         InputControl aimY = player.GetControl(InputControlType.LeftStickY);
