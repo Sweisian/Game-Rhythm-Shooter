@@ -9,11 +9,14 @@ public class Script_DashMove : MonoBehaviour {
     [HideInInspector] public float dashTime;
     public float startDashTime;
 
-
     [HideInInspector] public int direction;
 
-	// Use this for initialization
-	void Start () {
+    private bool afterDash = false;
+    [Range(-1,0)] [SerializeField] private float gravityModifier = 0;
+    [SerializeField] private float afterDashFloatTime = .25f;
+
+    // Use this for initialization
+    void Start () {
         rb = GetComponent<Rigidbody2D>();
         dashTime = startDashTime;
 	}
@@ -43,6 +46,9 @@ public class Script_DashMove : MonoBehaviour {
         {
             if (dashTime <= 0)
             {
+                //starts the timer for the "after dash" period
+                StartCoroutine("afterDashTimer");
+
                 direction = 0;
                 dashTime = startDashTime;
                 rb.velocity = Vector2.zero;
@@ -70,5 +76,19 @@ public class Script_DashMove : MonoBehaviour {
                 }
             }
         }
-	}
+
+        //this part modifys the gravity on the player after the dash is completed
+        //This is designed to make the player "float" after dashing to give them a chance to dash again
+        if (afterDash)
+        {
+            rb.AddForce(gravityModifier * Physics.gravity * rb.mass);
+        }
+    }
+
+    IEnumerator afterDashTimer()
+    {
+        afterDash = true;
+        yield return new WaitForSeconds(afterDashFloatTime);
+        afterDash = false;
+    }
 }

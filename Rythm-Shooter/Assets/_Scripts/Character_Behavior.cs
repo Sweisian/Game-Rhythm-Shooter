@@ -75,7 +75,7 @@ public class Character_Behavior : MonoBehaviour
 
         InputDevice player = InputManager.Devices[playerNumber];
 
-        if (player.Action1.WasPressed || Input.GetKeyDown(KeyCode.J))
+        if (player.Action3.WasPressed || Input.GetKeyDown(KeyCode.J))
         {
             if (forceOnBeat)
             {
@@ -96,19 +96,18 @@ public class Character_Behavior : MonoBehaviour
         }
        
         //jump
-        if ((player.Action2.WasPressed && isgrounded) || (Input.GetKeyDown(KeyCode.K) && isgrounded))
-        {
-            Debug.Log("B Pressed player 1");
-            jump = true;
-        }
+        //if ((player.Action2.WasPressed && isgrounded) || (Input.GetKeyDown(KeyCode.K) && isgrounded))
+        //{
+        //    Debug.Log("B Pressed player 1");
+        //    jump = true;
+        //}
 
         //dash
-        if (player.Action3.WasPressed || Input.GetKeyDown(KeyCode.L))
+        if (player.Action1.WasPressed || Input.GetKeyDown(KeyCode.L))
         {
             Debug.Log("X Pressed by player 1");
             dash = true;
         }
-       
     }
 
     void FixedUpdate()
@@ -462,10 +461,10 @@ public class Character_Behavior : MonoBehaviour
     {
         //Debug.Log("called dashFlash");
         //Debug.Log(myDashMove.direction);
+        Color32 c = mySpriteRen.color;
         while (myDashMove.direction != 0)
         {
             //Debug.Log("inside dashFlash");
-            Color32 c = mySpriteRen.color;
             mySpriteRen.color = Color.black;
             yield return new WaitForSeconds(0.03f);
             mySpriteRen.color = c;
