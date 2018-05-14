@@ -75,7 +75,7 @@ public class Character_Behavior : MonoBehaviour
 
         InputDevice player = InputManager.Devices[playerNumber];
 
-        if (player.Action1.WasPressed || Input.GetKeyDown(KeyCode.J))
+        if (player.Action3.WasPressed || Input.GetKeyDown(KeyCode.J))
         {
             if (forceOnBeat)
             {
@@ -96,24 +96,23 @@ public class Character_Behavior : MonoBehaviour
         }
        
         //jump
-        if ((player.Action2.WasPressed && isgrounded) || (Input.GetKeyDown(KeyCode.K) && isgrounded))
-        {
-            Debug.Log("B Pressed player 1");
-            jump = true;
-        }
+        //if ((player.Action2.WasPressed && isgrounded) || (Input.GetKeyDown(KeyCode.K) && isgrounded))
+        //{
+        //    Debug.Log("B Pressed player 1");
+        //    jump = true;
+        //}
 
         //dash
-        if (player.Action3.WasPressed || Input.GetKeyDown(KeyCode.L))
+        if (player.Action1.WasPressed || Input.GetKeyDown(KeyCode.L))
         {
             Debug.Log("X Pressed by player 1");
             dash = true;
-        }
-       
+        } 
     }
 
     void FixedUpdate()
     {
-        InputDevice player = InputManager.Devices[0];
+        InputDevice player = InputManager.Devices[playerNumber];
         InputControl xControl = player.GetControl(InputControlType.LeftStickX);
         InputControl yControl = player.GetControl(InputControlType.LeftStickY);
 
@@ -322,7 +321,7 @@ public class Character_Behavior : MonoBehaviour
 
     void Aim(GameObject curr, InputDevice player)
     {
-        //InputDevice player = InputManager.Devices[0];
+        //InputDevice player = InputManager.Devices[playerNumber];
         InputControl aimX = player.GetControl(InputControlType.LeftStickX);
         InputControl aimY = player.GetControl(InputControlType.LeftStickY);
         float Y = aimY.Value;

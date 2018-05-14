@@ -30,7 +30,7 @@ namespace InControl
                 Patch = 4,
 
 
-                Build = 4308
+                Build = 4312
 
 
 			};
