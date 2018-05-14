@@ -462,10 +462,11 @@ public class Character_Behavior : MonoBehaviour
     {
         //Debug.Log("called dashFlash");
         //Debug.Log(myDashMove.direction);
+
+        Color32 c = mySpriteRen.color;
         while (myDashMove.direction != 0)
         {
             //Debug.Log("inside dashFlash");
-            Color32 c = mySpriteRen.color;
             mySpriteRen.color = Color.black;
             yield return new WaitForSeconds(0.03f);
             mySpriteRen.color = c;
