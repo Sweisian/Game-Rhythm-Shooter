@@ -94,7 +94,7 @@ public class Character_Behavior : MonoBehaviour
                 {
                     Fire(this.gameObject, player);
                     particles[0].Play();
-                    myTrigger.BeatHit();
+                   // myTrigger.BeatHit();
                 }
             }
             else
@@ -114,7 +114,7 @@ public class Character_Behavior : MonoBehaviour
         //dash
         if (player.Action1.WasPressed || Input.GetKeyDown(KeyCode.L))
         {
-            Debug.Log("X Pressed by player 1");
+            //Debug.Log("X Pressed by player 1");
             dash = true;
         }
 
@@ -164,7 +164,7 @@ public class Character_Behavior : MonoBehaviour
                 {
                     Jump(mybody);
                     jump = false;
-                    myTrigger.BeatHit();                   
+                    //myTrigger.BeatHit();                   
                     if (isgrounded)
                         particles[0].Play();
                 }
@@ -178,7 +178,7 @@ public class Character_Behavior : MonoBehaviour
             {
                 Jump(mybody);
                 jump = false;
-                myTrigger.BeatHit();
+                //myTrigger.BeatHit();
                 if (isgrounded)
                     particles[0].Play();
             }
@@ -193,7 +193,7 @@ public class Character_Behavior : MonoBehaviour
                 if (beatBarScript.onBeat)
                 {
                     Dash(xControl, myDashMove);
-                    myTrigger.BeatHit();
+                    //myTrigger.BeatHit();
                     particles[0].Play();
                 }
                 else particles[1].Play();                
@@ -214,6 +214,7 @@ public class Character_Behavior : MonoBehaviour
     public void Dash(InputControl xControl, Script_DashMove myDashMove)
     {
         //camera shake function
+        Debug.Log("Called Dash");
         CameraShaker.Instance.ShakeOnce(5f, 3f, 0f, .5f);
 
         InputControl aimX = player.GetControl(InputControlType.LeftStickX);

@@ -13496,7 +13496,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c95306ed028778746b97620f2c4e8b3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  setting: default
+  setting: easy
   useSetting: 1
   beatBar: {fileID: 2126139575}
 --- !u!1 &1953681792

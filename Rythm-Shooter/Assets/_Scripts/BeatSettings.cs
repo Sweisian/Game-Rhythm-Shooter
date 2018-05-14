@@ -23,10 +23,10 @@ public class BeatSettings : MonoBehaviour
 	void Update () {
 	    if (useSetting)
 	    {
-	        Debug.Log("startDelay is: ");
-	        Debug.Log(beatSynch.startDelay);
-	        Debug.Log("beatWindow is: ");
-	        Debug.Log(beatObserver.beatWindow);
+	        //Debug.Log("startDelay is: ");
+	        //Debug.Log(beatSynch.startDelay);
+	        //Debug.Log("beatWindow is: ");
+	        //Debug.Log(beatObserver.beatWindow);
 	        // 0 is default beat setting
 	        switch (setting)
 	        {
