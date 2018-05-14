@@ -205,8 +205,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dashSpeed: 80
   dashTime: 0
-  startDashTime: 0.12
+  startDashTime: 0.13
   direction: 0
+  gravityModifier: -1
+  afterDashFloatTime: 0.25
 --- !u!198 &198418396444034370
 ParticleSystem:
   m_ObjectHideFlags: 1

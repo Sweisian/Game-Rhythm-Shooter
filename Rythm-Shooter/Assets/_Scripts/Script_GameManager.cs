@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using EZCameraShake;
 
 public class Script_GameManager : MonoBehaviour
 {
@@ -60,11 +61,13 @@ public class Script_GameManager : MonoBehaviour
         {
             gameOverText.text = "Game Over. Green Wins!";
             gameOverText.color = Color.green;
+            StartCoroutine("gameOverRoutine");
         }
         if (score2 >= scoreCap)
         {
             gameOverText.text = "Game Over. Red Wins!";
             gameOverText.color = Color.red;
+            StartCoroutine("gameOverRoutine");
         }
     }
 	
@@ -76,6 +79,7 @@ public class Script_GameManager : MonoBehaviour
             score2 += 1;
             player2score.text = "Victories: " + score2.ToString();
 
+   
             StartCoroutine("redWinsRoutine");
 
             player1.transform.position = playerOneRespawn.position;
@@ -103,10 +107,15 @@ public class Script_GameManager : MonoBehaviour
         gameOverText.text = "Point: Red";
         gameOverText.color = Color.red;
 
-        Time.timeScale = .2f;
+        CameraShaker.Instance.ShakeOnce(10f, 10f, 0f, 1f);
+        yield return new WaitForSecondsRealtime(.3f);
+        Time.timeScale = .0f;
         yield return new WaitForSecondsRealtime(2);
-        gameOverText.text = "";
+        gameOverText.color = Color.white;
+        gameOverText.text = "FIGHT!";
         Time.timeScale = 1f;
+        yield return new WaitForSecondsRealtime(1);
+        gameOverText.text = "";
 
     }
 
@@ -115,12 +124,22 @@ public class Script_GameManager : MonoBehaviour
         gameOverText.text = "Point: Green";
         gameOverText.color = Color.green;
 
-        Time.timeScale = .2f;
+        CameraShaker.Instance.ShakeOnce(10f, 10f, 0f, 1f);
+        yield return new WaitForSecondsRealtime(.3f);
+        Time.timeScale = .0f;
         yield return new WaitForSecondsRealtime(2);
-        gameOverText.text = "";
+        gameOverText.color = Color.white;
+        gameOverText.text = "FIGHT!";
         Time.timeScale = 1f;
+        yield return new WaitForSecondsRealtime(1);
+        gameOverText.text = "";
+    }
 
-
-
+    IEnumerator gameOverRoutine()
+    {
+        Time.timeScale = .5f;
+        yield return new WaitForSecondsRealtime(5);
+        Time.timeScale = 1f;
+        Application.LoadLevel(Application.loadedLevel);
     }
 }

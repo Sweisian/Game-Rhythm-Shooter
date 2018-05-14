@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using InControl;
+using EZCameraShake;
 
 public class Character_Behavior : MonoBehaviour
 {
@@ -192,7 +193,7 @@ public class Character_Behavior : MonoBehaviour
 
     public void Dash(InputControl xControl, Script_DashMove myDashMove)
     {
-        
+        CameraShaker.Instance.ShakeOnce(5f, 3f, 0, .5f);
 
         InputControl aimX = player.GetControl(InputControlType.LeftStickX);
         InputControl aimY = player.GetControl(InputControlType.LeftStickY);
