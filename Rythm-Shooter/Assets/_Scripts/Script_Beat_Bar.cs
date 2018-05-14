@@ -49,7 +49,7 @@ public class Script_Beat_Bar : MonoBehaviour {
             //GameObject thisBeat;
             //thisBeat = Instantiate(myBeat, beatSpawnLoc);
             //thisBeat.GetComponent<Script_Beat>().moveSpeed = beatSpeed;
-
+            /*
             if (down)
             {
                 //transform.position = new Vector3(transform.position.x, transform.position.y - .1f,
@@ -62,12 +62,22 @@ public class Script_Beat_Bar : MonoBehaviour {
                    // transform.position.z);
                 //down = true;
             }
+            */
             //Debug.Log("Detected on beat");
         }
         else
         {
-            down = !down;
+            //down = !down;
             onBeat = false;
+        }
+
+        if (onBeat == true)
+        {
+            GetComponent<SpriteRenderer>().color = Color.blue;
+        }
+        else
+        {
+            GetComponent<SpriteRenderer>().color = Color.black;
         }
         //Debug.Log(onBeat);
 

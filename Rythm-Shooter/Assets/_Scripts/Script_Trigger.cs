@@ -20,12 +20,14 @@ public class Script_Trigger : MonoBehaviour
         //    isActive = false;
         //}
     }
+    /*
     public void BeatHit(bool localIsActive)
     //public void BeatHit()
     {
         beat.GetComponent<SpriteRenderer>().color = Color.green;
         localIsActive = false;
     }
+    */
 
     public void BeatHit()
     {
