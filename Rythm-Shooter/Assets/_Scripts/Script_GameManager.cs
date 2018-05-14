@@ -108,8 +108,7 @@ public class Script_GameManager : MonoBehaviour
         gameOverText.color = Color.red;
 
         CameraShaker.Instance.ShakeOnce(10f, 10f, 0f, 1f);
-        yield return new WaitForSecondsRealtime(.3f);
-        Time.timeScale = .0f;
+
         yield return new WaitForSecondsRealtime(2);
         gameOverText.color = Color.white;
         gameOverText.text = "FIGHT!";
@@ -125,8 +124,7 @@ public class Script_GameManager : MonoBehaviour
         gameOverText.color = Color.green;
 
         CameraShaker.Instance.ShakeOnce(10f, 10f, 0f, 1f);
-        yield return new WaitForSecondsRealtime(.3f);
-        Time.timeScale = .0f;
+
         yield return new WaitForSecondsRealtime(2);
         gameOverText.color = Color.white;
         gameOverText.text = "FIGHT!";
@@ -137,7 +135,7 @@ public class Script_GameManager : MonoBehaviour
 
     IEnumerator gameOverRoutine()
     {
-        Time.timeScale = .5f;
+     
         yield return new WaitForSecondsRealtime(5);
         Time.timeScale = 1f;
         Application.LoadLevel(Application.loadedLevel);
