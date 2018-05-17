@@ -335,10 +335,25 @@ public class Character_Behavior : MonoBehaviour
         {
             Temp = LastAim;
         }
-        GameObject shotcreate = Instantiate(shot);
-        ShotBehavior shotinit = shotcreate.GetComponent<ShotBehavior>();
 
-        shotinit.Init(currGameObject, (Vector2)currGameObject.transform.position + (1.5F * (Temp)), Temp);
+
+
+        //old code for regular bullets
+        //GameObject shotcreate = Instantiate(shot);
+        //ShotBehavior shotinit = shotcreate.GetComponent<ShotBehavior>();
+        //shotinit.Init(currGameObject, (Vector2)currGameObject.transform.position + (1.5F * (Temp)), Temp);
+
+        //new code for boomerang bullets
+
+        GameObject shotcreate = Instantiate(shot);
+        Script_Boomerang_Bullet myBoomBulletScript = shotcreate.GetComponent<Script_Boomerang_Bullet>();
+        myBoomBulletScript.player = gameObject;
+        myBoomBulletScript.transform.position = gameObject.transform.position;
+        if (facingRight)
+            shotcreate.GetComponent<Rigidbody2D>().velocity = new Vector2 (500,0);
+        if (!facingRight)
+            myBoomBulletScript.rb.velocity = new Vector2(-500, 0);
+
         shotready = Time.time + shootdelay;
     }
 
