@@ -45,6 +45,9 @@ public class Character_Behavior : MonoBehaviour
     private bool onBeat = false;
 
 
+    //Ghost state testing
+    [SerializeField] private bool isGhost = false;
+
     void Awake()
     {
         //This needs to go first, or we get problems
@@ -83,40 +86,26 @@ public class Character_Behavior : MonoBehaviour
     {
 
         InputDevice player = InputManager.Devices[playerNumber];
-
-        if (player.Action3.WasPressed || Input.GetKeyDown(KeyCode.J))
+        if (isGhost)
         {
-            if (forceOnBeat)
+            //dash
+            if (player.Action1.WasPressed || Input.GetKeyDown(KeyCode.L))
             {
-                Debug.Log("A Pressed player 1");
-                if (beatBarScript.onBeat)
-                //if (myTrigger.GetIsActive())
-                {
-                    Fire(this.gameObject, player);
-                    particles[0].Play();
-                   // myTrigger.BeatHit();
-                }
+                //Debug.Log("X Pressed by player 1");
+                dash = true;
             }
-            else
+        }
+        else
+        {
+            //shoot
+            if (player.Action3.WasPressed || Input.GetKeyDown(KeyCode.J))
             {
                 Fire(this.gameObject, player);
                 particles[0].Play();
             }
         }
-       
-        //jump
-        //if ((player.Action2.WasPressed && isgrounded) || (Input.GetKeyDown(KeyCode.K) && isgrounded))
-        //{
-        //    Debug.Log("B Pressed player 1");
-        //    jump = true;
-        //}
+        
 
-        //dash
-        if (player.Action1.WasPressed || Input.GetKeyDown(KeyCode.L))
-        {
-            //Debug.Log("X Pressed by player 1");
-            dash = true;
-        }
 
         //Handles enableing particle emmision on dash
         if (myDashMove.direction != 0)
@@ -152,58 +141,12 @@ public class Character_Behavior : MonoBehaviour
             transform.localScale = new Vector2(-1, transform.localScale.y);
 
         FallingPhysics(mybody);
-
-        //Jump Ability        
-        if (jump)
-        {
-            //Now checks if the trigger is active
-            if (forceOnBeat)
-            {
-                //if (myTrigger.GetIsActive())
-                if (beatBarScript.onBeat)
-                {
-                    Jump(mybody);
-                    jump = false;
-                    //myTrigger.BeatHit();                   
-                    if (isgrounded)
-                        particles[0].Play();
-                }
-                else
-                {
-                    jump = false;
-                    particles[1].Play();                    
-                }
-            }           
-            else
-            {
-                Jump(mybody);
-                jump = false;
-                //myTrigger.BeatHit();
-                if (isgrounded)
-                    particles[0].Play();
-            }
-        }
         
         //Dash Ability
         if (dash)
         {
-            if (forceOnBeat)
-            {
-                //if (myTrigger.GetIsActive())
-                if (beatBarScript.onBeat)
-                {
-                    Dash(xControl, myDashMove);
-                    //myTrigger.BeatHit();
-                    particles[0].Play();
-                }
-                else particles[1].Play();                
-            }
-            else
-            {
-                Dash(xControl, myDashMove);               
-                //Debug.Log("I DASHED");
-            }
-
+            Dash(xControl, myDashMove);               
+            //Debug.Log("I DASHED");
             dash = false;         
         }
 
@@ -325,6 +268,8 @@ public class Character_Behavior : MonoBehaviour
 
     public void Fire(GameObject currGameObject, InputDevice player)
     {
+        BecomeGhost(currGameObject, player);
+
         Vector2 Temp = new Vector2();
         InputControl aimX = player.GetControl(InputControlType.LeftStickX);
         InputControl aimY = player.GetControl(InputControlType.LeftStickY);
@@ -355,6 +300,17 @@ public class Character_Behavior : MonoBehaviour
             myBoomBulletScript.rb.velocity = new Vector2(-500, 0);
 
         shotready = Time.time + shootdelay;
+
+        
+
+
+    }
+
+    void BecomeGhost(GameObject curr, InputDevice player)
+    {
+        //gonna need a coroutine
+        this.isGhost = true;
+        Debug.Log("ITS SPOOKY TIME");
     }
 
     void Aim(GameObject curr, InputDevice player)
