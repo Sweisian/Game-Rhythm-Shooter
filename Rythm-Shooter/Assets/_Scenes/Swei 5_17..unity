@@ -723,6 +723,10 @@ Prefab:
       propertyPath: m_Name
       value: Shoot Particles
       objectReference: {fileID: 0}
+    - target: {fileID: 1286807688537550, guid: 815208692857b214482bf0f49f542eff, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 815208692857b214482bf0f49f542eff, type: 2}
   m_IsPrefabParent: 0
@@ -8362,7 +8366,7 @@ Prefab:
     - target: {fileID: 212850955577499640, guid: df43a4c168b2bd6418c91d94e229bae9,
         type: 2}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 212844805599567060, guid: df43a4c168b2bd6418c91d94e229bae9,
         type: 2}

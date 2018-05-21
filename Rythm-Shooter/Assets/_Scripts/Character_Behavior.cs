@@ -157,11 +157,11 @@ public class Character_Behavior : MonoBehaviour
         {
             var emission = myDashParticles.emission;
             emission.enabled = true;
-            Debug.Log("Currently Dashing");
+            //Debug.Log("Currently Dashing");
         }
         else if (myDashMove.direction == 0)
         {
-            Debug.Log("not dashing");
+            //Debug.Log("not dashing");
             var emission = myDashParticles.emission;
             emission.enabled = false;
         }

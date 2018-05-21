@@ -10,6 +10,9 @@ public class Script_Boomerang_Bullet : MonoBehaviour
     public Rigidbody2D rb;
     public bool trackPlayer = true;
 
+    //make sure you assign this manually
+    public Script_GameManager gm;
+
     [SerializeField] private float speed = 33f;
     [SerializeField] private float rotateSpeed = 200f;
     [SerializeField] private float initialSpeed = 80f;
@@ -19,6 +22,7 @@ public class Script_Boomerang_Bullet : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
+        gm = GameObject.Find("GameManager").GetComponent<Script_GameManager>();
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -79,6 +83,18 @@ public class Script_Boomerang_Bullet : MonoBehaviour
             //if the bullet hits the player who shot it
             player.GetComponent<Character_Behavior>().BecomeHuman(player);
         }
+        else
+        {
+            Debug.Log("boomerang hit da other player");
+            gm.respawn(c.gameObject);
+        }
+
+        //if (c.gameObject.tag == "PlayerTwo" || c.gameObject.tag == "PlayerOne" && c.gameObject.tag != c.gameObject.tag)
+        //{
+        //    Debug.Log("boomerang hit da other player");
+        //    gm.respawn(gameObject);
+        //}
+
         Destroy(gameObject);
     }
 

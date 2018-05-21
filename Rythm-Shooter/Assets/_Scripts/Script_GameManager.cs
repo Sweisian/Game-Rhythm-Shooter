@@ -79,12 +79,7 @@ public class Script_GameManager : MonoBehaviour
             score2 += 1;
             player2score.text = "Victories: " + score2.ToString();
 
-   
             StartCoroutine("redWinsRoutine");
-
-            player1.transform.position = playerOneRespawn.position;
-            player2.transform.position = playerTwoRespawn.position;
-
         }
 
         if (caller.tag == "PlayerTwo")
@@ -93,10 +88,14 @@ public class Script_GameManager : MonoBehaviour
             player1score.text = "Victories: " + score1.ToString();
 
             StartCoroutine("greenWinsRoutine");
-
-            player1.transform.position = playerOneRespawn.position;
-            player2.transform.position = playerTwoRespawn.position;
         }
+
+        player1.transform.position = playerOneRespawn.position;
+        player2.transform.position = playerTwoRespawn.position;
+
+        //resets player state to be human
+        player1.GetComponent<Character_Behavior>().BecomeHuman(player1);
+        player2.GetComponent<Character_Behavior>().BecomeHuman(player2);
 
         //Scene scene = SceneManager.GetActiveScene();
         //SceneManager.LoadScene(scene.name);

@@ -222,9 +222,11 @@ MonoBehaviour:
   forceOnBeat: 0
   fallMultiplier: 2.5
   lowJumpMultiplier: 2
+  stunLength: 0.5
   playerNumber: 0
   isGhost: 0
-  isGhostEnabled: 0
+  isGhostEnabled: 1
+  isStunned: 0
 --- !u!114 &114984786951273578
 MonoBehaviour:
   m_ObjectHideFlags: 1

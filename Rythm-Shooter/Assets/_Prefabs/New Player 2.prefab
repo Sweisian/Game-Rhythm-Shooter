@@ -225,7 +225,7 @@ MonoBehaviour:
   stunLength: 0.5
   playerNumber: 1
   isGhost: 0
-  isGhostEnabled: 0
+  isGhostEnabled: 1
   isStunned: 0
 --- !u!114 &114925332910968600
 MonoBehaviour:
