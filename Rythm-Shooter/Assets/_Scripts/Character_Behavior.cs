@@ -47,6 +47,7 @@ public class Character_Behavior : MonoBehaviour
 
     //Ghost state testing
     [SerializeField] private bool isGhost = false;
+    [SerializeField] private bool isGhostEnabled = false;
 
     void Awake()
     {
@@ -84,9 +85,30 @@ public class Character_Behavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
         InputDevice player = InputManager.Devices[playerNumber];
-        if (isGhost)
+        if (isGhostEnabled)
+        {
+            if (isGhost)
+            {
+                //dash
+                if (player.Action1.WasPressed || Input.GetKeyDown(KeyCode.L))
+                {
+                    //Debug.Log("X Pressed by player 1");
+                    dash = true;
+                }
+            }
+            else
+            {
+                //shoot
+                if (player.Action3.WasPressed || Input.GetKeyDown(KeyCode.J))
+                {
+                    Fire(this.gameObject, player);
+                    particles[0].Play();
+                }
+            }
+        }
+        else
         {
             //dash
             if (player.Action1.WasPressed || Input.GetKeyDown(KeyCode.L))
@@ -94,9 +116,7 @@ public class Character_Behavior : MonoBehaviour
                 //Debug.Log("X Pressed by player 1");
                 dash = true;
             }
-        }
-        else
-        {
+
             //shoot
             if (player.Action3.WasPressed || Input.GetKeyDown(KeyCode.J))
             {
@@ -104,6 +124,7 @@ public class Character_Behavior : MonoBehaviour
                 particles[0].Play();
             }
         }
+       
         
 
 
