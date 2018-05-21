@@ -444,6 +444,26 @@ Prefab:
       value: 
       objectReference: {fileID: 1319180391754388, guid: 4be28bf8bf3098b44acfa8d94e474a98,
         type: 2}
+    - target: {fileID: 212925383330056310, guid: 4301ad145323f664090c2eb7b2b6736d,
+        type: 2}
+      propertyPath: m_Color.r
+      value: 0.52799034
+      objectReference: {fileID: 0}
+    - target: {fileID: 212925383330056310, guid: 4301ad145323f664090c2eb7b2b6736d,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 0.990566
+      objectReference: {fileID: 0}
+    - target: {fileID: 212925383330056310, guid: 4301ad145323f664090c2eb7b2b6736d,
+        type: 2}
+      propertyPath: m_Color.b
+      value: 0.5664769
+      objectReference: {fileID: 0}
+    - target: {fileID: 114646199508160218, guid: 4301ad145323f664090c2eb7b2b6736d,
+        type: 2}
+      propertyPath: isGhostEnabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4301ad145323f664090c2eb7b2b6736d, type: 2}
   m_IsPrefabParent: 0
@@ -12990,6 +13010,8 @@ MonoBehaviour:
   fallMultiplier: 2.5
   lowJumpMultiplier: 2
   playerNumber: 1
+  isGhost: 0
+  isGhostEnabled: 0
 --- !u!114 &1277856072
 MonoBehaviour:
   m_ObjectHideFlags: 0

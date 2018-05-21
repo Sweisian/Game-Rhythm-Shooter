@@ -48,6 +48,8 @@ public class Character_Behavior : MonoBehaviour
     //Ghost state testing
     [SerializeField] private bool isGhost = false;
     [SerializeField] private bool isGhostEnabled = false;
+    Color32 humanColor; // = new Color(0.5279903f, 0.990566f, 0.5664769f, 1f);
+    Color32 ghostColor = new Color(0.1884567f, 0.3301887f, 0.1992668f, 1f);
 
     void Awake()
     {
@@ -62,6 +64,7 @@ public class Character_Behavior : MonoBehaviour
         beatBarScript = beatBar.GetComponent<Script_Beat_Bar>();
 
         mySpriteRen = GetComponent<SpriteRenderer>();
+        humanColor = mySpriteRen.color;
 
         //added code to find the trigger object and script
         myTrigger = GameObject.FindGameObjectWithTag("Trigger").GetComponent<Script_Trigger>();
@@ -139,6 +142,20 @@ public class Character_Behavior : MonoBehaviour
             var emission = myDashParticles.emission;
             emission.enabled = false;
         }
+
+        //makes sure the player is the right color
+        //if (myDashMove.direction != 0)
+        //{
+            if (isGhost)
+            {
+                mySpriteRen.color = ghostColor;
+            }
+            else if (!isGhost)
+            {
+                mySpriteRen.color = humanColor;
+            }
+        //}
+    
     }
 
     void FixedUpdate()
@@ -289,7 +306,7 @@ public class Character_Behavior : MonoBehaviour
 
     public void Fire(GameObject currGameObject, InputDevice player)
     {
-        BecomeGhost(currGameObject, player);
+        StartCoroutine(ChillAsGhost(currGameObject, player));
 
         Vector2 Temp = new Vector2();
         InputControl aimX = player.GetControl(InputControlType.LeftStickX);
@@ -321,17 +338,30 @@ public class Character_Behavior : MonoBehaviour
             myBoomBulletScript.rb.velocity = new Vector2(-500, 0);
 
         shotready = Time.time + shootdelay;
-
-        
-
-
     }
-
+    
     void BecomeGhost(GameObject curr, InputDevice player)
     {
-        //gonna need a coroutine
         this.isGhost = true;
+        Color32 ghostColor = new Color(0.1884567f, 0.3301887f, 0.1992668f, 1f);
+        mySpriteRen.color = ghostColor;
         Debug.Log("ITS SPOOKY TIME");
+    }
+
+    void BecomeHuman(GameObject curr, InputDevice player)
+    {
+        
+        mySpriteRen.color = humanColor;
+        this.isGhost = false;
+        Debug.Log("JUST A HUMAN...");
+    }
+    
+
+    IEnumerator ChillAsGhost(GameObject curr, InputDevice player)
+    {
+        BecomeGhost(curr, player);
+        yield return new WaitForSeconds(5f);
+        BecomeHuman(curr, player);
     }
 
     void Aim(GameObject curr, InputDevice player)
@@ -481,7 +511,7 @@ public class Character_Behavior : MonoBehaviour
         while (myDashMove.direction != 0)
         {
             //Debug.Log("inside dashFlash");
-            mySpriteRen.color = Color.black;
+            mySpriteRen.color = humanColor;
             yield return new WaitForSeconds(0.03f);
             mySpriteRen.color = c;
             yield return new WaitForSeconds(0.03f);
