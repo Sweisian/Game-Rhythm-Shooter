@@ -22,7 +22,8 @@ GameObject:
   - component: {fileID: 212663818105289172}
   - component: {fileID: 114161448500843296}
   - component: {fileID: 50352113034838934}
-  m_Layer: 0
+  - component: {fileID: 70600022452516870}
+  m_Layer: 9
   m_Name: Boomerang Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62,6 +63,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!70 &70600022452516870
+CapsuleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1319180391754388}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 2.9375, y: 4.1875}
+  m_Direction: 0
 --- !u!114 &114161448500843296
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -75,9 +91,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   target: {fileID: 0}
-  rb: {fileID: 0}
-  speed: 33
-  rotateSpeed: 400
+  rb: {fileID: 50352113034838934}
+  trackPlayer: 1
+  speed: 20
+  rotateSpeed: 700
+  initialSpeed: 80
+  flyStraightTime: 0.25
+  spawnOffset: 2.5
 --- !u!212 &212663818105289172
 SpriteRenderer:
   m_ObjectHideFlags: 1
