@@ -73,13 +73,13 @@ public class Script_Boomerang_Bullet : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D c)
     {
-       if(c.gameObject.tag == "PlayerOne")
+        if (player.tag == c.gameObject.tag)
         {
-            Destroy(gameObject);
+            Debug.Log("boomerang hit player who shot it");
+            //if the bullet hits the player who shot it
+            player.GetComponent<Character_Behavior>().BecomeHuman(player);
         }
+        Destroy(gameObject);
     }
-
-
-    
 
 }

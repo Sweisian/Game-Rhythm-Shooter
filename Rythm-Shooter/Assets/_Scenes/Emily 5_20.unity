@@ -464,6 +464,10 @@ Prefab:
       propertyPath: isGhostEnabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4907261563641772, guid: 4301ad145323f664090c2eb7b2b6736d, type: 2}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4301ad145323f664090c2eb7b2b6736d, type: 2}
   m_IsPrefabParent: 0
@@ -12582,7 +12586,7 @@ PlatformEffector2D:
   m_UseColliderMask: 1
   m_ColliderMask:
     serializedVersion: 2
-    m_Bits: 4294967039
+    m_Bits: 4294966527
   m_RotationalOffset: 0
   m_UseOneWay: 0
   m_UseOneWayGrouping: 0
@@ -12962,6 +12966,10 @@ Prefab:
       propertyPath: player
       value: 
       objectReference: {fileID: 988414077}
+    - target: {fileID: 1319180391754388, guid: 4be28bf8bf3098b44acfa8d94e474a98, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4be28bf8bf3098b44acfa8d94e474a98, type: 2}
   m_IsPrefabParent: 0
