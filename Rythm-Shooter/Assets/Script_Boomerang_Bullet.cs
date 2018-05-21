@@ -73,7 +73,7 @@ public class Script_Boomerang_Bullet : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D c)
     {
-       if(c.gameObject.tag == "PlayerOne")
+       if(c.gameObject.tag == "PlayerOne" || c.gameObject.tag == "PlayerTwo" && c.gameObject.tag != player.gameObject.tag)
         {
             Destroy(gameObject);
         }

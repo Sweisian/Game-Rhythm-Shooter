@@ -212,7 +212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b7f780c5b0bc1b4cadbd75e07d154ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shot: {fileID: 1568460062443294, guid: 374269934e004bb40a8193fd0a92612d, type: 2}
+  shot: {fileID: 1319180391754388, guid: 4be28bf8bf3098b44acfa8d94e474a98, type: 2}
   GameManage: {fileID: 0}
   beatBar: {fileID: 0}
   jumpvelocity: 20
@@ -222,9 +222,11 @@ MonoBehaviour:
   forceOnBeat: 0
   fallMultiplier: 2.5
   lowJumpMultiplier: 2
+  stunLength: 0.5
   playerNumber: 1
   isGhost: 0
   isGhostEnabled: 0
+  isStunned: 0
 --- !u!114 &114925332910968600
 MonoBehaviour:
   m_ObjectHideFlags: 1
