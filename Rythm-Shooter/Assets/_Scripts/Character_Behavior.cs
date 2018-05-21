@@ -34,6 +34,7 @@ public class Character_Behavior : MonoBehaviour
     [SerializeField] private bool forceOnBeat = true;
     [SerializeField] private float fallMultiplier = 2.5f;
     [SerializeField] private float lowJumpMultiplier = 2f;
+    [SerializeField] private float stunLength = .5f;
     [Range(0, 1)] [SerializeField] private int playerNumber = 0;
 
     //Things we don't care about seeing in the inpsector
@@ -51,6 +52,9 @@ public class Character_Behavior : MonoBehaviour
     private bool stuckAsHuman = false;
     Color32 humanColor; // = new Color(0.5279903f, 0.990566f, 0.5664769f, 1f);
     Color32 ghostColor = new Color(0.1884567f, 0.3301887f, 0.1992668f, 1f);
+
+    //Public variables
+    public bool isStunned = false;
 
     void Awake()
     {
@@ -89,11 +93,32 @@ public class Character_Behavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        InputDevice player = InputManager.Devices[playerNumber];
-        if (isGhostEnabled)
+        //checks to see if the player is stunned
+        if (!isStunned)
         {
-            if (isGhost)
+            InputDevice player = InputManager.Devices[playerNumber];
+            if (isGhostEnabled)
+            {
+                if (isGhost)
+                {
+                    //dash
+                    if (player.Action1.WasPressed || Input.GetKeyDown(KeyCode.L))
+                    {
+                        //Debug.Log("X Pressed by player 1");
+                        dash = true;
+                    }
+                }
+                else if (!isGhost && !stuckAsHuman)
+                {
+                    //shoot
+                    if (player.Action3.WasPressed || Input.GetKeyDown(KeyCode.J))
+                    {
+                        Fire(this.gameObject, player);
+                        particles[0].Play();
+                    }
+                }
+            }
+            else
             {
                 //dash
                 if (player.Action1.WasPressed || Input.GetKeyDown(KeyCode.L))
@@ -101,9 +126,6 @@ public class Character_Behavior : MonoBehaviour
                     //Debug.Log("X Pressed by player 1");
                     dash = true;
                 }
-            }
-            else if (!isGhost && !stuckAsHuman)
-            {
                 //shoot
                 if (player.Action3.WasPressed || Input.GetKeyDown(KeyCode.J))
                 {
@@ -111,26 +133,19 @@ public class Character_Behavior : MonoBehaviour
                     particles[0].Play();
                 }
             }
-        }
-        else
-        {
-            //dash
-            if (player.Action1.WasPressed || Input.GetKeyDown(KeyCode.L))
-            {
-                //Debug.Log("X Pressed by player 1");
-                dash = true;
-            }
 
-            //shoot
-            if (player.Action3.WasPressed || Input.GetKeyDown(KeyCode.J))
+            //Handles enableing particle emmision on dash
+            if (myDashMove.direction != 0)
             {
-                Fire(this.gameObject, player);
-                particles[0].Play();
+                var emission = myDashParticles.emission;
+                emission.enabled = true;
+            }
+            else if (myDashMove.direction == 0)
+            {
+                var emission = myDashParticles.emission;
+                emission.enabled = false;
             }
         }
-       
-        
-
 
         //Handles enableing particle emmision on dash
         if (myDashMove.direction != 0)
@@ -159,9 +174,6 @@ public class Character_Behavior : MonoBehaviour
             }
         //}
 
-        
-    
-    }
 
     void FixedUpdate()
     {
@@ -511,6 +523,26 @@ public class Character_Behavior : MonoBehaviour
             isgrounded = false;
             myAnim.SetBool("isJump", true);
         }
+    }
+
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        //checks to see if we are dashing and hit another player
+        if (myDashMove.direction != 0 && other.gameObject.tag == "PlayerOne" || other.gameObject.tag == "PlayerTwo")
+        {
+            Debug.Log("I dashed into: " + other);
+            StartCoroutine(stunned(other));
+        }
+    }
+
+    IEnumerator stunned(Collision2D other)
+    {
+        Color32 c = other.gameObject.GetComponent<SpriteRenderer>().color;
+        isStunned = true;
+        other.gameObject.GetComponent<SpriteRenderer>().color = Color.cyan;
+        yield return new WaitForSeconds(stunLength);
+        other.gameObject.GetComponent<SpriteRenderer>().color = c;
+        isStunned = false;
     }
 
     IEnumerator dashFlash()
