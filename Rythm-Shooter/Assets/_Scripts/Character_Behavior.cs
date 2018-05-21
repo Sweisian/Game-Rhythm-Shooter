@@ -311,19 +311,17 @@ public class Character_Behavior : MonoBehaviour
 
         //new code for boomerang bullets
 
-        GameObject shotcreate = Instantiate(shot);
+        GameObject shotcreate = Instantiate(shot); //This might possibly spawn the boomerang inside
         Script_Boomerang_Bullet myBoomBulletScript = shotcreate.GetComponent<Script_Boomerang_Bullet>();
-        myBoomBulletScript.player = gameObject;
-        myBoomBulletScript.transform.position = gameObject.transform.position;
-        if (facingRight)
-            shotcreate.GetComponent<Rigidbody2D>().velocity = new Vector2 (500,0);
-        if (!facingRight)
-            myBoomBulletScript.rb.velocity = new Vector2(-500, 0);
-
-        shotready = Time.time + shootdelay;
 
         
 
+        //initilizes shot parameters
+        myBoomBulletScript.shotInit(facingRight, gameObject);
+        
+        
+
+        shotready = Time.time + shootdelay;
 
     }
 
