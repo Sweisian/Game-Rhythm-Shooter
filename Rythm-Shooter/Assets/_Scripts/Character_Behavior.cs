@@ -9,6 +9,7 @@ public class Character_Behavior : MonoBehaviour
 {
     //Game object specific elements assigned in Awake()
     private Animator myAnim;
+
     private Script_Trigger myTrigger;
     private Rigidbody2D mybody;
     private ParticleSystem[] particles;
@@ -20,14 +21,16 @@ public class Character_Behavior : MonoBehaviour
 
     //Things we have to manually add to the game object
     [SerializeField] private GameObject shot;
-    [SerializeField] private GameObject GameManage ;
+
+    [SerializeField] private GameObject GameManage;
     [SerializeField] private GameObject beatBar;
 
     //move dis
-     private ParticleSystem myDashParticles;
+    private ParticleSystem myDashParticles;
 
     //Important fields to be editable from the inspector
     [SerializeField] private float jumpvelocity = 20;
+
     [SerializeField] private float speed = 10;
     [SerializeField] private float shootdelay = 0.1f;
     [SerializeField] private float shotready = 0.0f;
@@ -39,6 +42,7 @@ public class Character_Behavior : MonoBehaviour
 
     //Things we don't care about seeing in the inpsector
     private Vector2 LastAim;
+
     private bool isgrounded = true;
     private bool jump = false;
     private bool dash = false;
@@ -48,7 +52,11 @@ public class Character_Behavior : MonoBehaviour
 
     //Ghost state testing
     [SerializeField] private bool isGhost = false;
+
     [SerializeField] private bool isGhostEnabled = false;
+    private bool stuckAsHuman = false;
+    Color32 humanColor; // = new Color(0.5279903f, 0.990566f, 0.5664769f, 1f);
+    Color32 ghostColor = new Color(0.1884567f, 0.3301887f, 0.1992668f, 1f);
 
     //Public variables
     public bool isStunned = false;
@@ -66,6 +74,7 @@ public class Character_Behavior : MonoBehaviour
         beatBarScript = beatBar.GetComponent<Script_Beat_Bar>();
 
         mySpriteRen = GetComponent<SpriteRenderer>();
+        humanColor = mySpriteRen.color;
 
         //added code to find the trigger object and script
         myTrigger = GameObject.FindGameObjectWithTag("Trigger").GetComponent<Script_Trigger>();
@@ -104,7 +113,7 @@ public class Character_Behavior : MonoBehaviour
                         dash = true;
                     }
                 }
-                else
+                else if (!isGhost && !stuckAsHuman)
                 {
                     //shoot
                     if (player.Action3.WasPressed || Input.GetKeyDown(KeyCode.J))
@@ -122,7 +131,6 @@ public class Character_Behavior : MonoBehaviour
                     //Debug.Log("X Pressed by player 1");
                     dash = true;
                 }
-
                 //shoot
                 if (player.Action3.WasPressed || Input.GetKeyDown(KeyCode.J))
                 {
@@ -143,6 +151,35 @@ public class Character_Behavior : MonoBehaviour
                 emission.enabled = false;
             }
         }
+
+        //Handles enableing particle emmision on dash
+        if (myDashMove.direction != 0)
+        {
+            var emission = myDashParticles.emission;
+            emission.enabled = true;
+            Debug.Log("Currently Dashing");
+        }
+        else if (myDashMove.direction == 0)
+        {
+            Debug.Log("not dashing");
+            var emission = myDashParticles.emission;
+            emission.enabled = false;
+        }
+
+        //makes sure the player is the right color
+        //if (myDashMove.direction != 0)
+        //{
+        if (isGhost)
+        {
+            mySpriteRen.color = ghostColor;
+        }
+        else if (!isGhost)
+        {
+            mySpriteRen.color = humanColor;
+        }
+        //}
+
+
     }
 
     void FixedUpdate()
@@ -154,25 +191,25 @@ public class Character_Behavior : MonoBehaviour
         myAnim.SetFloat("moveSpeed", Mathf.Abs(xControl.Value));
 
         //Sets orientation of sprite
-        if (xControl.Value > .01f ||  Input.GetKey(KeyCode.D))
+        if (xControl.Value > .01f || Input.GetKey(KeyCode.D))
             facingRight = true;
 
         if (xControl.Value < -.01f || Input.GetKey(KeyCode.A))
             facingRight = false;
 
-        if(facingRight)
+        if (facingRight)
             transform.localScale = new Vector2(1, transform.localScale.y);
-        if(!facingRight)
+        if (!facingRight)
             transform.localScale = new Vector2(-1, transform.localScale.y);
 
         FallingPhysics(mybody);
-        
+
         //Dash Ability
         if (dash)
         {
-            Dash(xControl, myDashMove);               
+            Dash(xControl, myDashMove);
             //Debug.Log("I DASHED");
-            dash = false;         
+            dash = false;
         }
 
         //Might be important this stays at the end
@@ -209,11 +246,11 @@ public class Character_Behavior : MonoBehaviour
         {
             myDashMove.direction = 4;
         }
-        else if(xControl.Value == 0)
+        else if (xControl.Value == 0)
         {
-            if(facingRight)
+            if (facingRight)
                 myDashMove.direction = 2;
-            if(!facingRight)
+            if (!facingRight)
                 myDashMove.direction = 1;
         }
         //Debug.Log("I Dashed");
@@ -240,7 +277,7 @@ public class Character_Behavior : MonoBehaviour
     public void Move(float horizontalInput, Rigidbody2D mybody, Script_DashMove myDashMove)
     {
         //Code for keyboard controls
-        if(Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.A))
             horizontalInput = -1f;
 
         if (Input.GetKey(KeyCode.D))
@@ -287,18 +324,19 @@ public class Character_Behavior : MonoBehaviour
         //Debug.Log(jumpvelocity);
         //Debug.Log("mybody.velocity before jump is: ");
         //Debug.Log(mybody.velocity);
-        
+
         mybody.velocity += jumpvelocity * Vector2.up; //* Time.deltaTime;
     }
 
     public void Fire(GameObject currGameObject, InputDevice player)
     {
-        BecomeGhost(currGameObject, player);
+        //StartCoroutine(ChillAsGhost(currGameObject, player));
+        BecomeGhost(currGameObject);
 
         Vector2 Temp = new Vector2();
         InputControl aimX = player.GetControl(InputControlType.LeftStickX);
         InputControl aimY = player.GetControl(InputControlType.LeftStickY);
-        Aim(currGameObject,player);
+        Aim(currGameObject, player);
         if (currGameObject.GetComponent<Character_Behavior2>() != null)
             Temp = currGameObject.GetComponent<Character_Behavior2>().LastAim;
         else
@@ -317,24 +355,44 @@ public class Character_Behavior : MonoBehaviour
 
         GameObject shotcreate = Instantiate(shot); //This might possibly spawn the boomerang inside
         Script_Boomerang_Bullet myBoomBulletScript = shotcreate.GetComponent<Script_Boomerang_Bullet>();
-
-        
+        shotready = Time.time + shootdelay;
 
         //initilizes shot parameters
         myBoomBulletScript.shotInit(facingRight, gameObject);
-        
-        
-
-        shotready = Time.time + shootdelay;
-
     }
 
-    void BecomeGhost(GameObject curr, InputDevice player)
+    public void BecomeGhost(GameObject curr)
     {
-        //gonna need a coroutine
-        this.isGhost = true;
-        Debug.Log("ITS SPOOKY TIME");
+        if (!stuckAsHuman)
+        {
+            this.isGhost = true;
+            Color32 ghostColor = new Color(0.1884567f, 0.3301887f, 0.1992668f, 1f);
+            mySpriteRen.color = ghostColor;
+            Debug.Log("ITS SPOOKY TIME");
+        }
+        else
+        {
+            Debug.Log("You must be a human for a time, ye mortal...");
+        }
+
     }
+
+    public void BecomeHuman(GameObject curr)
+    {
+        mySpriteRen.color = humanColor;
+        this.isGhost = false;
+        Debug.Log("JUST A HUMAN...");
+        StartCoroutine(RemainAHuman(curr));
+    }
+
+
+    IEnumerator RemainAHuman(GameObject curr)
+    {
+        stuckAsHuman = true;
+        yield return new WaitForSeconds(2f);
+        stuckAsHuman = false;
+    }
+
 
     void Aim(GameObject curr, InputDevice player)
     {
@@ -357,7 +415,7 @@ public class Character_Behavior : MonoBehaviour
         }
 
         LastAim = temp;
-        
+
 
         /* This is the old way of shooting. It still is buggy
 
@@ -503,13 +561,11 @@ public class Character_Behavior : MonoBehaviour
         while (myDashMove.direction != 0)
         {
             //Debug.Log("inside dashFlash");
-            mySpriteRen.color = Color.black;
+            mySpriteRen.color = humanColor;
             yield return new WaitForSeconds(0.03f);
             mySpriteRen.color = c;
             yield return new WaitForSeconds(0.03f);
         }
         mySpriteRen.color = c;
     }
-
-
 }
