@@ -388,7 +388,9 @@ public class Character_Behavior : MonoBehaviour
 
     IEnumerator RemainAHuman(GameObject curr)
     {
+        Debug.Log("stay mortal for a time");
         stuckAsHuman = true;
+        particles[4].Play();
         yield return new WaitForSeconds(2f);
         stuckAsHuman = false;
     }
