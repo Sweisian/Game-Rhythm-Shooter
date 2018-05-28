@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using EZCameraShake;
 
+
 public class Script_GameManager : MonoBehaviour
 {
     private float respawntime = 0.2f;
@@ -22,6 +23,7 @@ public class Script_GameManager : MonoBehaviour
     public Transform playerTwoRespawn;
 
     public TextMeshProUGUI gameOverText;
+    public Canvas winCanvas;
 
     public int scoreCap = 5;
 
@@ -67,13 +69,14 @@ public class Script_GameManager : MonoBehaviour
         {
             gameOverText.text = "Game Over. Green Wins!";
             gameOverText.color = Color.green;
-            StartCoroutine("gameOverRoutine");
+            winCanvas.gameObject.SetActive(true);
         }
         if (score2 >= scoreCap)
         {
             gameOverText.text = "Game Over. Red Wins!";
             gameOverText.color = Color.red;
-            StartCoroutine("gameOverRoutine");
+            winCanvas.gameObject.SetActive(true);
+
         }
     }
 	
@@ -111,6 +114,7 @@ public class Script_GameManager : MonoBehaviour
     {
         gameOverText.text = "Point: Red";
         gameOverText.color = Color.red;
+        
 
         CameraShaker.Instance.ShakeOnce(10f, 10f, 0f, 1f);
 
@@ -127,6 +131,7 @@ public class Script_GameManager : MonoBehaviour
     {
         gameOverText.text = "Point: Green";
         gameOverText.color = Color.green;
+
 
         CameraShaker.Instance.ShakeOnce(10f, 10f, 0f, 1f);
 
