@@ -5,9 +5,16 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour {
 
     [SerializeField] AudioSource dashSound;
+    [SerializeField] AudioSource shootSound;
+    [SerializeField] AudioSource playerCollisionSound;
+    [SerializeField] AudioSource hitSound;
+    [SerializeField] AudioSource respawnSound;
+    [SerializeField] AudioSource objectCollisionSound;
+    [SerializeField] AudioSource gameOverSound;
 
-	// Use this for initialization
-	void Start () {
+
+    // Use this for initialization
+    void Start () {
         //PlayCoinSound();
 	}
 	
@@ -24,24 +31,27 @@ public class AudioManager : MonoBehaviour {
                 //Debug.Log("Play dash sound");
                 dashSound.Play();
                 break;
-            case "fire":
-                dashSound.Play();
+            case "shoot":
+                shootSound.Play();
                 break;
             case "hit":
-                dashSound.Play();
+                hitSound.Play();
                 break;
             case "playerCollision":
-                dashSound.Play();
+                playerCollisionSound.Play();
                 break;
             case "objectCollision":
-                dashSound.Play();
+                objectCollisionSound.Play();
                 break;
             case "gameOver":
-                dashSound.Play();
+                gameOverSound.Play();
+                break;
+            case "respawn":
+                respawnSound.Play();
                 break;
             default:
                 Debug.Log("invalid input");
-            break;
+                break;
         }
         Debug.Log(input);
             

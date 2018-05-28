@@ -343,7 +343,7 @@ public class Character_Behavior : MonoBehaviour
 
     public void Fire(GameObject currGameObject, InputDevice player)
     {
-        audioManager.PlaySound("fire");
+        audioManager.PlaySound("shoot");
         //StartCoroutine(ChillAsGhost(currGameObject, player));
         BecomeGhost(currGameObject);
 
@@ -465,6 +465,10 @@ public class Character_Behavior : MonoBehaviour
 
             Debug.Log("I dashed into: " + other);
             StartCoroutine(stunned(other));
+        }
+        else if (myDashMove.direction != 0)
+        {
+            audioManager.PlaySound("objectCollision");
         }
     }
 

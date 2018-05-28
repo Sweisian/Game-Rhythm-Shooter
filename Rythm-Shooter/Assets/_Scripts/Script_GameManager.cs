@@ -82,6 +82,7 @@ public class Script_GameManager : MonoBehaviour
 	
     public void respawn (GameObject caller)
     {
+        audioManager.PlaySound("respawn");
         //Debug.Log("respawn");
         if (caller.tag == "PlayerOne")
         {
