@@ -58,6 +58,11 @@ public class Character_Behavior : MonoBehaviour
     Color32 humanColor; // = new Color(0.5279903f, 0.990566f, 0.5664769f, 1f);
     Color32 ghostColor = new Color(0.1884567f, 0.3301887f, 0.1992668f, 1f);
 
+
+    //[SerializeField] AudioClip coinEffect;
+    private AudioManager audioManager;
+
+
     //Public variables
     public bool isStunned = false;
 
@@ -93,11 +98,17 @@ public class Character_Behavior : MonoBehaviour
         if (myTrigger == null)
             throw new Exception("a Trigger Object was not found");
 
+        audioManager = GameObject.FindObjectOfType<AudioManager>();
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        //audiosource.PlayOneShot(coinEffect);
+        
+
         //checks to see if the player is stunned
         if (!isStunned)
         {
@@ -207,6 +218,8 @@ public class Character_Behavior : MonoBehaviour
         //Dash Ability
         if (dash)
         {
+            audioManager.PlaySound("dash");
+
             Dash(xControl, myDashMove);
             //Debug.Log("I DASHED");
             dash = false;
@@ -330,6 +343,7 @@ public class Character_Behavior : MonoBehaviour
 
     public void Fire(GameObject currGameObject, InputDevice player)
     {
+        audioManager.PlaySound("fire");
         //StartCoroutine(ChillAsGhost(currGameObject, player));
         BecomeGhost(currGameObject);
 
@@ -388,7 +402,9 @@ public class Character_Behavior : MonoBehaviour
 
     IEnumerator RemainAHuman(GameObject curr)
     {
+        Debug.Log("stay mortal for a time");
         stuckAsHuman = true;
+        particles[4].Play();
         yield return new WaitForSeconds(2f);
         stuckAsHuman = false;
     }
@@ -416,99 +432,7 @@ public class Character_Behavior : MonoBehaviour
 
         LastAim = temp;
 
-
-        /* This is the old way of shooting. It still is buggy
-
-        if (Y == 0 && X == 0 && facingRight)
-        {
-            temp = new Vector2(1, 0);
-        }
-        if (Y == 0 && X == 0 && !facingRight)
-        {
-            temp = new Vector2(-1, 0);
-        }
-
-       
-        if (X < 0 && tan < Mathf.PI * 7 / 12)
-        {
-            temp = new Vector2(Mathf.Cos(Mathf.PI / 2), Mathf.Sin(Mathf.PI / 2));
-        }
-        if (X < 0 && tan > Mathf.PI * 7 / 12)
-        {
-            temp = new Vector2(Mathf.Cos(Mathf.PI * 2 / 3), Mathf.Sin(Mathf.PI * 2 / 3));
-        }
-        if (X < 0 && tan > Mathf.PI * 3 / 4)
-        {
-            temp = new Vector2(Mathf.Cos(Mathf.PI * 5 / 6), Mathf.Sin(Mathf.PI * 5 / 6));
-        }
-        if (X < 0 && tan > Mathf.PI * 11 / 12)
-        {
-            temp = new Vector2(Mathf.Cos(Mathf.PI), Mathf.Sin(Mathf.PI));
-        }
-        if (X < 0 && tan < Mathf.PI * 13 / 12)
-        {
-            temp = new Vector2(Mathf.Cos(Mathf.PI * 7 / 6), Mathf.Sin(Mathf.PI * 7 / 6));
-        }
-        if (X < 0 && tan < Mathf.PI * 5 / 4)
-        {
-            temp = new Vector2(Mathf.Cos(Mathf.PI * 4 / 3), Mathf.Sin(Mathf.PI * 4 / 3));
-        }
-        if (X < 0 && tan < Mathf.PI * 17 / 12)
-        {
-            temp = new Vector2(Mathf.Cos(Mathf.PI * 3 / 2), Mathf.Sin(Mathf.PI * 3 / 2));
-        }
-
-        //This should be left shooting
-        if (X < 0 && tan < Mathf.PI / 12)
-        {
-            temp = new Vector2(-1, 0);
-        }
-
-        if (X > 0 && tan > Mathf.PI * 5 / 12)
-        {
-            temp = new Vector2(Mathf.Cos(Mathf.PI / 2), Mathf.Sin(Mathf.PI / 2));
-        }
-        if (X > 0 && tan < Mathf.PI * 5 / 12)
-        {
-            temp = new Vector2(Mathf.Cos(Mathf.PI / 3), Mathf.Sin(Mathf.PI / 3));
-        }
-        if (X > 0 && tan < Mathf.PI / 4)
-        {
-            temp = new Vector2(Mathf.Cos(Mathf.PI / 6), Mathf.Sin(Mathf.PI / 6));
-        }
-        if (X > 0 && tan < Mathf.PI / 12)
-        {
-            temp = new Vector2(Mathf.Cos(0), Mathf.Sin(0));
-        }
-        if (X > 0 && tan > Mathf.PI * 23 / 12)
-        {
-            temp = new Vector2(Mathf.Cos(Mathf.PI * 11 / 6), Mathf.Sin(Mathf.PI * 11 / 6));
-        }
-        if (X > 0 && tan > Mathf.PI * 7 / 4)
-        {
-            temp = new Vector2(Mathf.Cos(Mathf.PI * 5 / 3), Mathf.Sin(Mathf.PI * 5 / 3));
-        }
-        if (X > 0 && tan > Mathf.PI * 19 / 12)
-        {
-            temp = new Vector2(Mathf.Cos(Mathf.PI * 3 / 2), Mathf.Sin(Mathf.PI * 3 / 2));
-        }
-        if (Y > 0.8)
-        {
-            temp = new Vector2(Mathf.Cos(Mathf.PI / 2), Mathf.Sin(Mathf.PI / 2));
-        }
-        if (Y < -0.8)
-        {
-            temp = new Vector2(Mathf.Cos(Mathf.PI * 3 / 2), Mathf.Sin(Mathf.PI * 3 / 2));
-        }
-
-        if (curr.GetComponent<Character_Behavior2>() != null) { 
-            curr.GetComponent<Character_Behavior2>().LastAim = temp; }
-        else
-        {
-            LastAim = temp;
-        }
-
-       */
+        
     }
 
     // Detect continous collision with the ground
@@ -533,10 +457,12 @@ public class Character_Behavior : MonoBehaviour
     }
 
     void OnCollisionEnter2D(Collision2D other)
-    {
+    {       
         //checks to see if we are dashing and hit another player
         if (myDashMove.direction != 0 && other.gameObject.tag == "PlayerOne" || other.gameObject.tag == "PlayerTwo")
         {
+            audioManager.PlaySound("playerCollision");
+
             Debug.Log("I dashed into: " + other);
             StartCoroutine(stunned(other));
         }
