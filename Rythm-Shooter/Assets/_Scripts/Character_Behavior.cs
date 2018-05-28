@@ -22,7 +22,7 @@ public class Character_Behavior : MonoBehaviour
     //Things we have to manually add to the game object
     [SerializeField] private GameObject shot;
 
-    [SerializeField] private GameObject GameManage;
+    private Script_GameManager myGM;
     [SerializeField] private GameObject beatBar;
 
     //move dis
@@ -85,8 +85,11 @@ public class Character_Behavior : MonoBehaviour
 
         myDashMove = GetComponent<Script_DashMove>();
 
+        //gets the game managers script 
+        myGM = GameObject.Find("GameManager").GetComponent<Script_GameManager>();
+
         //finds child dash particles with name "Dash Particles"
-        myDashParticles = transform.Find("Dash Particles").gameObject.GetComponent<ParticleSystem>();
+        
         if (myDashParticles == null)
             Debug.Log("No Dash Particles child attached");
 
@@ -104,19 +107,23 @@ public class Character_Behavior : MonoBehaviour
             InputDevice player = InputManager.Devices[playerNumber];
             if (isGhostEnabled)
             {
-                if (isGhost)
-                {
+               // if (isGhost)
+               // {
                     //dash
                     if (player.Action1.WasPressed || Input.GetKeyDown(KeyCode.L))
                     {
                         //Debug.Log("X Pressed by player 1");
                         dash = true;
                     }
-                }
-                else if (!isGhost && !stuckAsHuman)
+                // }
+                // else if (!isGhost && !stuckAsHuman)
+                Debug.Log("isGhost is: " + isGhost);
+                Debug.Log("stuckAsHuman is: " + stuckAsHuman);
+                if (!isGhost && !stuckAsHuman)
                 {
                     //shoot
-                    if (player.Action3.WasPressed || Input.GetKeyDown(KeyCode.J))
+                    //Only be able to shoot if tag mode is not on
+                    if (player.Action3.WasPressed || Input.GetKeyDown(KeyCode.J) && !myGM.tagModeOn)
                     {
                         Fire(this.gameObject, player);
                         particles[0].Play();
@@ -131,8 +138,9 @@ public class Character_Behavior : MonoBehaviour
                     //Debug.Log("X Pressed by player 1");
                     dash = true;
                 }
-                //shoot
-                if (player.Action3.WasPressed || Input.GetKeyDown(KeyCode.J))
+                //shoot 
+                //Only be able to shoot if tag mode is not one
+                if (player.Action3.WasPressed || Input.GetKeyDown(KeyCode.J) && !myGM.tagModeOn)
                 {
                     Fire(this.gameObject, player);
                     particles[0].Play();
@@ -390,7 +398,9 @@ public class Character_Behavior : MonoBehaviour
     {
         Debug.Log("stay mortal for a time");
         stuckAsHuman = true;
-        particles[4].Play();
+        ParticleSystem cooldownParticles = transform.Find("Cooldown Particles").gameObject.GetComponent<ParticleSystem>();
+        cooldownParticles.Play();
+        //particles[3].Play();
         yield return new WaitForSeconds(2f);
         stuckAsHuman = false;
     }
@@ -536,16 +546,28 @@ public class Character_Behavior : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
+        Debug.Log("myDashMove is: " + myDashMove);
+        Debug.Log("other.gameObject.name is: " + other.gameObject.name);
+
         //checks to see if we are dashing and hit another player
         if (myDashMove.direction != 0 && other.gameObject.tag == "PlayerOne" || other.gameObject.tag == "PlayerTwo")
         {
-            Debug.Log("I dashed into: " + other);
+            Debug.Log(gameObject.name + " collided with: " + other.gameObject.name);
             StartCoroutine(stunned(other));
+            
         }
     }
 
     IEnumerator stunned(Collision2D other)
     {
+        //checks to see if we can change targets at this time
+        if(myGM.tagModeOn && myGM.canSwitchTargets)
+        {
+            myGM.StartCoroutine(myGM.tagRefractoryRoutine());
+            myGM.chaseP1 = !myGM.chaseP1;
+            Debug.Log("CHANGED TARGET");
+        }
+
         Color32 c = other.gameObject.GetComponent<SpriteRenderer>().color;
         isStunned = true;
         other.gameObject.GetComponent<SpriteRenderer>().color = Color.cyan;
