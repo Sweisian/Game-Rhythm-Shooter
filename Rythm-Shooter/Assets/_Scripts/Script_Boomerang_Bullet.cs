@@ -19,11 +19,15 @@ public class Script_Boomerang_Bullet : MonoBehaviour
     [SerializeField] private float flyStraightTime = 1f;
     [SerializeField] private float spawnOffset = 10f;
 
+    private AudioManager audioManager;
+
     // Use this for initialization
     void Awake()
     {
         gm = GameObject.Find("GameManager").GetComponent<Script_GameManager>();
         rb = GetComponent<Rigidbody2D>();
+        audioManager = GameObject.FindObjectOfType<AudioManager>();
+
     }
 
     void FixedUpdate()
@@ -86,6 +90,8 @@ public class Script_Boomerang_Bullet : MonoBehaviour
         else
         {
             Debug.Log("boomerang hit da other player");
+            audioManager.PlaySound("hit");
+
             gm.respawn(c.gameObject);
         }
 

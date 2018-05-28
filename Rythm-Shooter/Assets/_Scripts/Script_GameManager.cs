@@ -25,6 +25,9 @@ public class Script_GameManager : MonoBehaviour
 
     public int scoreCap = 5;
 
+    private AudioManager audioManager;
+
+
     // Use this for initialization
     void Start ()
 	{
@@ -38,6 +41,9 @@ public class Script_GameManager : MonoBehaviour
         gameOverText = GameObject.Find("Game Over Text").GetComponent<TextMeshProUGUI>();
 
         gameOverText.text = "";
+
+	    audioManager = GameObject.FindObjectOfType<AudioManager>();
+
     }
 
     //temp testing code
@@ -134,7 +140,8 @@ public class Script_GameManager : MonoBehaviour
 
     IEnumerator gameOverRoutine()
     {
-     
+        audioManager.PlaySound("gameOver");
+
         yield return new WaitForSecondsRealtime(5);
         Time.timeScale = 1f;
         Application.LoadLevel(Application.loadedLevel);
