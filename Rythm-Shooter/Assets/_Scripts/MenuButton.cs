@@ -33,10 +33,12 @@ public class MenuButton : MonoBehaviour {
         SceneManager.LoadScene("Main_Menu");
     }
 
-    void Replay()
-    { }
     void GoToStart()
     {
         SceneManager.LoadScene("Main_Menu");
+    }
+    void QuitGame()
+    {
+        Application.Quit();
     }
 }

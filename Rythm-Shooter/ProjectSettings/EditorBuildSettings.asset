@@ -7,5 +7,14 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/InControl/Test/TestInputManager.unity
-    guid: 00000000000000000000000000000000
+    guid: 5732134fbcf2c404ea75451f03d6392e
+  - enabled: 1
+    path: Assets/_Scenes/Main_Menu.unity
+    guid: fd730959ca5e91e4ca1bd082b6ef93de
+  - enabled: 1
+    path: Assets/_Scenes/Emily 5_20.unity
+    guid: 7cf061a7415e40440923acc7a44d97d6
+  - enabled: 1
+    path: Assets/_Scenes/Options_Menu.unity
+    guid: 099f25fc8826984418c97a953c984a3c
   m_configObjects: {}

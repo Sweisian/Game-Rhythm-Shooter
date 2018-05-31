@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using EZCameraShake;
 
+
 public class Script_GameManager : MonoBehaviour
 {
     private float respawntime = 0.2f;
@@ -23,8 +24,10 @@ public class Script_GameManager : MonoBehaviour
     
 
     public TextMeshProUGUI gameOverText;
+    public Canvas winCanvas;
 
     public int scoreCap = 5;
+
 
     public GameObject[] shots;
 
@@ -37,6 +40,9 @@ public class Script_GameManager : MonoBehaviour
     public float tagRefractoryPeriod = 1;
 
     public bool canSwitchTargets = true;
+
+    private AudioManager audioManager;
+
 
     // Use this for initialization
     void Start ()
@@ -51,6 +57,9 @@ public class Script_GameManager : MonoBehaviour
         gameOverText = GameObject.Find("Game Over Text").GetComponent<TextMeshProUGUI>();
 
         gameOverText.text = "";
+
+	    audioManager = GameObject.FindObjectOfType<AudioManager>();
+
     }
 
     //temp testing code
@@ -75,25 +84,29 @@ public class Script_GameManager : MonoBehaviour
         {
             gameOverText.text = "Game Over. Green Wins!";
             gameOverText.color = Color.green;
-            StartCoroutine("gameOverRoutine");
+            winCanvas.gameObject.SetActive(true);
         }
         if (score2 >= scoreCap)
         {
             gameOverText.text = "Game Over. Red Wins!";
             gameOverText.color = Color.red;
-            StartCoroutine("gameOverRoutine");
+            winCanvas.gameObject.SetActive(true);
+
         }
     }
 	
     //gets called by the bullet when it hits something
     public void respawn (GameObject caller)
     {
+
         player1.transform.position = playerOneRespawn.position;
         player2.transform.position = playerTwoRespawn.position;
 
         //resets player state to be human
         player1.GetComponent<Character_Behavior>().BecomeHuman(player1);
         player2.GetComponent<Character_Behavior>().BecomeHuman(player2);
+
+        audioManager.PlaySound("respawn");
 
         //Debug.Log("respawn");
         if (caller.tag == "PlayerOne")
@@ -157,6 +170,7 @@ public class Script_GameManager : MonoBehaviour
     {
         gameOverText.text = "Point: Red";
         gameOverText.color = Color.red;
+        
 
         CameraShaker.Instance.ShakeOnce(10f, 10f, 0f, 1f);
 
@@ -174,6 +188,7 @@ public class Script_GameManager : MonoBehaviour
         gameOverText.text = "Point: Green";
         gameOverText.color = Color.green;
 
+
         CameraShaker.Instance.ShakeOnce(10f, 10f, 0f, 1f);
 
         yield return new WaitForSecondsRealtime(2);
@@ -186,7 +201,8 @@ public class Script_GameManager : MonoBehaviour
 
     IEnumerator gameOverRoutine()
     {
-     
+        audioManager.PlaySound("gameOver");
+
         yield return new WaitForSecondsRealtime(5);
         Time.timeScale = 1f;
         Scene loadedLevel = SceneManager.GetActiveScene();

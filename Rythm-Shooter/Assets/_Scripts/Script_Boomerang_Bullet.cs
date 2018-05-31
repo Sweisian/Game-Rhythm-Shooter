@@ -18,6 +18,8 @@ public class Script_Boomerang_Bullet : MonoBehaviour
     [SerializeField] private float flyStraightTime = 1f;
     [SerializeField] private float spawnOffset = 10f;
 
+    private AudioManager audioManager;
+
     // Use this for initialization
     void Awake()
     {
@@ -25,6 +27,7 @@ public class Script_Boomerang_Bullet : MonoBehaviour
         if (gm == null)
             Debug.Log(gameObject + " DIDN'T FIND THE GAME MANAGER");
         rb = GetComponent<Rigidbody2D>();
+
 
         //Asks the gm for which player to chase if tag mode is on
         if(gm.tagModeOn)
@@ -47,7 +50,9 @@ public class Script_Boomerang_Bullet : MonoBehaviour
             else
                 GetComponent<SpriteRenderer>().color = Color.green;
         }
-        
+
+        audioManager = GameObject.FindObjectOfType<AudioManager>();
+
     }
 
     void FixedUpdate()
@@ -116,9 +121,14 @@ public class Script_Boomerang_Bullet : MonoBehaviour
         else
         {
             Debug.Log("boomerang hit da other player");
+
             Debug.Log("should have destroyed the boomerang");
             Debug.Log("boomerang is: " + gameObject.name);
             Debug.Log("boomerang hit: " + c.gameObject.name);
+
+            audioManager.PlaySound("hit");
+
+
             gm.respawn(c.gameObject);
         }
 
