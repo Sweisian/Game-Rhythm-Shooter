@@ -28,6 +28,8 @@ public class Character_Behavior : MonoBehaviour
     //move dis
     private ParticleSystem myDashParticles;
 
+    private ParticleSystem myTaggedParticles;
+
     //Important fields to be editable from the inspector
     [SerializeField] private float jumpvelocity = 20;
 
@@ -97,6 +99,9 @@ public class Character_Behavior : MonoBehaviour
         //Gets dash particles from the game object
         myDashParticles = gameObject.transform.Find("Dash Particles").GetComponent<ParticleSystem>();
 
+        //Gets dash particles from the game object
+        myTaggedParticles = gameObject.transform.Find("Tagged Particles").GetComponent<ParticleSystem>();
+
         //finds child dash particles with name "Dash Particles"
         if (myDashParticles == null)
             Debug.Log("No Dash Particles child attached");
@@ -137,7 +142,7 @@ public class Character_Behavior : MonoBehaviour
                 {
                     //shoot
                     //Only be able to shoot if tag mode is not on
-                    if (player.Action3.WasPressed || Input.GetKeyDown(KeyCode.J) && !myGM.tagModeOn)
+                    if (!myGM.tagModeOn && player.Action3.WasPressed || Input.GetKeyDown(KeyCode.J))
                     {
                         Fire(this.gameObject, player);
                         particles[0].Play();
@@ -154,7 +159,7 @@ public class Character_Behavior : MonoBehaviour
                 }
                 //shoot 
                 //Only be able to shoot if tag mode is not one
-                if (player.Action3.WasPressed || Input.GetKeyDown(KeyCode.J) && !myGM.tagModeOn)
+                if (!myGM.tagModeOn && player.Action3.WasPressed || Input.GetKeyDown(KeyCode.J) )
                 {
                     Fire(this.gameObject, player);
                     particles[0].Play();
@@ -201,6 +206,25 @@ public class Character_Behavior : MonoBehaviour
         }
         //}
 
+        //Handles "tagged" particle effects
+        var myEmission = myTaggedParticles.emission;
+        if (gameObject.tag == "PlayerOne" && myGM.chaseP1 == true)
+        {
+            myEmission.enabled = true;
+        }
+        else
+        {
+            myEmission.enabled = false;
+        }
+
+        if (gameObject.tag == "PlayerTwo" && myGM.chaseP1 == false)
+        {
+            myEmission.enabled = true;
+        }
+        else
+        {
+            myEmission.enabled = false;
+        }
 
     }
 
