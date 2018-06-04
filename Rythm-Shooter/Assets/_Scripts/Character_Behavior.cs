@@ -208,23 +208,41 @@ public class Character_Behavior : MonoBehaviour
 
         //Handles "tagged" particle effects
         var myEmission = myTaggedParticles.emission;
-        if (gameObject.tag == "PlayerOne" && myGM.chaseP1 == true)
+
+        if (gameObject.tag == "PlayerOne")
         {
-            myEmission.enabled = true;
+            if (myGM.chaseP1 == true)
+                myEmission.enabled = true;
+            else
+                myEmission.enabled = false;
+
         }
-        else
+        else if (gameObject.tag == "PlayerTwo")
         {
-            myEmission.enabled = false;
+            if (myGM.chaseP1 == false)
+                myEmission.enabled = true;
+            else
+                myEmission.enabled = false;
+
         }
 
-        if (gameObject.tag == "PlayerTwo" && myGM.chaseP1 == false)
-        {
-            myEmission.enabled = true;
-        }
-        else
-        {
-            myEmission.enabled = false;
-        }
+        //if (gameObject.tag == "PlayerOne" && myGM.chaseP1 == true)
+        //{
+        //    myEmission.enabled = true;
+        //}
+        //else
+        //{
+        //    myEmission.enabled = false;
+        //}
+
+        //if (gameObject.tag == "PlayerTwo" && myGM.chaseP1 == false)
+        //{
+        //    myEmission.enabled = true;
+        //}
+        //else
+        //{
+        //    myEmission.enabled = false;
+        //}
 
     }
 
