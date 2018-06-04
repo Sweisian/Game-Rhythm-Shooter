@@ -11,7 +11,7 @@ public class AudioManager : MonoBehaviour {
     [SerializeField] AudioSource respawnSound;
     [SerializeField] AudioSource objectCollisionSound;
     [SerializeField] AudioSource gameOverSound;
-
+    [SerializeField] AudioSource gameStartSound;
 
     // Use this for initialization
     void Start () {
@@ -45,6 +45,9 @@ public class AudioManager : MonoBehaviour {
                 break;
             case "gameOver":
                 gameOverSound.Play();
+                break;
+            case "gameStart":
+                gameStartSound.Play();
                 break;
             case "respawn":
                 respawnSound.Play();
