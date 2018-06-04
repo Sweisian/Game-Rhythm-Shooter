@@ -21,11 +21,25 @@ public class Script_GameManager : MonoBehaviour
 
     public Transform playerOneRespawn;
     public Transform playerTwoRespawn;
+    
 
     public TextMeshProUGUI gameOverText;
     public Canvas winCanvas;
 
     public int scoreCap = 5;
+
+
+    public GameObject[] shots;
+
+    public bool tagModeOn;
+
+    public bool chaseP1;
+
+    public GameObject tagBoomerang;
+    public Transform tagRespawn;
+    public float tagRefractoryPeriod = 1;
+
+    public bool canSwitchTargets = true;
 
     private AudioManager audioManager;
 
@@ -53,7 +67,8 @@ public class Script_GameManager : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.R))
         {
-            Application.LoadLevel(Application.loadedLevel);
+            Scene loadedLevel = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(loadedLevel.buildIndex);
         }
 
         if (Input.GetKeyDown(KeyCode.O))
@@ -80,9 +95,19 @@ public class Script_GameManager : MonoBehaviour
         }
     }
 	
+    //gets called by the bullet when it hits something
     public void respawn (GameObject caller)
     {
+
+        player1.transform.position = playerOneRespawn.position;
+        player2.transform.position = playerTwoRespawn.position;
+
+        //resets player state to be human
+        player1.GetComponent<Character_Behavior>().BecomeHuman(player1);
+        player2.GetComponent<Character_Behavior>().BecomeHuman(player2);
+
         audioManager.PlaySound("respawn");
+
         //Debug.Log("respawn");
         if (caller.tag == "PlayerOne")
         {
@@ -100,15 +125,45 @@ public class Script_GameManager : MonoBehaviour
             StartCoroutine("greenWinsRoutine");
         }
 
-        player1.transform.position = playerOneRespawn.position;
-        player2.transform.position = playerTwoRespawn.position;
+        if(tagModeOn)
+        {
+            GameObject newTagBoomerang = Instantiate(tagBoomerang);
+            newTagBoomerang.transform.position = tagRespawn.position;
+        }
 
-        //resets player state to be human
-        player1.GetComponent<Character_Behavior>().BecomeHuman(player1);
-        player2.GetComponent<Character_Behavior>().BecomeHuman(player2);
 
         //Scene scene = SceneManager.GetActiveScene();
         //SceneManager.LoadScene(scene.name);
+
+        //shots = GameObject.FindGameObjectsWithTag("shot");
+        //foreach(GameObject s in shots)
+        //{
+        //    Destroy(s);
+        //}
+    }
+
+    public GameObject tagModeInit()
+    {
+        //If this is a new game
+        if(score1 + score2 == 0)
+        {
+            if (Random.value > .50)
+                chaseP1 = true;
+            else
+                chaseP1 = false;
+        }
+
+        if (chaseP1)
+        {
+            chaseP1 = !chaseP1;
+            return player1;
+        }
+        else
+        {
+            chaseP1 = !chaseP1;
+            return player2;
+        }
+
     }
 
     IEnumerator redWinsRoutine()
@@ -150,6 +205,14 @@ public class Script_GameManager : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(5);
         Time.timeScale = 1f;
-        Application.LoadLevel(Application.loadedLevel);
+        Scene loadedLevel = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(loadedLevel.buildIndex);
+    }
+
+    public IEnumerator tagRefractoryRoutine()
+    {
+        canSwitchTargets = false;
+        yield return new WaitForSecondsRealtime(tagRefractoryPeriod) ;
+        canSwitchTargets = true;
     }
 }

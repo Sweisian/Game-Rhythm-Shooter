@@ -10,8 +10,7 @@ public class Script_Boomerang_Bullet : MonoBehaviour
     public Rigidbody2D rb;
     public bool trackPlayer = true;
 
-    //make sure you assign this manually
-    public Script_GameManager gm;
+    [SerializeField] private Script_GameManager gm;
 
     [SerializeField] private float speed = 33f;
     [SerializeField] private float rotateSpeed = 200f;
@@ -25,7 +24,33 @@ public class Script_Boomerang_Bullet : MonoBehaviour
     void Awake()
     {
         gm = GameObject.Find("GameManager").GetComponent<Script_GameManager>();
+        if (gm == null)
+            Debug.Log(gameObject + " DIDN'T FIND THE GAME MANAGER");
         rb = GetComponent<Rigidbody2D>();
+
+
+        //Asks the gm for which player to chase if tag mode is on
+        if(gm.tagModeOn)
+        {
+            player = gm.tagModeInit();
+        }
+    }
+
+    void Update()
+    {
+        if (gm.canSwitchTargets && gm.tagModeOn)
+        {
+            if (gm.chaseP1)
+                player = gm.player1;
+            else
+                player = gm.player2;
+
+            if (player == gm.player1)
+                GetComponent<SpriteRenderer>().color = Color.red;
+            else
+                GetComponent<SpriteRenderer>().color = Color.green;
+        }
+
         audioManager = GameObject.FindObjectOfType<AudioManager>();
 
     }
@@ -36,7 +61,7 @@ public class Script_Boomerang_Bullet : MonoBehaviour
         if (trackPlayer)
         {
             //gets the target based on the player, which should be assigned when this is instantiated
-            if (target == null && player != null)
+            if (player != null)
                 target = player.transform;
 
             if (target != null && trackPlayer)
@@ -81,7 +106,13 @@ public class Script_Boomerang_Bullet : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D c)
     {
-        if (player.tag == c.gameObject.tag)
+        if (gm.tagModeOn)
+        {
+            gm.respawn(c.gameObject);
+            Debug.Log("Should have destroyed boomerang");
+            Destroy(gameObject);
+        }
+        else if (player.tag == c.gameObject.tag)
         {
             Debug.Log("boomerang hit player who shot it");
             //if the bullet hits the player who shot it
@@ -90,7 +121,13 @@ public class Script_Boomerang_Bullet : MonoBehaviour
         else
         {
             Debug.Log("boomerang hit da other player");
+
+            Debug.Log("should have destroyed the boomerang");
+            Debug.Log("boomerang is: " + gameObject.name);
+            Debug.Log("boomerang hit: " + c.gameObject.name);
+
             audioManager.PlaySound("hit");
+
 
             gm.respawn(c.gameObject);
         }
@@ -101,7 +138,9 @@ public class Script_Boomerang_Bullet : MonoBehaviour
         //    gm.respawn(gameObject);
         //}
 
+
         Destroy(gameObject);
+        
     }
 
 }
