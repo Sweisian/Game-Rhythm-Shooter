@@ -8,13 +8,14 @@ using EZCameraShake;
 public class Character_Behavior : MonoBehaviour
 {
     //Game object specific elements assigned in Awake()
-    private Animator myAnim;
+    public Animator myAnim;
+
+    public GameObject Catbody;
 
     private Script_Trigger myTrigger;
     private Rigidbody2D mybody;
     private ParticleSystem[] particles;
     private BeatObserver beatObserver;
-    private SpriteRenderer mySpriteRen;
     private InputDevice player;
     private Script_DashMove myDashMove;
     private Script_Beat_Bar beatBarScript;
@@ -80,8 +81,6 @@ public class Character_Behavior : MonoBehaviour
 
         beatBarScript = beatBar.GetComponent<Script_Beat_Bar>();
 
-        mySpriteRen = GetComponent<SpriteRenderer>();
-        humanColor = mySpriteRen.color;
 
         //added code to find the trigger object and script
         myTrigger = GameObject.FindGameObjectWithTag("Trigger").GetComponent<Script_Trigger>();
@@ -118,7 +117,7 @@ public class Character_Behavior : MonoBehaviour
     void Update()
     {
         //audiosource.PlayOneShot(coinEffect);
-        
+        Catbody.transform.localPosition = new Vector2(0,-1.8f);
 
         //checks to see if the player is stunned
         if (!isStunned)
@@ -198,11 +197,9 @@ public class Character_Behavior : MonoBehaviour
         //{
         if (isGhost)
         {
-            mySpriteRen.color = ghostColor;
         }
         else if (!isGhost)
         {
-            mySpriteRen.color = humanColor;
         }
         //}
 
@@ -234,7 +231,7 @@ public class Character_Behavior : MonoBehaviour
         InputControl xControl = player.GetControl(InputControlType.LeftStickX);
         InputControl yControl = player.GetControl(InputControlType.LeftStickY);
 
-        myAnim.SetFloat("moveSpeed", Mathf.Abs(xControl.Value));
+        myAnim.SetFloat("XSpeed", Mathf.Abs(xControl.Value));
 
         //Sets orientation of sprite
         if (xControl.Value > .01f || Input.GetKey(KeyCode.D))
@@ -243,10 +240,10 @@ public class Character_Behavior : MonoBehaviour
         if (xControl.Value < -.01f || Input.GetKey(KeyCode.A))
             facingRight = false;
 
-        if (facingRight)
-            transform.localScale = new Vector2(1, transform.localScale.y);
-        if (!facingRight)
-            transform.localScale = new Vector2(-1, transform.localScale.y);
+       // if (facingRight)
+         //   transform.localScale = new Vector2(1, transform.localScale.y);
+        //if (!facingRight)
+          //  transform.localScale = new Vector2(-1, transform.localScale.y);
 
         FallingPhysics(mybody);
 
@@ -416,7 +413,6 @@ public class Character_Behavior : MonoBehaviour
         {
             this.isGhost = true;
             Color32 ghostColor = new Color(0.1884567f, 0.3301887f, 0.1992668f, 1f);
-            mySpriteRen.color = ghostColor;
             Debug.Log("ITS SPOOKY TIME");
         }
         else
@@ -428,7 +424,6 @@ public class Character_Behavior : MonoBehaviour
 
     public void BecomeHuman(GameObject curr)
     {
-        mySpriteRen.color = humanColor;
         this.isGhost = false;
         Debug.Log("JUST A HUMAN...");
         StartCoroutine(RemainAHuman(curr));
@@ -479,7 +474,6 @@ public class Character_Behavior : MonoBehaviour
         {
             //Debug.Log("myAnim is: " + myAnim);
             isgrounded = true;
-            myAnim.SetBool("isJump", false);
         }
     }
 
@@ -489,7 +483,6 @@ public class Character_Behavior : MonoBehaviour
         if (exit.gameObject.tag == "Ground")
         {
             isgrounded = false;
-            myAnim.SetBool("isJump", true);
         }
     }
 
@@ -540,15 +533,13 @@ public class Character_Behavior : MonoBehaviour
         //Debug.Log("called dashFlash");
         //Debug.Log(myDashMove.direction);
 
-        Color32 c = mySpriteRen.color;
         while (myDashMove.direction != 0)
         {
             //Debug.Log("inside dashFlash");
-            mySpriteRen.color = humanColor;
+
             yield return new WaitForSeconds(0.03f);
-            mySpriteRen.color = c;
+
             yield return new WaitForSeconds(0.03f);
         }
-        mySpriteRen.color = c;
     }
 }
