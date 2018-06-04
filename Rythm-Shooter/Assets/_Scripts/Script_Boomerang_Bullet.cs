@@ -38,7 +38,7 @@ public class Script_Boomerang_Bullet : MonoBehaviour
 
     void Update()
     {
-        if (gm.canSwitchTargets && !gm.tagModeOn)
+        if (gm.canSwitchTargets && gm.tagModeOn)
         {
             if (gm.chaseP1)
                 player = gm.player1;

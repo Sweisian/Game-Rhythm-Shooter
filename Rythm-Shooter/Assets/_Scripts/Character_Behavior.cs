@@ -91,8 +91,13 @@ public class Character_Behavior : MonoBehaviour
         //gets the game managers script 
         myGM = GameObject.Find("GameManager").GetComponent<Script_GameManager>();
 
+        //Gets dash move from the game object
+        myDashMove = gameObject.GetComponent<Script_DashMove>();
+
+        //Gets dash particles from the game object
+        myDashParticles = gameObject.transform.Find("Dash Particles").GetComponent<ParticleSystem>();
+
         //finds child dash particles with name "Dash Particles"
-        
         if (myDashParticles == null)
             Debug.Log("No Dash Particles child attached");
 
@@ -126,8 +131,8 @@ public class Character_Behavior : MonoBehaviour
                     }
                 // }
                 // else if (!isGhost && !stuckAsHuman)
-                Debug.Log("isGhost is: " + isGhost);
-                Debug.Log("stuckAsHuman is: " + stuckAsHuman);
+                //Debug.Log("isGhost is: " + isGhost);
+                //Debug.Log("stuckAsHuman is: " + stuckAsHuman);
                 if (!isGhost && !stuckAsHuman)
                 {
                     //shoot
