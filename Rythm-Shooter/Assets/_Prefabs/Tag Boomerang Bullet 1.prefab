@@ -94,7 +94,7 @@ MonoBehaviour:
   rb: {fileID: 50352113034838934}
   trackPlayer: 1
   gm: {fileID: 0}
-  speed: 0
+  speed: 7.5
   rotateSpeed: 700
   initialSpeed: 80
   flyStraightTime: 0.25
