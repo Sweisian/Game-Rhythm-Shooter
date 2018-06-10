@@ -82,12 +82,16 @@ public class Script_GameManager : MonoBehaviour
 
         if (score1 >= scoreCap)
         {
+            player1.GetComponent<Character_Behavior>().myAnim.SetBool("Win",true);
+            player2.GetComponent<Character_Behavior>().myAnim.SetBool("Dead", true);
             gameOverText.text = "Game Over. Green Wins!";
             gameOverText.color = Color.green;
             winCanvas.gameObject.SetActive(true);
         }
         if (score2 >= scoreCap)
         {
+            player2.GetComponent<Character_Behavior>().myAnim.SetBool("Win", true);
+            player1.GetComponent<Character_Behavior>().myAnim.SetBool("Dead", true);
             gameOverText.text = "Game Over. Red Wins!";
             gameOverText.color = Color.red;
             winCanvas.gameObject.SetActive(true);
@@ -112,6 +116,7 @@ public class Script_GameManager : MonoBehaviour
         if (caller.tag == "PlayerOne")
         {
             score2 += 1;
+            player1.GetComponent<Character_Behavior>().myAnim.SetTrigger("Hit");
             player2score.text = "Victories: " + score2.ToString();
 
             StartCoroutine("redWinsRoutine");
@@ -120,6 +125,7 @@ public class Script_GameManager : MonoBehaviour
         if (caller.tag == "PlayerTwo")
         {
             score1 += 1;
+            player2.GetComponent<Character_Behavior>().myAnim.SetTrigger("Hit");
             player1score.text = "Victories: " + score1.ToString();
 
             StartCoroutine("greenWinsRoutine");
