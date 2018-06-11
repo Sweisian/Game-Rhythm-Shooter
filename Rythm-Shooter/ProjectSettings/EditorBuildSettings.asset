@@ -14,13 +14,16 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/_Scenes/Emily 5_20.unity
     guid: 7cf061a7415e40440923acc7a44d97d6
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Scenes/Options_Menu.unity
     guid: 099f25fc8826984418c97a953c984a3c
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Scenes/Emily 6-3.unity
     guid: bdcf6c8df2cbb044d8b7647f1958c4b9
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Scenes/Win_Menu.unity
     guid: c7fc60485c88cd740883ea0ace9efbd6
+  - enabled: 1
+    path: Assets/_Scenes/Tag 6_4 Swei.unity
+    guid: 33bb16ae31d6fe0429a04541de295783
   m_configObjects: {}
