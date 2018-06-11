@@ -25,7 +25,7 @@ public class Script_Boomerang_Bullet : MonoBehaviour
     {
         gm = GameObject.Find("GameManager").GetComponent<Script_GameManager>();
         if (gm == null)
-            Debug.Log(gameObject + " DIDN'T FIND THE GAME MANAGER");
+            //Debug.Log(gameObject + " DIDN'T FIND THE GAME MANAGER");
         rb = GetComponent<Rigidbody2D>();
 
 
@@ -109,23 +109,15 @@ public class Script_Boomerang_Bullet : MonoBehaviour
         if (gm.tagModeOn)
         {
             gm.respawn(c.gameObject);
-            Debug.Log("Should have destroyed boomerang");
             Destroy(gameObject);
         }
         else if (player.tag == c.gameObject.tag)
         {
-            Debug.Log("boomerang hit player who shot it");
             //if the bullet hits the player who shot it
             player.GetComponent<Character_Behavior>().BecomeHuman(player);
         }
         else
         {
-            Debug.Log("boomerang hit da other player");
-
-            Debug.Log("should have destroyed the boomerang");
-            Debug.Log("boomerang is: " + gameObject.name);
-            Debug.Log("boomerang hit: " + c.gameObject.name);
-
             audioManager.PlaySound("hit");
 
 
