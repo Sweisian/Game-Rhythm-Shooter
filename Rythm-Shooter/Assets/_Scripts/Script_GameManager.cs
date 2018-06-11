@@ -49,6 +49,9 @@ public class Script_GameManager : MonoBehaviour
     // Use this for initialization
     void Start ()
 	{
+        //DontDestroyOnLoad(gameObject);
+        //ColorUtility.TryParseHtmlString("97E9FF", out myLightBlue);
+        //ColorUtility.TryParseHtmlString("FFAB56", out myLightOrange);
 
         myLightBlue = new Color(0.5882353f, 0.9137255f, 1f);
         myLightOrange = new Color(1f, 0.670058f, 0.3333334f);
@@ -196,7 +199,6 @@ public class Script_GameManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(2);
         gameOverText.color = Color.white;
         gameOverText.text = "FIGHT!";
-        Time.timeScale = 1f;
         yield return new WaitForSecondsRealtime(1);
         gameOverText.text = "";
 
@@ -214,7 +216,6 @@ public class Script_GameManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(2);
         gameOverText.color = Color.white;
         gameOverText.text = "FIGHT!";
-        Time.timeScale = 1f;
         yield return new WaitForSecondsRealtime(1);
         gameOverText.text = "";
     }
