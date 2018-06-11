@@ -20,7 +20,8 @@ public class MenuButton : MonoBehaviour {
 
     void StartGame()
     {
-        SceneManager.LoadScene("Emily 6-3");
+
+        SceneManager.LoadScene("Map_Menu");
     }
 
     void Options()
