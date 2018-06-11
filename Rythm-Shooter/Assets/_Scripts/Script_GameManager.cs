@@ -50,8 +50,11 @@ public class Script_GameManager : MonoBehaviour
     void Start ()
 	{
         //DontDestroyOnLoad(gameObject);
-        ColorUtility.TryParseHtmlString("97E9FF", out myLightBlue);
-        ColorUtility.TryParseHtmlString("FFAB56", out myLightOrange);
+        //ColorUtility.TryParseHtmlString("97E9FF", out myLightBlue);
+        //ColorUtility.TryParseHtmlString("FFAB56", out myLightOrange);
+
+        myLightBlue = new Color(0.5882353f, 0.9137255f, 1f);
+        myLightOrange = new Color(1f, 0.670058f, 0.3333334f);
 
         Debug.Log(myLightBlue);
         Debug.Log(myLightOrange);
@@ -186,7 +189,9 @@ public class Script_GameManager : MonoBehaviour
 
     IEnumerator orangeWinsRoutine()
     {
-        gameOverText.text = "Point: orange";
+        //Debug.Log("I fucking reached the orange wins routine you cocksucker");
+
+        gameOverText.text = "Point: Orange";
         gameOverText.color = myLightOrange;
 
         CameraShaker.Instance.ShakeOnce(10f, 10f, 0f, 1f);
@@ -202,6 +207,8 @@ public class Script_GameManager : MonoBehaviour
 
     IEnumerator blueWinsRoutine()
     {
+        //Debug.Log("I fucking reached the blue wins routine you cocksucker");
+
         gameOverText.text = "Point: Blue";
         gameOverText.color = myLightBlue;
 
