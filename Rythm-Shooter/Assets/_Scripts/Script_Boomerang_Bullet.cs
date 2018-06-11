@@ -18,6 +18,8 @@ public class Script_Boomerang_Bullet : MonoBehaviour
     [SerializeField] private float flyStraightTime = 1f;
     [SerializeField] private float spawnOffset = 10f;
 
+    [SerializeField] private float speedIncrease = .25f;
+
     private AudioManager audioManager;
 
     // Use this for initialization
@@ -52,6 +54,8 @@ public class Script_Boomerang_Bullet : MonoBehaviour
         }
 
         audioManager = GameObject.FindObjectOfType<AudioManager>();
+
+        speed = speed + speedIncrease * Time.deltaTime;
 
     }
 
