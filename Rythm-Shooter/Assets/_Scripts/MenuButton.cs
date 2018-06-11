@@ -21,12 +21,15 @@ public class MenuButton : MonoBehaviour {
     void StartGame()
     {
 
-        SceneManager.LoadScene("Map_Menu");
+        SceneManager.LoadScene("Tag 6_4 Swei");
     }
 
     void Options()
     {
-        SceneManager.LoadScene("Options_Menu");
+        
+
+        Application.Quit();
+        //SceneManager.LoadScene("Options_Menu");
     }
 
     void OptionReturn()
@@ -38,8 +41,9 @@ public class MenuButton : MonoBehaviour {
     {
         SceneManager.LoadScene("Main_Menu");
     }
-    void QuitGame()
+    public void QuitGame()
     {
+        Debug.Log("QUIT");
         Application.Quit();
     }
 }
