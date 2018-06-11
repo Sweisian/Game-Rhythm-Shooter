@@ -40,7 +40,7 @@ public class AudioManager : MonoBehaviour {
                 playerCollisionSound.Play();
                 break;
             case "objectCollision":
-                objectCollisionSound.Play();
+                //objectCollisionSound.Play();
                 break;
             case "gameOver":
                 gameOverSound.Play();
