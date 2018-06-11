@@ -12,19 +12,15 @@ public class Character_Behavior : MonoBehaviour
 
     public GameObject Catbody;
 
-    private Script_Trigger myTrigger;
     private Rigidbody2D mybody;
     private ParticleSystem[] particles;
-    private BeatObserver beatObserver;
     private InputDevice player;
     private Script_DashMove myDashMove;
-    private Script_Beat_Bar beatBarScript;
 
     //Things we have to manually add to the game object
     [SerializeField] private GameObject shot;
 
     private Script_GameManager myGM;
-    [SerializeField] private GameObject beatBar;
 
     //move dis
     private ParticleSystem myDashParticles;
@@ -37,7 +33,6 @@ public class Character_Behavior : MonoBehaviour
     [SerializeField] private float speed = 10;
     [SerializeField] private float shootdelay = 0.1f;
     [SerializeField] private float shotready = 0.0f;
-    [SerializeField] private bool forceOnBeat = true;
     [SerializeField] private float fallMultiplier = 2.5f;
     [SerializeField] private float lowJumpMultiplier = 2f;
     [SerializeField] private float stunLength = .5f;
@@ -50,7 +45,6 @@ public class Character_Behavior : MonoBehaviour
     private bool jump = false;
     private bool dash = false;
     private bool facingRight = true;
-    private bool onBeat = false;
 
 
     //Ghost state testing
@@ -79,15 +73,8 @@ public class Character_Behavior : MonoBehaviour
         player = InputManager.Devices[playerNumber];
         Debug.Log("AWAKE player is: " + player);
 
-        beatBarScript = beatBar.GetComponent<Script_Beat_Bar>();
-
-
-        //added code to find the trigger object and script
-        myTrigger = GameObject.FindGameObjectWithTag("Trigger").GetComponent<Script_Trigger>();
-
         mybody = GetComponent<Rigidbody2D>();
         particles = GetComponentsInChildren<ParticleSystem>();
-        beatObserver = GetComponent<BeatObserver>();
 
         //gets the game managers script 
         myGM = GameObject.Find("GameManager").GetComponent<Script_GameManager>();
@@ -104,9 +91,6 @@ public class Character_Behavior : MonoBehaviour
         //finds child dash particles with name "Dash Particles"
         if (myDashParticles == null)
             Debug.Log("No Dash Particles child attached");
-
-        if (myTrigger == null)
-            throw new Exception("a Trigger Object was not found");
 
         audioManager = GameObject.FindObjectOfType<AudioManager>();
 
@@ -401,12 +385,12 @@ public class Character_Behavior : MonoBehaviour
         InputControl aimX = player.GetControl(InputControlType.LeftStickX);
         InputControl aimY = player.GetControl(InputControlType.LeftStickY);
         Aim(currGameObject, player);
-        if (currGameObject.GetComponent<Character_Behavior2>() != null)
-            Temp = currGameObject.GetComponent<Character_Behavior2>().LastAim;
-        else
-        {
+        //if (currGameObject.GetComponent<Character_Behavior2>() != null)
+          //  Temp = currGameObject.GetComponent<Character_Behavior2>().LastAim;
+        //else
+        //{
             Temp = LastAim;
-        }
+        //}
 
 
 
