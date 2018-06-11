@@ -765,15 +765,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4918133707912774, guid: 92d058960c22b3141905bc2f405d7792, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114161448500843296, guid: 92d058960c22b3141905bc2f405d7792,
-        type: 2}
-      propertyPath: speedIncrease
-      value: 0.5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 92d058960c22b3141905bc2f405d7792, type: 2}
   m_IsPrefabParent: 0
