@@ -43,11 +43,18 @@ public class Script_GameManager : MonoBehaviour
 
     private AudioManager audioManager;
 
+    private Color myLightBlue;
+    private Color myLightOrange;
 
     // Use this for initialization
     void Start ()
 	{
         //DontDestroyOnLoad(gameObject);
+        ColorUtility.TryParseHtmlString("97E9FF", out myLightBlue);
+        ColorUtility.TryParseHtmlString("FFAB56", out myLightOrange);
+
+        Debug.Log(myLightBlue);
+        Debug.Log(myLightOrange);
 
         player1 = GameObject.FindGameObjectWithTag("PlayerOne");
         player2 = GameObject.FindGameObjectWithTag("PlayerTwo");
@@ -84,8 +91,8 @@ public class Script_GameManager : MonoBehaviour
         {
             player1.GetComponent<Character_Behavior>().myAnim.SetBool("Win",true);
             player2.GetComponent<Character_Behavior>().myAnim.SetBool("Dead", true);
-            gameOverText.text = "Game Over. Green Wins!";
-            gameOverText.color = Color.green;
+            gameOverText.text = "Game Over. Blue Wins!";
+            gameOverText.color = myLightBlue;
             winCanvas.gameObject.SetActive(true);
 
             StartCoroutine(gameOverRoutine());
@@ -94,8 +101,8 @@ public class Script_GameManager : MonoBehaviour
         {
             player2.GetComponent<Character_Behavior>().myAnim.SetBool("Win", true);
             player1.GetComponent<Character_Behavior>().myAnim.SetBool("Dead", true);
-            gameOverText.text = "Game Over. Red Wins!";
-            gameOverText.color = Color.red;
+            gameOverText.text = "Game Over. Orange Wins!";
+            gameOverText.color = myLightOrange;
             winCanvas.gameObject.SetActive(true);
 
             StartCoroutine(gameOverRoutine());
@@ -123,7 +130,7 @@ public class Script_GameManager : MonoBehaviour
             player2score.text = "Victories: " + score2.ToString();
 
             if (score1 < scoreCap && score2 < scoreCap)
-                StartCoroutine("redWinsRoutine");
+                StartCoroutine("orangeWinsRoutine");
         }
 
         if (caller.tag == "PlayerTwo")
@@ -133,7 +140,7 @@ public class Script_GameManager : MonoBehaviour
             player1score.text = "Victories: " + score1.ToString();
 
             if (score1 < scoreCap && score2 < scoreCap)
-                StartCoroutine("greenWinsRoutine");
+                StartCoroutine("blueWinsRoutine");
         }
 
         if(tagModeOn)
@@ -177,10 +184,10 @@ public class Script_GameManager : MonoBehaviour
 
     }
 
-    IEnumerator redWinsRoutine()
+    IEnumerator orangeWinsRoutine()
     {
-        gameOverText.text = "Point: Red";
-        gameOverText.color = Color.red;
+        gameOverText.text = "Point: orange";
+        gameOverText.color = myLightOrange;
 
         CameraShaker.Instance.ShakeOnce(10f, 10f, 0f, 1f);
 
@@ -193,10 +200,10 @@ public class Script_GameManager : MonoBehaviour
 
     }
 
-    IEnumerator greenWinsRoutine()
+    IEnumerator blueWinsRoutine()
     {
-        gameOverText.text = "Point: Green";
-        gameOverText.color = Color.green;
+        gameOverText.text = "Point: Blue";
+        gameOverText.color = myLightBlue;
 
         CameraShaker.Instance.ShakeOnce(10f, 10f, 0f, 1f);
 

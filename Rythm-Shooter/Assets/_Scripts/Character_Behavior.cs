@@ -229,11 +229,24 @@ public class Character_Behavior : MonoBehaviour
             facingRight = false;
 
         if (facingRight)
-            transform.Rotate(0, 0, 0);
+        {
+            //Debug.Log(transform.rotation);// == new Quaternion (0, 180, 0, 0))
+
+             if (transform.rotation.y == -1)
+                 transform.Rotate(0, -180, 0);
+
+        }
 
         //transform.localScale = new Vector2(1, transform.localScale.y);
-        if (!facingRight)
-            transform.Rotate(0, 180, 0);           // transform.localScale = new Vector2(-1, transform.localScale.y);
+        else if (!facingRight)
+        {
+            if (transform.rotation.y == 0)
+                transform.Rotate(0, 180, 0);
+
+            //Debug.Log(transform.rotation);// == new Quaternion (0, 180, 0, 0))
+        }
+        // transform.localScale = new Vector2(-1, transform.localScale.y);
+
 
         FallingPhysics(mybody);
 

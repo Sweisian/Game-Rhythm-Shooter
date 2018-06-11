@@ -46,9 +46,9 @@ public class Script_Boomerang_Bullet : MonoBehaviour
                 player = gm.player2;
 
             if (player == gm.player1)
-                GetComponent<SpriteRenderer>().color = Color.red;
+                GetComponent<SpriteRenderer>().color = Color.blue;
             else
-                GetComponent<SpriteRenderer>().color = Color.green;
+                GetComponent<SpriteRenderer>().color = Color.yellow;
         }
 
         audioManager = GameObject.FindObjectOfType<AudioManager>();
