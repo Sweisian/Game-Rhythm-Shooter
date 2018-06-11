@@ -48,9 +48,8 @@ public class Character_Behavior : MonoBehaviour
 
 
     //Ghost state testing
-    [SerializeField] private bool isGhost = false;
-
-    [SerializeField] private bool isGhostEnabled = false;
+    private bool isGhost = false;
+    private bool isGhostEnabled = false;
     private bool stuckAsHuman = false;
     Color32 humanColor; // = new Color(0.5279903f, 0.990566f, 0.5664769f, 1f);
     Color32 ghostColor = new Color(0.1884567f, 0.3301887f, 0.1992668f, 1f);
@@ -67,11 +66,9 @@ public class Character_Behavior : MonoBehaviour
     {
         //This needs to go first, or we get problems
         myAnim = GetComponent<Animator>();
-        Debug.Log("AWAKE myAnim is: " + myAnim);
 
         //If you don't have a controller plugged in, the game is UNPLAYABLE
         player = InputManager.Devices[playerNumber];
-        Debug.Log("AWAKE player is: " + player);
 
         mybody = GetComponent<Rigidbody2D>();
         particles = GetComponentsInChildren<ParticleSystem>();
@@ -89,8 +86,6 @@ public class Character_Behavior : MonoBehaviour
         myTaggedParticles = gameObject.transform.Find("Tagged Particles").GetComponent<ParticleSystem>();
 
         //finds child dash particles with name "Dash Particles"
-        if (myDashParticles == null)
-            Debug.Log("No Dash Particles child attached");
 
         audioManager = GameObject.FindObjectOfType<AudioManager>();
 
@@ -109,18 +104,12 @@ public class Character_Behavior : MonoBehaviour
             InputDevice player = InputManager.Devices[playerNumber];
             if (isGhostEnabled)
             {
-               // if (isGhost)
-               // {
-                    //dash
+
                     if (player.Action1.WasPressed || Input.GetKeyDown(KeyCode.L))
                     {
-                        //Debug.Log("X Pressed by player 1");
                         dash = true;
                     }
-                // }
-                // else if (!isGhost && !stuckAsHuman)
-                //Debug.Log("isGhost is: " + isGhost);
-                //Debug.Log("stuckAsHuman is: " + stuckAsHuman);
+
                 if (!isGhost && !stuckAsHuman)
                 {
                     //shoot
@@ -137,7 +126,6 @@ public class Character_Behavior : MonoBehaviour
                 //dash
                 if (player.Action1.WasPressed || Input.GetKeyDown(KeyCode.L))
                 {
-                    //Debug.Log("X Pressed by player 1");
                     dash = true;
                 }
                 //shoot 
@@ -167,11 +155,9 @@ public class Character_Behavior : MonoBehaviour
         {
             var emission = myDashParticles.emission;
             emission.enabled = true;
-            //Debug.Log("Currently Dashing");
         }
         else if (myDashMove.direction == 0)
         {
-            //Debug.Log("not dashing");
             var emission = myDashParticles.emission;
             emission.enabled = false;
         }
@@ -242,10 +228,12 @@ public class Character_Behavior : MonoBehaviour
         if (xControl.Value < -.01f || Input.GetKey(KeyCode.A))
             facingRight = false;
 
-       // if (facingRight)
-         //   transform.localScale = new Vector2(1, transform.localScale.y);
-        //if (!facingRight)
-          //  transform.localScale = new Vector2(-1, transform.localScale.y);
+        if (facingRight)
+            transform.Rotate(0, 0, 0);
+
+        //transform.localScale = new Vector2(1, transform.localScale.y);
+        if (!facingRight)
+            transform.Rotate(0, 180, 0);           // transform.localScale = new Vector2(-1, transform.localScale.y);
 
         FallingPhysics(mybody);
 
@@ -255,7 +243,6 @@ public class Character_Behavior : MonoBehaviour
             audioManager.PlaySound("dash");
 
             Dash(xControl, myDashMove);
-            //Debug.Log("I DASHED");
             dash = false;
         }
 
@@ -266,7 +253,6 @@ public class Character_Behavior : MonoBehaviour
     public void Dash(InputControl xControl, Script_DashMove myDashMove)
     {
         //camera shake function
-        Debug.Log("Called Dash");
         CameraShaker.Instance.ShakeOnce(5f, 3f, 0f, .5f);
 
         InputControl aimX = player.GetControl(InputControlType.LeftStickX);
@@ -300,7 +286,6 @@ public class Character_Behavior : MonoBehaviour
             if (!facingRight)
                 myDashMove.direction = 1;
         }
-        //Debug.Log("I Dashed");
 
         //Needs to go at end because this depends on the myDashMove.direction value
         StartCoroutine("dashFlash");
@@ -367,11 +352,6 @@ public class Character_Behavior : MonoBehaviour
 
     public void Jump(Rigidbody2D mybody)
     {
-        //Debug.Log("Jump velocity is: ");
-        //Debug.Log(jumpvelocity);
-        //Debug.Log("mybody.velocity before jump is: ");
-        //Debug.Log(mybody.velocity);
-
         mybody.velocity += jumpvelocity * Vector2.up; //* Time.deltaTime;
     }
 
@@ -415,26 +395,18 @@ public class Character_Behavior : MonoBehaviour
         {
             this.isGhost = true;
             Color32 ghostColor = new Color(0.1884567f, 0.3301887f, 0.1992668f, 1f);
-            Debug.Log("ITS SPOOKY TIME");
         }
-        else
-        {
-            Debug.Log("You must be a human for a time, ye mortal...");
-        }
-
     }
 
     public void BecomeHuman(GameObject curr)
     {
         this.isGhost = false;
-        Debug.Log("JUST A HUMAN...");
         StartCoroutine(RemainAHuman(curr));
     }
 
 
     IEnumerator RemainAHuman(GameObject curr)
     {
-        Debug.Log("stay mortal for a time");
         stuckAsHuman = true;
         ParticleSystem cooldownParticles = transform.Find("Cooldown Particles").gameObject.GetComponent<ParticleSystem>();
         cooldownParticles.Play();
@@ -474,7 +446,6 @@ public class Character_Behavior : MonoBehaviour
     {
         if (hit.gameObject.tag == "Ground")
         {
-            //Debug.Log("myAnim is: " + myAnim);
             isgrounded = true;
         }
     }
@@ -491,17 +462,13 @@ public class Character_Behavior : MonoBehaviour
     void OnCollisionEnter2D(Collision2D other)
 
     {
-        Debug.Log("myDashMove is: " + myDashMove);
-        Debug.Log("other.gameObject.name is: " + other.gameObject.name);
 
         //checks to see if we are dashing and hit another player
         if (myDashMove.direction != 0 && other.gameObject.tag == "PlayerOne" || other.gameObject.tag == "PlayerTwo")
         {
-            Debug.Log(gameObject.name + " collided with: " + other.gameObject.name);
 
             audioManager.PlaySound("playerCollision");
 
-            Debug.Log("I dashed into: " + other);
 
             StartCoroutine(stunned(other));
             
@@ -519,26 +486,21 @@ public class Character_Behavior : MonoBehaviour
         {
             myGM.StartCoroutine(myGM.tagRefractoryRoutine());
             myGM.chaseP1 = !myGM.chaseP1;
-            Debug.Log("CHANGED TARGET");
         }
 
-        Color32 c = other.gameObject.GetComponent<SpriteRenderer>().color;
+        //Color32 c = other.gameObject.GetComponent<SpriteRenderer>().color;
         isStunned = true;
-        other.gameObject.GetComponent<SpriteRenderer>().color = Color.cyan;
+        //other.gameObject.GetComponent<SpriteRenderer>().color = Color.cyan;
         yield return new WaitForSeconds(stunLength);
-        other.gameObject.GetComponent<SpriteRenderer>().color = c;
+        //other.gameObject.GetComponent<SpriteRenderer>().color = c;
         isStunned = false;
     }
 
     IEnumerator dashFlash()
     {
-        //Debug.Log("called dashFlash");
-        //Debug.Log(myDashMove.direction);
 
         while (myDashMove.direction != 0)
         {
-            //Debug.Log("inside dashFlash");
-
             yield return new WaitForSeconds(0.03f);
 
             yield return new WaitForSeconds(0.03f);

@@ -25,7 +25,6 @@ public class AudioManager : MonoBehaviour {
 
     public void PlaySound(string input)
     {
-        Debug.Log("Play coin sound");
         switch(input){
             case "dash":
                 //Debug.Log("Play dash sound");
@@ -56,7 +55,6 @@ public class AudioManager : MonoBehaviour {
                 Debug.Log("invalid input");
                 break;
         }
-        Debug.Log(input);
             
     
         
