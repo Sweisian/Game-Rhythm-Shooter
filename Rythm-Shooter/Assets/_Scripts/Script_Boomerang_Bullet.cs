@@ -12,7 +12,7 @@ public class Script_Boomerang_Bullet : MonoBehaviour
 
     [SerializeField] private Script_GameManager gm;
 
-    [SerializeField] private float speed = 33f;
+     public float speed = 33f;
     [SerializeField] private float rotateSpeed = 200f;
     [SerializeField] private float initialSpeed = 80f;
     [SerializeField] private float flyStraightTime = 1f;

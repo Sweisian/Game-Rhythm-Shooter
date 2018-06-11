@@ -428,19 +428,6 @@ Prefab:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4516483694872430, guid: 4301ad145323f664090c2eb7b2b6736d, type: 2}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4516483694872430, guid: 4301ad145323f664090c2eb7b2b6736d, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 61717201993313600, guid: 4301ad145323f664090c2eb7b2b6736d,
-        type: 2}
-      propertyPath: m_UsedByComposite
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 212925383330056310, guid: 4301ad145323f664090c2eb7b2b6736d, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 4301ad145323f664090c2eb7b2b6736d, type: 2}

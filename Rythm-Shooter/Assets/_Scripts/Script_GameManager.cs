@@ -87,6 +87,8 @@ public class Script_GameManager : MonoBehaviour
             gameOverText.text = "Game Over. Green Wins!";
             gameOverText.color = Color.green;
             winCanvas.gameObject.SetActive(true);
+
+            StartCoroutine(gameOverRoutine());
         }
         if (score2 >= scoreCap)
         {
@@ -96,6 +98,7 @@ public class Script_GameManager : MonoBehaviour
             gameOverText.color = Color.red;
             winCanvas.gameObject.SetActive(true);
 
+            StartCoroutine(gameOverRoutine());
         }
     }
 	
@@ -119,7 +122,8 @@ public class Script_GameManager : MonoBehaviour
             player1.GetComponent<Character_Behavior>().myAnim.SetTrigger("Hit");
             player2score.text = "Victories: " + score2.ToString();
 
-            StartCoroutine("redWinsRoutine");
+            if (score1 < scoreCap && score2 < scoreCap)
+                StartCoroutine("redWinsRoutine");
         }
 
         if (caller.tag == "PlayerTwo")
@@ -128,7 +132,8 @@ public class Script_GameManager : MonoBehaviour
             player2.GetComponent<Character_Behavior>().myAnim.SetTrigger("Hit");
             player1score.text = "Victories: " + score1.ToString();
 
-            StartCoroutine("greenWinsRoutine");
+            if (score1 < scoreCap && score2 < scoreCap)
+                StartCoroutine("greenWinsRoutine");
         }
 
         if(tagModeOn)
@@ -176,7 +181,6 @@ public class Script_GameManager : MonoBehaviour
     {
         gameOverText.text = "Point: Red";
         gameOverText.color = Color.red;
-        
 
         CameraShaker.Instance.ShakeOnce(10f, 10f, 0f, 1f);
 
@@ -194,7 +198,6 @@ public class Script_GameManager : MonoBehaviour
         gameOverText.text = "Point: Green";
         gameOverText.color = Color.green;
 
-
         CameraShaker.Instance.ShakeOnce(10f, 10f, 0f, 1f);
 
         yield return new WaitForSecondsRealtime(2);
@@ -208,11 +211,18 @@ public class Script_GameManager : MonoBehaviour
     IEnumerator gameOverRoutine()
     {
         audioManager.PlaySound("gameOver");
-
-        yield return new WaitForSecondsRealtime(5);
+        Time.timeScale = .25f;
+        yield return new WaitForSecondsRealtime(3);
         Time.timeScale = 1f;
         Scene loadedLevel = SceneManager.GetActiveScene();
         SceneManager.LoadScene(loadedLevel.buildIndex);
+
+        //Doesn't seem to work but I don't care
+        GameObject[] shots = GameObject.FindGameObjectsWithTag("Shot");
+        foreach (GameObject s in shots)
+        {
+            s.GetComponent<Script_Boomerang_Bullet>().speed = 0;
+        }
     }
 
     public IEnumerator tagRefractoryRoutine()
