@@ -49,9 +49,6 @@ public class Script_GameManager : MonoBehaviour
     // Use this for initialization
     void Start ()
 	{
-        //DontDestroyOnLoad(gameObject);
-        //ColorUtility.TryParseHtmlString("97E9FF", out myLightBlue);
-        //ColorUtility.TryParseHtmlString("FFAB56", out myLightOrange);
 
         myLightBlue = new Color(0.5882353f, 0.9137255f, 1f);
         myLightOrange = new Color(1f, 0.670058f, 0.3333334f);

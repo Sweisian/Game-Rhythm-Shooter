@@ -44,14 +44,14 @@ public class PauseScript : MonoBehaviour {
     public void LoadMenu()
     {
         Time.timeScale = 1f;
-        Debug.Log("Loading Menu...");
+        //Debug.Log("Loading Menu...");
         isPaused = false;
-        SceneManager.LoadScene("Start Menu"); //get rid of this hardcode
+        SceneManager.LoadScene("Main_Menu"); //get rid of this hardcode
     }
 
     public void QuitGame()
     {
-        Debug.Log("Quiting Game...");
+        //Debug.Log("Quiting Game...");
         Application.Quit();
     }
 }
