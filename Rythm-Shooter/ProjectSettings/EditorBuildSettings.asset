@@ -5,16 +5,22 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/InControl/Test/TestInputManager.unity
     guid: 5732134fbcf2c404ea75451f03d6392e
   - enabled: 1
     path: Assets/_Scenes/Main_Menu.unity
     guid: fd730959ca5e91e4ca1bd082b6ef93de
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Scenes/Emily 5_20.unity
     guid: 7cf061a7415e40440923acc7a44d97d6
   - enabled: 1
     path: Assets/_Scenes/Options_Menu.unity
     guid: 099f25fc8826984418c97a953c984a3c
+  - enabled: 1
+    path: Assets/_Scenes/Emily 6-3.unity
+    guid: bdcf6c8df2cbb044d8b7647f1958c4b9
+  - enabled: 1
+    path: Assets/_Scenes/Win_Menu.unity
+    guid: c7fc60485c88cd740883ea0ace9efbd6
   m_configObjects: {}
